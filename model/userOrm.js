@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const uniqid = require('uniqid');
 const {
   findAllUsers,
   findUserByIdQuery,
@@ -32,7 +33,7 @@ const fetchUsers = async () => {
 
 const fetchUserByIdFromDb = async (userId) => {
   try {
-    const [rows] = await connection.query(findUserByIdQuery, userId); //
+    const [rows] = await connection.query(findUserByIdQuery, userId);
     return rows[0];
   } catch (e) {
     throw new Error(e);
@@ -42,17 +43,21 @@ const fetchUserByIdFromDb = async (userId) => {
 const insertUserToDb = async (username, password) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
+  const _id = uniqid();
   try {
-    const [result] = await connection.query(insertUserQuery, [
+    await connection.query(insertUserQuery, [
+      _id,
       username,
       hashedPassword,
     ]);
+    
     const [userResult] = await connection.query(
       findUserByIdQuery,
-      result.insertId
+      _id
     );
     return userResult[0];
   } catch (e) {
+    console.log(e)
     throw new Error(e);
   }
 };
