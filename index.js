@@ -19,5 +19,5 @@ app.use(express.json());
 app.use(routes);
 
 server.listen(PORT, () => {
-  console.log("Server started listening on PORT 3001");
+  console.log("Server started listening on PORT: " + PORT);
 });
