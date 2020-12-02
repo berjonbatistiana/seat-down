@@ -24,12 +24,13 @@ const fetchCompanyByIdFromDb = async (companyId) => {
   }
 };
 
-const insertCompanyToDb = async (companyId, name, chairCapacity) => {
+const insertCompanyToDb = async (ownerId, name, deskCapacity, address) => {
   try {
     const [result] = await connection.query(insertCompanyQuery, [
-      companyId,
+      ownerId,
       name,
-      chairCapacity,
+      deskCapacity,
+      address,
     ]);
     const [companyResult] = await connection.query(
       findCompanyByIdQuery,

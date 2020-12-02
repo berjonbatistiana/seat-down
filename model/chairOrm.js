@@ -24,13 +24,9 @@ const fetchChairByIdFromDb = async (chairId) => {
   }
 };
 
-const insertChairToDb = async (companyId, name, chairCapacity) => {
+const insertChairToDb = async (deskId, name) => {
   try {
-    const [result] = await connection.query(insertChairQuery, [
-      companyId,
-      name,
-      chairCapacity,
-    ]);
+    const [result] = await connection.query(insertChairQuery, [deskId, name]);
     const [chairResult] = await connection.query(
       findChairByIdQuery,
       result.insertId
