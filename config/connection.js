@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "production") {
       host: "localhost",
       user: "root",
       password: "password",
-      database: "seat_down",
+      database: "seat_db",
     })
     .promise();
 }
