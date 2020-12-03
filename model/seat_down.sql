@@ -25,5 +25,10 @@ CREATE TABLE desk (
     companyId INT references company(id),
     name VARCHAR(255) NOT NULL,
     chairCapacity INT NOT NULL,
+
+CREATE TABLE users (
+    id VARCHAR(255) NOT NULL UNIQUE,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
     PRIMARY KEY(id)
 );
