@@ -5,7 +5,7 @@ const companyRoutes = require("./companyRoutes");
 const chairRoutes = require("./chairRoutes");
 
 router.use("/users", userRoutes);
-router.use("/tables", deskRoutes);
+router.use("/desks", deskRoutes);
 router.use("/company", companyRoutes);
 router.use("/chairs", chairRoutes);
 

@@ -1,5 +1,5 @@
 const {
-  findAllChairsQueries,
+  findAllChairsQuery,
   findChairByIdQuery,
   insertChairQuery,
   deleteChairByIdQuery,
@@ -8,7 +8,7 @@ const connection = require("../config/connection");
 
 const fetchAllChairsFromDb = async () => {
   try {
-    const [rows] = await connection.query(findAllChairsQueries);
+    const [rows] = await connection.query(findAllChairsQuery);
     return rows;
   } catch (e) {
     throw new Error(e);

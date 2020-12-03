@@ -1,5 +1,5 @@
 const {
-  findAllDesksQueries,
+  findAllDesksQuery,
   findDeskByIdQuery,
   insertDeskQuery,
   deleteDeskByIdQuery,
@@ -8,7 +8,7 @@ const connection = require("../config/connection");
 
 const fetchAllDesksFromDb = async () => {
   try {
-    const [rows] = await connection.query(findAllDesksQueries);
+    const [rows] = await connection.query(findAllDesksQuery);
     return rows;
   } catch (e) {
     throw new Error(e);
