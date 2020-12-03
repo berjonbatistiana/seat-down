@@ -5,15 +5,16 @@ CREATE DATABASE seat_db;
 USE seat_db;
 
 CREATE TABLE chair (
-    id INT AUTO_INCREMENT NOT NULL,
-    deskId INT references desk(id),
+    id VARCHAR(255) NOT NULL,
+    deskId VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
+    FOREIGN KEY(deskId) REFERENCES desk(id)
 );
 
 CREATE TABLE company (
-    id INT AUTO_INCREMENT NOT NULL,
-    ownerId INT NOT NULL,
+    id VARCHAR(255) NOT NULL,
+    ownerId VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     deskCapacity INT NOT NULL,
     address VARCHAR(255),
@@ -21,14 +22,33 @@ CREATE TABLE company (
 );
 
 CREATE TABLE desk (
-    id INT AUTO_INCREMENT NOT NULL,
-    companyId INT references company(id),
+    id VARCHAR(255) NOT NULL,
+    companyId VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     chairCapacity INT NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(companyId) REFERENCES company(id)
+);
+
+CREATE TABLE roles (
+    id VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL UNIQUE,
+    PRIMARY KEY(id)
+);
 
 CREATE TABLE users (
-    id VARCHAR(255) NOT NULL UNIQUE,
+    id VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     PRIMARY KEY(id)
+);
+
+CREATE TABLE occupancy (
+    id VARCHAR(255) NOT NULL,
+    occupancyDate VARCHAR(255) NOT NULL,
+    chairId VARCHAR(255) NOT NULL,
+    userId VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY (chairId) REFERENCES chair(id),
+    FOREIGN KEY (userId) REFERENCES users(id)
 );
