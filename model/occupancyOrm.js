@@ -28,17 +28,17 @@ const findOccupancyByIdFromDb = async (occupancyId) => {
 const insertOccupancyToDb = async (companyId, name, chairCapacity) => {
   try {
     const id = uniqid();
-    const [result] = await connection.query(insertOccupancyQuery, [
+    await connection.query(insertOccupancyQuery, [
       id,
       companyId,
       name,
       chairCapacity,
     ]);
-    const [deskResult] = await connection.query(
+    const [occupancyResult] = await connection.query(
       findOccupancyByIdFromDb,
       id
     );
-    return deskResult[0];
+    return occupancyResult[0];
   } catch (e) {
     throw new Error(e);
   }
