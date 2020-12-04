@@ -8,8 +8,8 @@ const {
 module.exports = {
   getAllRolesApi: async (_req, res) => {
     try {
-      const desks = await fetchAllRolesFromDb();
-      res.json(desks);
+      const roles = await fetchAllRolesFromDb();
+      res.json(roles);
     } catch (e) {
       res.status(400).json(e);
     }

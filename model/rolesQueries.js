@@ -1,16 +1,16 @@
 const findAllRolesQuery = `
-  SELECT * FROM Role;
+  SELECT * FROM roles;
 `;
 const findRoleByIdQuery = `
-  SELECT * FROM Role
+  SELECT * FROM roles
   WHERE id = ?;
 `;
 const insertRoleQuery = `
-  INSERT INTO Role (id, name)
+  INSERT INTO roles (id, name)
   VALUES (?, ?);
 `;
 const deleteRoleByIdQuery = `
-  DELETE FROM Role
+  DELETE FROM roles
   WHERE ID = ?;
 `;
 

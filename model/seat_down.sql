@@ -4,14 +4,6 @@ CREATE DATABASE seat_db;
 
 USE seat_db;
 
-CREATE TABLE chair (
-    id VARCHAR(255) NOT NULL,
-    deskId VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(deskId) REFERENCES desk(id)
-);
-
 CREATE TABLE company (
     id VARCHAR(255) NOT NULL,
     ownerId VARCHAR(255) NOT NULL,
@@ -30,6 +22,14 @@ CREATE TABLE desk (
     FOREIGN KEY(companyId) REFERENCES company(id)
 );
 
+CREATE TABLE chair (
+    id VARCHAR(255) NOT NULL,
+    deskId VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(deskId) REFERENCES desk(id)
+);
+
 CREATE TABLE roles (
     id VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL UNIQUE,
@@ -41,7 +41,7 @@ CREATE TABLE users (
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     roleId VARCHAR(255) NOT NULL,
-    PRIMARY KEY(id)
+    PRIMARY KEY(id),
     FOREIGN KEY(roleId) REFERENCES roles(id)
 );
 

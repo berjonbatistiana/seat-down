@@ -4,7 +4,7 @@ const {
   findRoleByIdQuery,
   insertRoleQuery,
   deleteRoleByIdQuery,
-} = require("./occupancyQueries");
+} = require("./rolesQueries");
 const connection = require("../config/connection");
 
 const fetchAllRolesFromDb = async () => {

@@ -12,8 +12,8 @@ const findUserByUsername = `
   WHERE username = ?;
   `;
 const insertUserQuery = `
-  INSERT INTO users (id, username, password)
-  VALUES (?, ?, ?);
+  INSERT INTO users (id, username, password, roleId)
+  VALUES (?, ?, ?, ?);
   `;
 const deleteUserByIdQuery = `
   DELETE FROM users
