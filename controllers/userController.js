@@ -23,7 +23,7 @@ module.exports = {
   },
   deleteUserByIdApi: async (req, res) => {
     const { userId } = req.params;
-    if (parseInt(userId) !== req.user.id) {
+    if (userId !== req.user.id) {
       return res
         .status(401)
         .json({ error: "You cannot delete a user that is not yourself" });

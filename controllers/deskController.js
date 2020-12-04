@@ -26,7 +26,7 @@ module.exports = {
     const { companyId, name, chairCapacity } = req.body;
     try {
       res.json(
-        await insertDeskToDb(parseInt(companyId), name, parseInt(chairCapacity))
+        await insertDeskToDb(companyId, name, parseInt(chairCapacity))
       );
     } catch (e) {
       res.status(400).json(e);
