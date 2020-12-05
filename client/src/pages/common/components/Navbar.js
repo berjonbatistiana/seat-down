@@ -1,15 +1,16 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
+import {Toolbar, Typography, Link} from "@material-ui/core";
+import { Link as RouteLink, useLocation } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
+  },
+  menuButton: {
+    marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
@@ -19,22 +20,40 @@ const useStyles = makeStyles((theme) => ({
 
 export function Navbar() {
   const classes = useStyles();
+  const location = useLocation();
 
   return (
     <div className={classes.root}>
       <AppBar className={classes.root} color="transparent" position="static" elevation={0}>
         <Toolbar>
           <Typography className={classes.title}>
-            <Button component={Link} to="/" color="inherit">
+            <Link component={RouteLink} to="/" color="inherit"
+              style={{
+                color: "#fd8369",
+                fontWeight: "bold",
+              }}
+            >
               Seat Down
-            </Button>
+            </Link>
           </Typography>
-          <Button to="/signup" component={Link} color="inherit">
-            Sign Up
-          </Button>
-          <Button to="/signin" component={Link} color="inherit">
-            Sign In
-          </Button>
+          <Typography className={classes.menuButton}>
+            <Link to="/signup" component={RouteLink} color="inherit"
+              style={{
+                fontWeight: location.pathname === "/signup" ? "bold" : "",
+              }}
+            >
+              Sign Up
+            </Link>
+          </Typography>
+          <Typography className={classes.menuButton}>
+            <Link to="/signin" component={RouteLink} color="inherit"
+              style={{
+                fontWeight: location.pathname === "/signin" ? "bold" : "",
+              }}
+            >
+              Sign In
+            </Link>
+          </Typography>
         </Toolbar>
       </AppBar>
     </div>
