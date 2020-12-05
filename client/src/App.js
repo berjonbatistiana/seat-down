@@ -3,8 +3,7 @@ import {HashRouter as Router, Route} from "react-router-dom";
 import { About, SignIn, SignUp } from "./pages/Viewer"
 import { Navbar } from "./pages/common"
 
-function App() {
-
+const App = () => {
   return (
     <Router>
       <Navbar />
