@@ -16,6 +16,8 @@ CREATE TABLE company (
 CREATE TABLE desk (
     id VARCHAR(255) NOT NULL,
     companyId VARCHAR(255) NOT NULL,
+    floor VARCHAR(255) NOT NULL,
+    building VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     chairCapacity INT NOT NULL,
     PRIMARY KEY(id),
