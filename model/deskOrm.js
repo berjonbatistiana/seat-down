@@ -1,4 +1,4 @@
-const uniqid = require('uniqid');
+const uniqid = require("uniqid");
 const {
   findAllDesksQuery,
   findDeskByIdQuery,
@@ -25,19 +25,24 @@ const fetchDeskByIdFromDb = async (deskId) => {
   }
 };
 
-const insertDeskToDb = async (companyId, name, chairCapacity) => {
+const insertDeskToDb = async (
+  companyId,
+  floor,
+  building,
+  name,
+  chairCapacity
+) => {
   const id = uniqid();
   try {
     await connection.query(insertDeskQuery, [
       id,
       companyId,
+      floor,
+      building,
       name,
       chairCapacity,
     ]);
-    const [deskResult] = await connection.query(
-      findDeskByIdQuery,
-      id
-    );
+    const [deskResult] = await connection.query(findDeskByIdQuery, id);
     return deskResult[0];
   } catch (e) {
     throw new Error(e);
