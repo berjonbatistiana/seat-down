@@ -7,7 +7,10 @@ const {
 } = require("../../../controllers/userController");
 
 router.use(authMiddleware);
-router.route("/").get(getAllUsersApi);
-router.route("/:userId").get(getUserByIdApi).delete(deleteUserByIdApi);
+router.route("/")
+  .get(getAllUsersApi);
+router.route("/:userId")
+  .get(getUserByIdApi)
+  .delete(deleteUserByIdApi);
 
 module.exports = router;

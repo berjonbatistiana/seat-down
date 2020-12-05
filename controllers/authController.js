@@ -24,4 +24,7 @@ module.exports = {
       res.status(400).json(e);
     }
   },
+  changePasswordApi: (req, res) => {
+    const {username, password, oldPassword} = req.body;
+  },
 };
