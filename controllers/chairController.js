@@ -25,7 +25,7 @@ module.exports = {
   insertChairApi: async (req, res) => {
     const { deskId, name } = req.body;
     try {
-      res.json(await insertChairToDb(parseInt(deskId), name));
+      res.json(await insertChairToDb(deskId, name));
     } catch (e) {
       res.status(400).json(e);
     }

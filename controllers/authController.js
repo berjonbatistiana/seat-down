@@ -16,9 +16,9 @@ module.exports = {
     res.json(tokenForUser(req.user.id));
   },
   signUpApi: async (req, res) => {
-    const { username, password } = req.body;
+    const { username, password, roleId } = req.body;
     try {
-      const user = await insertUserToDb(username, password);
+      const user = await insertUserToDb(username, password, roleId);
       res.json(tokenForUser(user.id));
     } catch (e) {
       res.status(400).json(e);

@@ -27,7 +27,7 @@ module.exports = {
     try {
       res.json(
         await insertCompanyToDb(
-          parseInt(ownerId),
+          ownerId,
           name,
           parseInt(deskCapacity),
           address
