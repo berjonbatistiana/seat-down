@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
@@ -27,7 +27,8 @@ export function Navbar() {
       <AppBar className={classes.root} color="transparent" position="static" elevation={0}>
         <Toolbar>
           <Typography className={classes.title}>
-            <Link component={RouteLink} to="/" color="inherit"
+            <Link
+              component={RouteLink} to="/" color="inherit"
               style={{
                 color: "#fd8369",
                 fontWeight: "bold",
@@ -37,7 +38,8 @@ export function Navbar() {
             </Link>
           </Typography>
           <Typography className={classes.menuButton}>
-            <Link to="/signup" component={RouteLink} color="inherit"
+            <Link
+              to="/signup" component={RouteLink} color="inherit"
               style={{
                 fontWeight: location.pathname === "/signup" ? "bold" : "",
               }}
