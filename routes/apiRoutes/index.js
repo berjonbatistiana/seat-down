@@ -1,4 +1,5 @@
 const router = require("express").Router();
+const authMiddleware = require("../../middlewares/authorizationMiddleware");
 const userRoutes = require("./userRoutes");
 const deskRoutes = require("./deskRoutes");
 const companyRoutes = require("./companyRoutes");
@@ -6,6 +7,7 @@ const chairRoutes = require("./chairRoutes");
 const roleRoutes = require("./roleRoutes");
 const occupancyRoutes = require("./occupancyRoutes");
 
+router.use(authMiddleware);
 router.use("/users", userRoutes);
 router.use("/desks", deskRoutes);
 router.use("/company", companyRoutes);
