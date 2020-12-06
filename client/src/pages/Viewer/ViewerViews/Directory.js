@@ -39,7 +39,7 @@ export const Directory = () => {
         </Grid>
       </Grid>
       <Box ml={3} mr={3}>
-        <Paper variant="outlined" style={{display: "block"}}>
+        <Paper variant="outlined">
           <EmployeeGrid
             title={"Everyone at The Software Company"}
             data={data}
@@ -48,8 +48,8 @@ export const Directory = () => {
               onRowAdd: newData =>
                 new Promise((resolve, reject) => {
                   setTimeout(() => {
+                    console.log(newData);
                     setData([...data, newData]);
-
                     resolve();
                   }, 1000)
                 }),

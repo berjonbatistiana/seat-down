@@ -34,11 +34,12 @@ export const EmployeeGrid = (props) => {
       columns={props.columns}
       options={{
         showTitle: false,
-        searchFieldAlignment: 'left',
+        toolbarButtonAlignment: 'left',
         doubleHorizontalScroll: true,
+        detailPanelType: 'single',
       }}
       editable={props.editable}
-      style={{boxShadow: 'none'}}
+      style={{boxShadow: 'none',}}
     />
   );
 }
