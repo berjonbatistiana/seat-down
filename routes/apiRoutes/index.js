@@ -6,13 +6,15 @@ const companyRoutes = require("./companyRoutes");
 const chairRoutes = require("./chairRoutes");
 const roleRoutes = require("./roleRoutes");
 const occupancyRoutes = require("./occupancyRoutes");
+const floorRoutes = require("./floorRoutes");
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
 router.use("/users", userRoutes);
 router.use("/desks", deskRoutes);
 router.use("/company", companyRoutes);
 router.use("/chairs", chairRoutes);
 router.use("/roles", roleRoutes);
 router.use("/occupy", occupancyRoutes);
+router.use("/floor", floorRoutes);
 
 module.exports = router;

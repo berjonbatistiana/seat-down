@@ -43,7 +43,7 @@ module.exports = {
   },
   
   updateFloorCompanyByIdApi: async (req, res) => {
-    const {floorId, companyId} = req.params;
+    const {floorId, companyId} = req.body;
     try{
       const updatedFloor = await updateFloorCompanyByIdFromDb(floorId, companyId);
       res.json(updatedFloor);
@@ -59,6 +59,7 @@ module.exports = {
       const deletedFloor = await deleteFloorByIdFromDb(floorId);
       res.json(deletedFloor);
     } catch (e) {
+      console.error(`API Error: Could not delete floor: ${floorId}`);
       res.status(400).json(e);
     }
   },
