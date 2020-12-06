@@ -2,7 +2,6 @@ import React, {useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {AppBar, Box, Tab, Tabs, Typography} from '@material-ui/core';
-import StarIcon from '@material-ui/icons/Star';
 import SearchIcon from '@material-ui/icons/Search';
 import { Link as RouteLink, useLocation } from "react-router-dom";
 
@@ -52,19 +51,16 @@ const AntTab = withStyles((theme) => ({
   root: {
     textTransform: 'none',
     minWidth: 70,
+    marginLeft: theme.spacing(2),
     fontWeight: theme.typography.fontWeightRegular,
-    '&$selected': {
-      color: '#5fc5d1',
-      fontWeight: theme.typography.fontWeightMedium,
-    },
     '&:focus': {
       color: '#5fc5d1',
     },
   },
-  selected: {},
 }))((props) => <Tab disableRipple {...props} />);
 
-export const UserNavbar = (props) => {
+export const UserNavbar = () => {
+  const location = useLocation();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -75,7 +71,10 @@ export const UserNavbar = (props) => {
     <div>
       <AppBar position="static" color="transparent" elevation={0}>
         <AntTabs value={value} onChange={handleChange}>
-          <AntTab component={RouteLink} to="/directory" label={<div><SearchIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Directory</div>} {...a11yProps(0)}/>
+          <AntTab
+            style={{color: location.pathname === '/directory' ? '#5fc5d1' : ''}}
+            component={RouteLink} to="/directory" label={<div><SearchIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Directory</div>} {...a11yProps(0)}
+          />
         </AntTabs>
       </AppBar>
     </div>

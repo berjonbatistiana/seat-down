@@ -28,9 +28,8 @@ export function Navbar() {
         <Toolbar>
           <Typography className={classes.title}>
             <Link
-              component={RouteLink} to="/" color="inherit"
+              component={RouteLink} to="/" color="secondary"
               style={{
-                color: "#fd8369",
                 fontWeight: "bold",
               }}
             >
