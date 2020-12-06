@@ -21,11 +21,11 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Router>
         <Navbar />
-        <UserNavbar/>
+        {/*only show this when signed in <UserNavbar/>*/}
         <Route exact path="/" component={About} />
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={SignUp} />
-        <Route path="/directory" component={Directory} />
+        {/* only show this when signed in <Route path="/directory" component={Directory} />*/}
       </Router>
     </ThemeProvider>
   );
