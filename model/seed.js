@@ -11,4 +11,6 @@ async function seed () {
   const userAdmin = insertUserToDb('admin', 'password', roleAdmin.id);
   
   
+  
+  
 }

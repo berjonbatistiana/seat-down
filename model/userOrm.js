@@ -41,7 +41,7 @@ const fetchUserByIdFromDb = async (userId) => {
   }
 };
 
-const insertUserToDb = async (username, password, roleId) => {
+const insertUserToDb = async (username, password, roleId, companyId) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
   const _id = uniqid();
@@ -50,7 +50,8 @@ const insertUserToDb = async (username, password, roleId) => {
       _id,
       username,
       hashedPassword,
-      roleId
+      roleId,
+      companyId,
     ]);
     
     const [userResult] = await connection.query(
