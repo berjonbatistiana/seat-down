@@ -14,7 +14,7 @@ module.exports = {
       res.status(400).json(e);
     }
   },
-  getOccupyIdApi: async (req, res) => {
+  getOccupyByIdApi: async (req, res) => {
     const { roleId } = req.params;
     try {
       res.json(await findOccupancyByIdFromDb(roleId));
