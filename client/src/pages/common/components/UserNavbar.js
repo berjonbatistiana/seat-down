@@ -51,7 +51,7 @@ const AntTab = withStyles((theme) => ({
   root: {
     textTransform: 'none',
     minWidth: 70,
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(3),
     fontWeight: theme.typography.fontWeightRegular,
     '&:focus': {
       color: '#5fc5d1',

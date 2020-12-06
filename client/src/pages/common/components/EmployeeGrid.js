@@ -35,6 +35,7 @@ export const EmployeeGrid = (props) => {
       options={{
         showTitle: false,
         searchFieldAlignment: 'left',
+        doubleHorizontalScroll: true,
       }}
       editable={props.editable}
       style={{boxShadow: 'none'}}
