@@ -2,6 +2,7 @@ import React, {useState } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {AppBar, Box, Tab, Tabs, Typography} from '@material-ui/core';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import SearchIcon from '@material-ui/icons/Search';
 import { Link as RouteLink, useLocation } from "react-router-dom";
 
@@ -72,8 +73,12 @@ export const UserNavbar = () => {
       <AppBar position="static" color="transparent" elevation={0}>
         <AntTabs value={value} onChange={handleChange}>
           <AntTab
+            style={{color: location.pathname === '/dashboard' ? '#5fc5d1' : ''}}
+            component={RouteLink} to="/dashboard" label={<div><CalendarTodayIcon fontSize="small" style={{verticalAlign: 'middle'}}/> User's Calendar</div>} {...a11yProps(0)}
+          />
+          <AntTab
             style={{color: location.pathname === '/directory' ? '#5fc5d1' : ''}}
-            component={RouteLink} to="/directory" label={<div><SearchIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Directory</div>} {...a11yProps(0)}
+            component={RouteLink} to="/directory" label={<div><SearchIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Employee Directory</div>} {...a11yProps(0)}
           />
         </AntTabs>
       </AppBar>

@@ -1,6 +1,6 @@
 import React from "react";
 import {HashRouter as Router, Route} from "react-router-dom";
-import { About, SignIn, SignUp, Directory } from "./pages/Viewer"
+import { About, SignIn, SignUp, Dashboard, Directory } from "./pages/Viewer"
 import {Navbar, UserNavbar} from "./pages/common"
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 
@@ -21,11 +21,12 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <Router>
         <Navbar />
-        {/*only show this when signed in <UserNavbar/>*/}
+        <UserNavbar/>
         <Route exact path="/" component={About} />
         <Route path="/signin" component={SignIn} />
         <Route path="/signup" component={SignUp} />
-        {/* only show this when signed in <Route path="/directory" component={Directory} />*/}
+        <Route path="/directory" component={Directory} />
+        <Route path="/dashboard" component={Dashboard}/>
       </Router>
     </ThemeProvider>
   );
