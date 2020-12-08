@@ -12,7 +12,7 @@ export const SignCard = (props) => {
     <Grid
       container
       direction="row"
-      style={{ textAlign: "center", height: "93vh" }}
+      style={{ textAlign: "center", height: "93vh", backgroundColor: '#faf9f7' }}
       justify="center"
       alignItems="stretch"
     >
@@ -25,7 +25,7 @@ export const SignCard = (props) => {
           xs={12}
           sm={6}
           md={8}
-          style={{ backgroundColor: "gray", width: "100%" }}
+          style={{ backgroundColor: "white", width: "100%" }}
         >
           <Grid item>
             <img alt="oops" src={props.image} style={{ width: "75%" }} />

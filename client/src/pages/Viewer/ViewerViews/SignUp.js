@@ -1,15 +1,8 @@
 import React, { Component } from "react";
-import { Field } from "redux-form";
 // import axios from "axios";
 import Button from "@material-ui/core/Button";
-import { Grid } from "@material-ui/core/";
-// import { connect } from "react-redux";
-// import { compose } from "redux";
-import Snackbar from "@material-ui/core/Snackbar";
-import MuiAlert from "@material-ui/lab/Alert";
-
-// import { setViewerToken } from "../ViewerReducer";
-import { SignCard, TextFieldInput } from "../../common/components";
+import { Grid, TextField } from "@material-ui/core/";
+import { SignCard, TextFieldInput, SelectDropdown } from "../../common/components";
 import signUp from "../../common/images/SignUpPhoto.png";
 
 export class SignUp extends Component {
@@ -55,30 +48,34 @@ export class SignUp extends Component {
         linkTitle="Sign In"
         link="signin"
         content={
-          <form noValidate autoComplete="off">
+          <form>
             <Grid item container spacing={3}>
               <Grid item xs={12}>
-                <Field
-                  name="username"
-                  label="Username"
-                  component={TextFieldInput}
-                />
+                <TextFieldInput name="username" label="Username" />
               </Grid>
               <Grid item xs={12}>
-                <Field
-                  name="password"
-                  label="Password"
-                  component={TextFieldInput}
+                <TextFieldInput name="password" label="Password" />
+              </Grid>
+              {/* <Grid item xs={12}>
+                <TextFieldInput
+                  name="confirmPassword"
+                  label="Confirm Password"
                 />
+              </Grid> */}
+              <Grid item xs={12}>
+                <TextFieldInput name="company" label="Company" />
+              </Grid>
+              <Grid item xs={12}>
+                <SelectDropdown>
+
+                </SelectDropdown>
               </Grid>
               <Grid item xs={12}>
                 <Button
-                  // disabled={disable()}
-                  // onClick={handleSubmit(this.handleSignUp)}
                   variant="contained"
                   style={{
                     color: "white",
-                    backgroundColor: "gray",
+                    backgroundColor: "#eb7a34",
                     borderRadius: 25,
                     "&:hover": {
                       backgroundColor: "#0276aa",
@@ -89,25 +86,12 @@ export class SignUp extends Component {
                 </Button>
               </Grid>
             </Grid>
-            <Snackbar
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "center",
-              }}
-              open={this.state.snackbar}
-              onClose={this.handleClose}
-            >
-              <MuiAlert onClose={this.handleClose} severity="error">
-                The username you have entered is not available.
-              </MuiAlert>
-            </Snackbar>
           </form>
         }
       />
     );
   }
 }
-
 
 // import React from 'react';
 // import { Typography, Grid } from "@material-ui/core";
