@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Typography, Grid, Box, Paper } from "@material-ui/core";
+import axios from "axios";
 
 import { DatePicker, EmployeeGrid } from "../../../pages/common/";
 
@@ -23,6 +24,10 @@ export const Directory = () => {
       seat: 3,
     },
   ]);
+
+  axios.get("/api/occupy").then((res) => {
+    console.log(res);
+  });
 
   return (
     <div>
