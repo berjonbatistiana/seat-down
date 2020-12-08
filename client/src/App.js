@@ -7,11 +7,11 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: '#6bd5e1',
-      darker: '#5fc5d1'
+      main: "#6bd5e1",
+      darker: "#5fc5d1",
     },
     secondary: {
-      main: '#fd8369'
+      main: "#fd8369",
     },
   },
 });
@@ -30,6 +30,6 @@ const App = () => {
       </Router>
     </ThemeProvider>
   );
-}
+};
 
 export default App;

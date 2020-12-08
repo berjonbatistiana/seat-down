@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 // import axios from "axios";
 import Button from "@material-ui/core/Button";
-import { Grid, TextField } from "@material-ui/core/";
+import { Grid } from "@material-ui/core/";
 import { SignCard, TextFieldInput, SelectDropdown } from "../../common/components";
 import signUp from "../../common/images/SignUpPhoto.png";
 
@@ -75,10 +75,10 @@ export class SignUp extends Component {
                   variant="contained"
                   style={{
                     color: "white",
-                    backgroundColor: "#eb7a34",
+                    backgroundColor: "#fd8369",
                     borderRadius: 25,
                     "&:hover": {
-                      backgroundColor: "#0276aa",
+                      backgroundColor: "#fd8369",
                     },
                   }}
                 >
