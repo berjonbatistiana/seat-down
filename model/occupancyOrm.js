@@ -35,7 +35,7 @@ const insertOccupancyToDb = async (date, chairId, userId) => {
       userId,
     ]);
     const [occupancyResult] = await connection.query(
-      findOccupancyByIdFromDb,
+      findOccupancyByIdQuery,
       id
     );
     return occupancyResult[0];
