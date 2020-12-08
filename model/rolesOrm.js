@@ -33,7 +33,7 @@ const insertRoleToDb = async (name) => {
       name,
     ]);
     const [row] = await connection.query(
-      findRoleByIdFromDb,
+      findRoleByIdQuery,
       id
     );
     return row[0];

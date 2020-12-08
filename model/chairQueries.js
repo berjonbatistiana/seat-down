@@ -1,7 +1,7 @@
-const findAllChairsQuery = "SELECT * FROM chair;";
-const findChairByIdQuery = "SELECT * FROM chair WHERE id = ?;";
-const insertChairQuery = "INSERT INTO chair (id, deskId, name) VALUES (?, ?, ?);";
-const deleteChairByIdQuery = "DELETE FROM chair WHERE ID = ?;";
+const findAllChairsQuery = "SELECT * FROM chairs;";
+const findChairByIdQuery = "SELECT * FROM chairs WHERE id = ?;";
+const insertChairQuery = "INSERT INTO chairs (id, deskId, name) VALUES (?, ?, ?);";
+const deleteChairByIdQuery = "DELETE FROM chairs WHERE ID = ?;";
 
 module.exports = {
   findAllChairsQuery,
