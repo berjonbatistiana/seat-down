@@ -25,15 +25,12 @@ const fetchCompanyByIdFromDb = async (companyId) => {
   }
 };
 
-const insertCompanyToDb = async (ownerId, name, deskCapacity, address) => {
+const insertCompanyToDb = async (name) => {
   const id = uniqid();
   try {
     await connection.query(insertCompanyQuery, [
       id,
-      ownerId,
       name,
-      deskCapacity,
-      address,
     ]);
     const [companyResult] = await connection.query(
       findCompanyByIdQuery,
