@@ -32,11 +32,11 @@ const insertRoleToDb = async (name) => {
       id,
       name,
     ]);
-    const [occupancyResult] = await connection.query(
-      findRoleByIdFromDb,
+    const [row] = await connection.query(
+      findRoleByIdQuery,
       id
     );
-    return occupancyResult[0];
+    return row[0];
   } catch (e) {
     throw new Error(e);
   }

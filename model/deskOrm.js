@@ -26,9 +26,7 @@ const fetchDeskByIdFromDb = async (deskId) => {
 };
 
 const insertDeskToDb = async (
-  companyId,
-  floor,
-  building,
+  floorId,
   name,
   chairCapacity
 ) => {
@@ -36,9 +34,7 @@ const insertDeskToDb = async (
   try {
     await connection.query(insertDeskQuery, [
       id,
-      companyId,
-      floor,
-      building,
+      floorId,
       name,
       chairCapacity,
     ]);

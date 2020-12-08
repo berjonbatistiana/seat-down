@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SeatingDetail() {
+export const SeatingDetail = () => {
   const classes = useStyles();
 
   return (

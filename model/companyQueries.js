@@ -1,8 +1,8 @@
-const findAllCompaniesQuery = "SELECT * FROM company;";
-const findCompanyByIdQuery = "SELECT * FROM company WHERE id = ?;";
+const findAllCompaniesQuery = "SELECT * FROM companies;";
+const findCompanyByIdQuery = "SELECT * FROM companies WHERE id = ?;";
 const insertCompanyQuery =
-  "INSERT INTO company (id, ownerId, name, deskCapacity, address) VALUES (?, ?, ?, ?, ?);";
-const deleteCompanyByIdQuery = "DELETE FROM company WHERE ID = ?;";
+  "INSERT INTO companies (id, name) VALUES (?, ?);";
+const deleteCompanyByIdQuery = "DELETE FROM companies WHERE ID = ?;";
 
 module.exports = {
   findAllCompaniesQuery,

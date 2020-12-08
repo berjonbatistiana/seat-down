@@ -5,6 +5,7 @@ const {
   findUserByIdQuery,
   findUserByUsername,
   insertUserQuery,
+  updateUserPasswordQuery,
   deleteUserByIdQuery,
 } = require("./userQueries");
 const connection = require("../config/connection");
@@ -40,7 +41,7 @@ const fetchUserByIdFromDb = async (userId) => {
   }
 };
 
-const insertUserToDb = async (username, password, roleId) => {
+const insertUserToDb = async (username, password, roleId, companyId) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
   const _id = uniqid();
@@ -49,7 +50,8 @@ const insertUserToDb = async (username, password, roleId) => {
       _id,
       username,
       hashedPassword,
-      roleId
+      roleId,
+      companyId,
     ]);
     
     const [userResult] = await connection.query(
@@ -62,6 +64,31 @@ const insertUserToDb = async (username, password, roleId) => {
     throw new Error(e);
   }
 };
+
+const updatePasswordFromDb = async (userId, oldPassword, newPassword) => {
+  const salt = await bcrypt.genSalt(10);
+  try {
+    const [rows] = await connection.query(findUserByIdQuery, userId);
+    const user = rows[0];
+    console.log(user)
+    const isVerified = await comparePassword(oldPassword, user.password);
+    
+    if (isVerified) {
+      const hashedPassword = await bcrypt.hash(newPassword, salt);
+      const result = await connection.query(updateUserPasswordQuery, [
+        hashedPassword,
+        userId
+      ])
+      
+      return result[0];
+    }
+    
+    return -1;
+  } catch (e) {
+    console.log(e)
+    throw new Error(e);
+  }
+}
 
 const deleteUserByIdFromDb = async (userId) => {
   try {
@@ -79,5 +106,6 @@ module.exports = {
   fetchUserByIdFromDb,
   fetchUserByUsernameFromDb,
   insertUserToDb,
+  updatePasswordFromDb,
   deleteUserByIdFromDb,
 };

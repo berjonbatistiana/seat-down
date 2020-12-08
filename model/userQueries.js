@@ -3,7 +3,7 @@ const findAllUsers = `
   FROM users;
   `;
 const findUserByIdQuery = `
-  SELECT id, username FROM users
+  SELECT id, username, password FROM users
   WHERE id = ?;
   `;
 const findUserByUsername = `
@@ -12,9 +12,14 @@ const findUserByUsername = `
   WHERE username = ?;
   `;
 const insertUserQuery = `
-  INSERT INTO users (id, username, password, roleId)
-  VALUES (?, ?, ?, ?);
+  INSERT INTO users (id, username, password, roleId, companyId)
+  VALUES (?, ?, ?, ?, ?);
   `;
+const updateUserPasswordQuery = `
+  UPDATE users
+  SET password = ?
+  WHERE id = ?
+`;
 const deleteUserByIdQuery = `
   DELETE FROM users
   WHERE ID = ?;
@@ -25,5 +30,6 @@ module.exports = {
   findUserByIdQuery,
   findUserByUsername,
   insertUserQuery,
+  updateUserPasswordQuery,
   deleteUserByIdQuery,
 };
