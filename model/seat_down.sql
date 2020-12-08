@@ -4,32 +4,10 @@ CREATE DATABASE seat_db;
 
 USE seat_db;
 
-CREATE TABLE company (
+CREATE TABLE companies (
     id VARCHAR(255) NOT NULL,
-    ownerId VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
-    deskCapacity INT NOT NULL,
-    address VARCHAR(255),
     PRIMARY KEY(id)
-);
-
-CREATE TABLE desk (
-    id VARCHAR(255) NOT NULL,
-    companyId VARCHAR(255) NOT NULL,
-    floor VARCHAR(255) NOT NULL,
-    building VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    chairCapacity INT NOT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(companyId) REFERENCES company(id)
-);
-
-CREATE TABLE chair (
-    id VARCHAR(255) NOT NULL,
-    deskId VARCHAR(255) NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    PRIMARY KEY(id),
-    FOREIGN KEY(deskId) REFERENCES desk(id)
 );
 
 CREATE TABLE roles (
@@ -38,13 +16,50 @@ CREATE TABLE roles (
     PRIMARY KEY(id)
 );
 
+CREATE TABLE buildings (
+    id VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    buildingName VARCHAR(255) NOT NULL,
+    PRIMARY KEY (id)
+);
+
 CREATE TABLE users (
     id VARCHAR(255) NOT NULL,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     roleId VARCHAR(255) NOT NULL,
+    companyId VARCHAR(255) NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY(roleId) REFERENCES roles(id)
+    FOREIGN KEY(roleId) REFERENCES roles(id),
+    FOREIGN KEY(companyId) REFERENCES companies(id)
+);
+
+CREATE TABLE floors (
+    id VARCHAR(255) NOT NULL,
+    companyId VARCHAR(255) NOT NULL,
+    buildingId VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    deskCapacity INT DEFAULT 0,
+    PRIMARY KEY(id),
+    FOREIGN KEY(companyId) REFERENCES companies(id),
+    FOREIGN KEY(buildingId) REFERENCES buildings(id)
+);
+
+CREATE TABLE desks (
+    id VARCHAR(255) NOT NULL,
+    floorId VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    chairCapacity INT DEFAULT 0,
+    PRIMARY KEY(id),
+    FOREIGN KEY(floorId) REFERENCES floors(id)
+);
+
+CREATE TABLE chairs (
+    id VARCHAR(255) NOT NULL,
+    deskId VARCHAR(255) NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    PRIMARY KEY(id),
+    FOREIGN KEY(deskId) REFERENCES desks(id)
 );
 
 CREATE TABLE occupancy (
@@ -53,6 +68,6 @@ CREATE TABLE occupancy (
     chairId VARCHAR(255) NOT NULL,
     userId VARCHAR(255) NOT NULL,
     PRIMARY KEY(id),
-    FOREIGN KEY (chairId) REFERENCES chair(id),
+    FOREIGN KEY (chairId) REFERENCES chairs(id),
     FOREIGN KEY (userId) REFERENCES users(id)
 );
