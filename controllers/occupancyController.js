@@ -6,9 +6,10 @@ const {
 } = require("../model/occupancyOrm");
 
 module.exports = {
-  getAllOccupancyApi: async (_req, res) => {
+  getAllOccupancyApi: async (req, res) => {
+    const { date } = req.query;
     try {
-      const occupancies = await fetchAllOccupancyFromDb();
+      const occupancies = await fetchAllOccupancyFromDb(date);
       res.json(occupancies);
     } catch (e) {
       res.status(400).json(e);
@@ -25,9 +26,7 @@ module.exports = {
   insertOccupancyApi: async (req, res) => {
     const { date, chairId, userId } = req.body;
     try {
-      res.json(
-        await insertOccupancyToDb(date, chairId, userId)
-      );
+      res.json(await insertOccupancyToDb(date, chairId, userId));
     } catch (e) {
       res.status(400).json(e);
     }

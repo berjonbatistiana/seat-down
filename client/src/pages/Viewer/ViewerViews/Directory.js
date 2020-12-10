@@ -1,33 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Typography, Grid, Box, Paper } from "@material-ui/core";
 import axios from "axios";
+import { convertDate } from "../../../utils/tools";
 
 import { DatePicker, EmployeeGrid } from "../../../pages/common/";
 
 export const Directory = () => {
   const columns = [
-    { field: "name", title: "Name" },
-    { field: "department", title: "Department" },
-    { field: "building", title: "Building" },
-    { field: "floor", title: "Floor" },
-    { field: "desk", title: "Desk" },
-    { field: "seat", title: "Seat" },
+    { field: "id", title: "ID" },
+    { field: "chairId", title: "Chair ID" },
+    { field: "occupancyDate", title: "Occupancy Date" },
+    { field: "userId", title: "User ID" },
   ];
 
-  const [data, setData] = useState([
-    {
-      name: "Sean Marten",
-      department: "Software Engineering",
-      building: "Hightower",
-      floor: 5,
-      desk: 15,
-      seat: 3,
-    },
-  ]);
+  const [data, setData] = useState([]);
+  const [day, changeDay] = useState(convertDate(new Date()));
 
-  axios.get("/api/occupy").then((res) => {
-    console.log(res);
-  });
+  const getOccupancies = async () => {
+    await axios.get("/api/occupy", { params: { date: day } }).then((res) => {
+      setData(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getOccupancies();
+  }, [day]);
 
   return (
     <div>
@@ -44,7 +41,9 @@ export const Directory = () => {
         </Grid>
         <Grid item>
           <Box m={3} style={{ alignSelf: "center" }}>
-            <DatePicker />
+            <div onChange={(e) => changeDay(e.target.value)}>
+              <DatePicker />
+            </div>
           </Box>
         </Grid>
       </Grid>

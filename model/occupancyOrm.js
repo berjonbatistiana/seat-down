@@ -1,4 +1,4 @@
-const uniqid = require('uniqid');
+const uniqid = require("uniqid");
 const {
   findOccupancyByDateQuery,
   findOccupancyByIdQuery,
@@ -28,12 +28,7 @@ const findOccupancyByIdFromDb = async (occupancyId) => {
 const insertOccupancyToDb = async (date, chairId, userId) => {
   try {
     const id = uniqid();
-    await connection.query(insertOccupancyQuery, [
-      id,
-      date,
-      chairId,
-      userId,
-    ]);
+    await connection.query(insertOccupancyQuery, [id, date, chairId, userId]);
     const [occupancyResult] = await connection.query(
       findOccupancyByIdQuery,
       id
