@@ -32,13 +32,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function SelectDropdown() {
+export const SelectDropdown = (props) => {
   const classes = useStyles();
-  const [role, setRole] = React.useState('');
-
-  const handleChange = (event) => {
-    setRole(event.target.value);
-  };
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
@@ -47,8 +42,8 @@ export function SelectDropdown() {
           id="standard-select"
           select
           label="Select"
-          value={role}
-          onChange={handleChange}
+          value={props.value}
+          onChange={props.onChange}
           helperText="Please select your role"
           // labelWidth={80}
         >
