@@ -6,6 +6,12 @@ import { convertDate } from "../../../utils/tools";
 import { DatePicker, EmployeeGrid } from "../../../pages/common/";
 
 export const Directory = () => {
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
   const columns = [
     { field: "id", title: "ID" },
     { field: "chairId", title: "Chair ID" },

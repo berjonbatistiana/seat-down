@@ -1,7 +1,9 @@
-import React, {useState } from 'react';
+import React, {useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import {AppBar, Box, Tab, Tabs, Typography} from '@material-ui/core';
+import PermContactCalendarIcon from '@material-ui/icons/PermContactCalendar';
+import EventAvailableIcon from '@material-ui/icons/EventAvailable';
 import SearchIcon from '@material-ui/icons/Search';
 import { Link as RouteLink, useLocation } from "react-router-dom";
 
@@ -63,17 +65,30 @@ export const UserNavbar = () => {
   const location = useLocation();
   const [value, setValue] = useState(0);
 
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+
+  useEffect(() => {
+    location.pathname === '/dashboard' ? setValue(0) : location.pathname === '/reserve' ? setValue(1) : setValue(2);
+  }, [location.pathname])
 
   return (
     <div>
       <AppBar position="static" color="transparent" elevation={0}>
         <AntTabs value={value} onChange={handleChange}>
           <AntTab
+            style={{color: location.pathname === '/dashboard' ? '#5fc5d1' : ''}}
+            component={RouteLink} to="/dashboard" label={<div><PermContactCalendarIcon fontSize="small" style={{verticalAlign: 'middle'}}/> User's Calendar</div>} {...a11yProps(0)}
+          />
+          <AntTab
+            style={{color: location.pathname === '/reserve' ? '#5fc5d1' : ''}}
+            component={RouteLink} to="/reserve" label={<div><EventAvailableIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Reserve Seat</div>} {...a11yProps(1)}
+          />
+          <AntTab
             style={{color: location.pathname === '/directory' ? '#5fc5d1' : ''}}
-            component={RouteLink} to="/directory" label={<div><SearchIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Directory</div>} {...a11yProps(0)}
+            component={RouteLink} to="/directory" label={<div><SearchIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Employee Directory</div>} {...a11yProps(2)}
           />
         </AntTabs>
       </AppBar>
