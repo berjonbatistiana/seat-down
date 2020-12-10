@@ -4,6 +4,12 @@ import { Typography, Grid, Box, Paper } from "@material-ui/core";
 import { DatePicker, EmployeeGrid } from "../../../pages/common/";
 
 export const Directory = () => {
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+  };
+
   const columns = [
     { field: "name", title: "Name" },
     { field: "department", title: "Department" },
@@ -39,7 +45,7 @@ export const Directory = () => {
         </Grid>
         <Grid item>
           <Box m={3} style={{ alignSelf: "center" }}>
-            <DatePicker />
+            <DatePicker selectedDate={selectedDate} handleDateChange={handleDateChange} fullWidth={false}/>
           </Box>
         </Grid>
       </Grid>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import DateFnsUtils from "@date-io/date-fns";
 import { Badge } from "@material-ui/core";
-import { Calendar, DatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
+import { DatePicker } from "@material-ui/pickers";
 import { Grid, Box } from "@material-ui/core";
 
 import { SeatingDetail } from '../../common/components';
@@ -13,7 +12,6 @@ export function Dashboard() {
   const days = [d, d2];
 
   return (
-    <MuiPickersUtilsProvider utils={DateFnsUtils}>
       <Grid container>
         <Grid item>
           <Box mt={3} ml={3} mr={3}>
@@ -51,6 +49,5 @@ export function Dashboard() {
           </Box>
         </Grid>
       </Grid>
-    </MuiPickersUtilsProvider>
   );
 }
