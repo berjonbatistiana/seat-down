@@ -35,22 +35,22 @@ export const Reservation = () => {
     setSelectedDate(date);
   };
 
-
   const handleBuildingChange = (event) => {
     setBuilding(event.target.value);
   };
+
   const handleFloorChange = (event) => {
     setFloor(event.target.value);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(selectedDate, building, floor, seat);
-  }
-
   const handleSeatChange = (event) => {
     setSeat(event.target.value);
   };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log({date: selectedDate, building, floor, seat});
+  }
   return (
     <form>
       <Box m={3} component={Paper} pb={3} variant="outlined">
