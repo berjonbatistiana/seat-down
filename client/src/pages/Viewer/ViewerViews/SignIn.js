@@ -59,16 +59,16 @@ export const SignIn = (props) => {
               <Grid item xs={12}>
                 <TextFieldInput name="company" label="Company" />
               </Grid>
-              
+
               <Grid item xs={12}>
                 <Button
                   variant="contained"
                   style={{
                     color: "white",
-                    backgroundColor: "#eb7a34",
+                    backgroundColor: "#fd8369",
                     borderRadius: 25,
                     "&:hover": {
-                      backgroundColor: "#0276aa",
+                      backgroundColor: "#fd8369",
                     },
                   }}
                 >

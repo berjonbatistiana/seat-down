@@ -75,10 +75,10 @@ export class SignUp extends Component {
                   variant="contained"
                   style={{
                     color: "white",
-                    backgroundColor: "#eb7a34",
+                    backgroundColor: "#fd8369",
                     borderRadius: 25,
                     "&:hover": {
-                      backgroundColor: "#0276aa",
+                      backgroundColor: "#fd8369",
                     },
                   }}
                 >
