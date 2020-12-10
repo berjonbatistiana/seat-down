@@ -30,7 +30,7 @@ export const reserveSeat = async (formValues) => {
 export const getAvailableSeats = async ({companyId, date}) => {
   try{
     // needs date, companyId
-    return await axios.get(`/${companyId}/${date}`);
+    return await axios.get(`api/chairs/available/${companyId}/${date}`);
   } catch (e){
     console.error(`API Error: Could not find available seats. \n ${e}`);
     throw new Error(e);

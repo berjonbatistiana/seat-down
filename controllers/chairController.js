@@ -24,11 +24,11 @@ module.exports = {
     }
   },
   getAllAvailableChairByCompanyIdApi: async (req, res) => {
-    const { companyId } = req.params;
+    const { companyId, date } = req.params;
     try{
-      res.json(await findAllAvailableChairsByCompanyFromDb(companyId))
+      res.json(await findAllAvailableChairsByCompanyFromDb(companyId, date))
     } catch (e){
-      console.log(`API Error: Failed to find all available chairs by company id: ${companyId} \n ${e}`);
+      console.log(`API Error: Failed to find all available chairs by company id: ${companyId} on: ${date} \n ${e}`);
       res.status(400).json(e);
     }
   },
