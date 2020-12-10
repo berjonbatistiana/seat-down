@@ -50,9 +50,9 @@ const deleteChairByIdFromDb = async (chairId) => {
   }
 };
 
-const findAllAvailableChairsByCompanyFromDb = async (companyId) => {
+const findAllAvailableChairsByCompanyFromDb = async (companyId, date) => {
   try {
-    const [rows] = await connection.query(findAllAvailableChairsByCompanyQuery, companyId);
+    const [rows] = await connection.query(findAllAvailableChairsByCompanyQuery, [date, companyId]);
     return rows;
   } catch (e) {
     throw new Error(e);
