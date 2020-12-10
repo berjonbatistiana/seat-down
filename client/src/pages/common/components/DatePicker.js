@@ -5,9 +5,8 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 
-export function DatePicker(props) {
+export const DatePicker = (props) => {
   // The first commit of Material-UI
-
 
   return (
     <KeyboardDatePicker
