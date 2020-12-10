@@ -1,22 +1,25 @@
+import 'date-fns';
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import {
 
-export function DatePicker() {
-  let defaultDate = new Date();
-  const dd = String(defaultDate.getDate()).padStart(2, '0');
-  const mm = String(defaultDate.getMonth() + 1).padStart(2, '0');
-  const yyyy = defaultDate.getFullYear();
-  defaultDate = yyyy + '-' + mm + '-' + dd;
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+
+export const DatePicker = (props) => {
+  // The first commit of Material-UI
 
   return (
-    <TextField
-      id="date"
-      variant="outlined"
-      type="date"
-      defaultValue={defaultDate}
-      InputLabelProps={{
-        shrink: true,
+    <KeyboardDatePicker
+      fullWidth={props.fullWidth}
+      disableToolbar
+      variant="inline"
+      format="MM/dd/yyyy"
+      margin="normal"
+      value={props.selectedDate}
+      onChange={props.handleDateChange}
+      KeyboardButtonProps={{
+        'aria-label': 'change date',
       }}
     />
-  );
+  )
 }

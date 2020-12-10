@@ -42,11 +42,11 @@ export const SignIn = (props) => {
 
   return (
     <SignCard
-        title="Sign Up"
+        title="Sign In"
         image={signIn}
         question="Already have an account? "
-        linkTitle="Sign In"
-        link="signin"
+        linkTitle="Sign Up"
+        link="signup"
         content={
           <form>
             <Grid item container spacing={3}>
