@@ -4,9 +4,11 @@ const {
   getChairByIdApi,
   insertChairApi,
   deleteChairByIdApi,
+  getAllAvailableChairByCompanyIdApi
 } = require("../../../controllers/chairController");
 
 router.route("/").get(getAllChairsApi).post(insertChairApi);
+router.route("/available/:companyId").get(getAllAvailableChairByCompanyIdApi);
 router.route("/:chairId").get(getChairByIdApi).delete(deleteChairByIdApi);
 
 module.exports = router;

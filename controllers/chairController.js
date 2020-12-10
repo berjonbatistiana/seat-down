@@ -3,6 +3,7 @@ const {
   fetchChairByIdFromDb,
   insertChairToDb,
   deleteChairByIdFromDb,
+  findAllAvailableChairsByCompanyFromDb,
 } = require("../model/chairOrm");
 
 module.exports = {
@@ -19,6 +20,15 @@ module.exports = {
     try {
       res.json(await fetchChairByIdFromDb(chairId));
     } catch (e) {
+      res.status(400).json(e);
+    }
+  },
+  getAllAvailableChairByCompanyIdApi: async (req, res) => {
+    const { companyId } = req.params;
+    try{
+      res.json(await findAllAvailableChairsByCompanyFromDb(companyId))
+    } catch (e){
+      console.log(`API Error: Failed to find all available chairs by company id: ${companyId} \n ${e}`);
       res.status(400).json(e);
     }
   },
