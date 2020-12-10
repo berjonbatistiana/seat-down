@@ -1,10 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography, Grid, Box, Paper, Divider, Button } from "@material-ui/core";
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import RoomIcon from '@material-ui/icons/Room';
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import {getAvailableSeats} from "../../../utils/API";
+import {convertDate} from "../../../utils/tools";
 
 import {DatePicker} from "../../common"
 
@@ -26,10 +28,23 @@ const seats = [1,2,3,4,5,6,7,8,9,10];
 export const Reservation = () => {
   const classes = useStyles();
 
+  const [companyId, setCompanyId] = React.useState('1fn50i1187kiidrmqu');
   const [building, setBuilding] = React.useState('');
   const [floor, setFloor] = React.useState('');
   const [seat, setSeat] = React.useState('');
   const [selectedDate, setSelectedDate] = React.useState(new Date());
+  
+  useEffect( () => {
+    
+    const date = convertDate(selectedDate);
+    async function fetchData() {
+      console.log(await getAvailableSeats({companyId, date}));
+    }
+    fetchData().catch(e => {
+      console.error(e)
+    });
+    
+  }, [companyId])
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
