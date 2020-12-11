@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import {Toolbar, Typography, Link} from "@material-ui/core";
-import { Link as RouteLink, useLocation } from "react-router-dom";
+import { Link as RouteLink, useLocation, useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -21,6 +21,14 @@ const useStyles = makeStyles((theme) => ({
 export function Navbar() {
   const classes = useStyles();
   const location = useLocation();
+  const history = useHistory();
+  const token = localStorage.getItem("token");
+
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    history.push("/");
+  };
 
   return (
     <div className={classes.root}>
@@ -28,7 +36,7 @@ export function Navbar() {
         <Toolbar>
           <Typography className={classes.title}>
             <Link
-              component={RouteLink} to="/" color="secondary"
+              component={RouteLink} to={token ? "/dashboard" : "/"} color="secondary"
               style={{
                 fontWeight: "bold",
               }}
@@ -36,25 +44,40 @@ export function Navbar() {
               Seat Down
             </Link>
           </Typography>
-          <Typography className={classes.menuButton}>
-            <Link
-              to="/signup" component={RouteLink} color="inherit"
-              style={{
-                fontWeight: location.pathname === "/signup" ? "bold" : "",
-              }}
-            >
-              Sign Up
-            </Link>
-          </Typography>
-          <Typography className={classes.menuButton}>
-            <Link to="/signin" component={RouteLink} color="inherit"
-              style={{
-                fontWeight: location.pathname === "/signin" ? "bold" : "",
-              }}
-            >
-              Sign In
-            </Link>
-          </Typography>
+          {token ? (
+            <Typography className={classes.menuButton}>
+              <Link
+                color="inherit" onClick={handleSignOut}
+                style={{
+                  cursor: "pointer",
+                }}
+              >
+                Sign Out
+              </Link>
+            </Typography>
+          ): (
+            <>
+              <Typography className={classes.menuButton}>
+                <Link
+                  to="/signup" component={RouteLink} color="inherit"
+                  style={{
+                    fontWeight: location.pathname === "/signup" ? "bold" : "",
+                  }}
+                >
+                  Sign Up
+                </Link>
+              </Typography>
+              <Typography className={classes.menuButton}>
+                <Link to="/signin" component={RouteLink} color="inherit"
+                      style={{
+                        fontWeight: location.pathname === "/signin" ? "bold" : "",
+                      }}
+                >
+                  Sign In
+                </Link>
+              </Typography>
+            </>
+          )}
         </Toolbar>
       </AppBar>
     </div>

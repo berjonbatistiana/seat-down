@@ -48,7 +48,7 @@ export const SignIn = () => {
               <TextField fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
             </Grid>
             <Grid item xs={12}>
-              <TextField fullWidth label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <TextField type="password" fullWidth label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </Grid>
             <Grid item xs={12}>
               <Button

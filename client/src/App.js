@@ -1,5 +1,5 @@
 import React from "react";
-import {HashRouter as Router, Route} from "react-router-dom";
+import { HashRouter as Router, Route } from "react-router-dom";
 import { About, SignIn, SignUp, Dashboard, Directory, Reservation } from "./pages/Viewer"
 import {Navbar, UserNavbar} from "./pages/common"
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -13,7 +13,7 @@ const theme = createMuiTheme({
       darker: "#5fc5d1",
     },
     secondary: {
-      main: "#fd8369",
+      main: "#212121",
     },
   },
 });
@@ -25,12 +25,12 @@ const App = () => {
         <Router>
           <Navbar />
           <UserNavbar/>
-          <Route exact path="/" component={About} />
           <Route path="/signin" component={SignIn} />
           <Route path="/signup" component={SignUp} />
-          <Route path="/directory" component={Directory} />
+          <Route path="/directory" component={Directory}  />
           <Route path="/dashboard" component={Dashboard}/>
           <Route path="/reserve" component={Reservation} />
+          <Route exact path="/" component={About} />
         </Router>
       </MuiPickersUtilsProvider>
     </ThemeProvider>

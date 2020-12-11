@@ -10,6 +10,28 @@ import {postSignUp} from "../../../utils"
 export const SignUp = () => {
   const history = useHistory();
 
+  // Input/populate roles
+  const roles = [
+    {
+      value: '68djomikiffl0lz',
+      label: 'Admin',
+    },
+    {
+      value: '68djomikiffl0ni',
+      label: 'User',
+    },
+  ];
+
+  const companies = [
+    {
+      value: '68djomikiffl0nk',
+      label: 'Seed A Company',
+    },
+    {
+      value: '68djomikiffl0nm',
+      label: 'Seed B Company',
+    },
+  ];
   const [snackbar, setSnackbar] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -26,7 +48,7 @@ export const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formValues = {username, password, company, role}
+      const formValues = {username, password, roleId: role, companyId: company}
       const res = await postSignUp(formValues);
       localStorage.setItem("token", res.data);
       localStorage.setItem("user", username);
@@ -50,13 +72,13 @@ export const SignUp = () => {
               <TextField fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
             </Grid>
             <Grid item xs={12}>
-              <TextField fullWidth label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <TextField type="password" fullWidth label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </Grid>
             <Grid item xs={12}>
-              <TextField fullWidth label="Company" value={company} onChange={(e) => setCompany(e.target.value)}/>
+              <SelectDropdown helperText="Please select your company" items={companies} value={company} onChange={(e) => setCompany(e.target.value)}/>
             </Grid>
             <Grid item xs={12}>
-              <SelectDropdown value={role} onChange={(e) => setRole(e.target.value)} />
+              <SelectDropdown helperText="Please select your role" items={roles} value={role} onChange={(e) => setRole(e.target.value)} />
             </Grid>
             <Grid item xs={12}>
               <Button
