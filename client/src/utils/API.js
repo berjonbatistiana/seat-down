@@ -46,3 +46,14 @@ export const doesUserHaveSeatDate = async ({date, userId}) => {
     throw new Error(e)
   }
 }
+
+export const removeSeatDate = async({date, userId}) => {
+  try{
+    // needs date, userId
+    const {data} = await doesUserHaveSeatDate({date, userId});
+    return await axios.delete(`/api/occupy/${data.id}`);
+  } catch (e){
+    console.error(`API Error: Could not remove seats for ${userId} on ${date}.`)
+    throw new Error(e);
+  }
+}

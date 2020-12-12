@@ -1,9 +1,8 @@
 import React, {forwardRef, useEffect} from 'react';
-import {makeStyles} from "@material-ui/core/styles";
-import {Box, Paper, Typography} from "@material-ui/core";
+import {Box, Button, Paper, Typography} from "@material-ui/core";
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import RoomIcon from '@material-ui/icons/Room';
-import {getAvailableSeats, reserveSeat} from "../../../utils/API";
+import {doesUserHaveSeatDate, getAvailableSeats, reserveSeat, removeSeatDate} from "../../../utils";
 import {convertDate} from "../../../utils/tools";
 import MaterialTable, {MTableToolbar} from "material-table";
 import EventSeatIcon from '@material-ui/icons/EventSeat';
@@ -47,16 +46,6 @@ const tableIcons = {
   ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref}/>)
 };
 
-const useStyles = makeStyles((theme) => ({
-  contained: {
-    color: "white",
-    backgroundColor: "#6bd5e1",
-    borderRadius: 25,
-    "&:hover": {
-      backgroundColor: "#5fc5d1",
-    }
-  }
-}))
 const columns = [
   {
     title: 'Building',
@@ -74,24 +63,36 @@ const columns = [
 
 export const Reservation = () => {
   
-  const [companyId, setCompanyId] = React.useState('1fn50i1187kiidrmqu');
+  const [companyId, setCompanyId] = React.useState('1fn50i1187kiidrmqu'); // from localstorage
+  const [userId, setUserId] = React.useState('1fn50i1187kiidrmw2'); // from localstorage
+  const [hasSeat, setHasSeat] = React.useState(false);
+  const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   
-  useEffect(() => {
-    
+  async function fetchData() {
     const date = convertDate(selectedDate);
-    
-    async function fetchData() {
-      const {data} = await getAvailableSeats({companyId, date});
-      setAvailableSeats(data);
+    setSeatsLoading(true);
+  
+    const {data: seat} = await doesUserHaveSeatDate({userId, date});
+    setHasSeat(!!seat)
+    if (!seat) {
+      const {data: seats} = await getAvailableSeats({companyId, date});
+      setAvailableSeats(seats);
+    } else {
+      setAvailableSeats([]);
     }
-    
-    fetchData().catch(e => {
-      console.error(e)
-    });
-    
-  }, [companyId])
+    setSeatsLoading(false);
+  }
+  
+  useEffect(() => {
+      
+      fetchData().catch(e => {
+        console.error(e)
+      })
+      
+    }, [companyId]
+  )
   
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -103,11 +104,22 @@ export const Reservation = () => {
     const {chairId} = rowData;
     const date = convertDate(selectedDate);
     
-    const row = await reserveSeat({userId, chairId, date});
-    console.log(row);
-    const {data} = await getAvailableSeats({companyId, date});
-    setAvailableSeats(data);
+    await reserveSeat({userId, chairId, date});
+    setHasSeat(true);
+    fetchData().catch(e => {
+      console.error(e)
+    })
     
+    
+  }
+  
+  const handleRemoveSeat = async () => {
+    const date = convertDate(selectedDate)
+    const removedSeat = await removeSeatDate({date, userId});
+    console.log(removedSeat)
+    fetchData().catch(e => {
+      console.error(e)
+    })
   }
   
   const renderTableTitle = () => {
@@ -134,35 +146,56 @@ export const Reservation = () => {
           title={renderTableTitle()}
           columns={columns}
           data={availableSeats}
-          actions={[
+          actions={ !hasSeat?[
             {
               icon: EventSeatIcon,
               tooltip: 'Reserve Seat',
               onClick: handleReserveSeat
             }
-          ]}
+          ]:[]}
           options={{
             doubleHorizontalScroll: true,
             detailPanelType: 'single',
             actionsColumnIndex: -1,
             searchFieldAlignment: "right",
             actionsCellStyle: {
-              paddingRight: '25px'
+              padding: '25px'
             },
-            rowStyle: {
-              hover: {
-                "&:hover": {
-                  backgroundColor: 'lightgrey'
-                }
-              }
-            }
           }}
           localization={{
             header: {
               actions: 'Reserve'
             },
             body: {
-              emptyDataSourceMessage: 'No seats available to this day'
+              emptyDataSourceMessage:
+              areSeatsLoading?
+                <Typography variant="h6">
+                  Loading seats, please wait.
+                </Typography> :
+                !hasSeat ?
+                <Typography variant="h6">
+                Sorry, no seats are available for this day.
+              </Typography> :
+                <Typography variant="h6">
+                  Sorry, You already have a seat.
+                  <Button
+                    variant="contained"
+                    style={{
+                      marginLeft: 5,
+                      marginRight: 5,
+                      color: "white",
+                      backgroundColor: "#fd8369",
+                      borderRadius: 25,
+                      "&:hover": {
+                        backgroundColor: "#fd8369",
+                      },
+                    }}
+                    onClick={handleRemoveSeat}
+                  >
+                    Click here
+                  </Button>
+                  to remove previous reservation.
+                </Typography>
             }
           }}
           components={{
