@@ -30,9 +30,30 @@ export const reserveSeat = async (formValues) => {
 export const getAvailableSeats = async ({companyId, date}) => {
   try{
     // needs date, companyId
-    return await axios.get(`api/chairs/available/${companyId}/${date}`);
+    return await axios.get(`/api/chairs/available/${companyId}/${date}`);
   } catch (e){
     console.error(`API Error: Could not find available seats. \n ${e}`);
+    throw new Error(e);
+  }
+}
+
+export const doesUserHaveSeatDate = async ({date, userId}) => {
+  try {
+    // needs date, userId
+    return await axios.get(`/api/occupy/${userId}/${date}`);
+  } catch(e){
+    console.error(`API Error: Could not get seats for ${userId} on ${date}.`)
+    throw new Error(e)
+  }
+}
+
+export const removeSeatDate = async({date, userId}) => {
+  try{
+    // needs date, userId
+    const {data} = await doesUserHaveSeatDate({date, userId});
+    return await axios.delete(`/api/occupy/${data.id}`);
+  } catch (e){
+    console.error(`API Error: Could not remove seats for ${userId} on ${date}.`)
     throw new Error(e);
   }
 }
