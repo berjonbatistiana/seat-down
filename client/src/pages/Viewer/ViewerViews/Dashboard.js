@@ -16,6 +16,16 @@ export function Dashboard() {
     setSelectedDate(convertDate(date));
   };
 
+  const getOccupancies = async () => {
+    await axios.get("/api/occupy", { params: { date: day } }).then((res) => {
+      setData(res.data);
+    });
+  };
+
+  useEffect(() => {
+    getOccupancies();
+  }, [day]);
+
   return (
     <Grid container>
       <Grid item>

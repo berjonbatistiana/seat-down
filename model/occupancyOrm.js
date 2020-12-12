@@ -1,6 +1,7 @@
 const uniqid = require("uniqid");
 const {
   findOccupancyByDateQuery,
+  findOccupancyByEmployeeIdQuery,
   findOccupancyByIdQuery,
   insertOccupancyQuery,
   deleteOccupancyByIdQuery,
@@ -10,6 +11,18 @@ const connection = require("../config/connection");
 const fetchAllOccupancyFromDb = async (date) => {
   try {
     const [rows] = await connection.query(findOccupancyByDateQuery, date);
+    return rows;
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+const fetchAllOccupancyByEmployeeIdFromDb = async (employeeId) => {
+  try {
+    const [rows] = await connection.query(
+      findOccupancyByEmployeeIdQuery,
+      employeeId
+    );
     return rows;
   } catch (e) {
     throw new Error(e);
@@ -51,6 +64,7 @@ const deleteOccupancyByIdFromDb = async (occupancyId) => {
 
 module.exports = {
   fetchAllOccupancyFromDb,
+  fetchAllOccupancyByEmployeeIdFromDb,
   findOccupancyByIdFromDb,
   insertOccupancyToDb,
   deleteOccupancyByIdFromDb,
