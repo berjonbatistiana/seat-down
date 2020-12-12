@@ -16,40 +16,38 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SeatingDetail = () => {
+export const SeatingDetail = (props) => {
   const classes = useStyles();
-
+  const { reservationData } = props;
   return (
     <Card className={classes.root}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            SM
+            RSV
           </Avatar>
         }
-        title="Sean Marten"
-        subheader="Software Engineer"
+        title={reservationData.username}
+        subheader={reservationData.roleName}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          Company: The Software Company
+          Company: {reservationData.companyName}
+        </Typography>
+
+        <Typography variant="body2" color="textSecondary" component="p">
+          Building: {reservationData.building}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          Department: Software Engineering
+          Floor: {reservationData.floor}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          Building: Hightower
+          Desk: {reservationData.desk}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          Floor: 5
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Desk: 15
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          Seat: 3
+          Seat: {reservationData.seat}
         </Typography>
       </CardContent>
     </Card>
   );
-}
+};

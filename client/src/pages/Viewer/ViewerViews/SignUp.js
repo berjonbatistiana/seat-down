@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import {Button, Grid, TextField, Snackbar} from "@material-ui/core";
+import { Button, Grid, TextField, Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useHistory } from "react-router-dom";
 
 import { SignCard, SelectDropdown } from "../../common/components";
 import signUp from "../../common/images/SignUpPhoto.png";
-import {postSignUp} from "../../../utils"
+import { postSignUp } from "../../../utils";
 
 export const SignUp = () => {
   const history = useHistory();
@@ -13,30 +13,30 @@ export const SignUp = () => {
   // Input/populate roles
   const roles = [
     {
-      value: '68djomikiffl0lz',
-      label: 'Admin',
+      value: "h427f4oukim48e96",
+      label: "Admin",
     },
     {
-      value: '68djomikiffl0ni',
-      label: 'User',
+      value: "h427f4oukim48e9q",
+      label: "User",
     },
   ];
 
   const companies = [
     {
-      value: '68djomikiffl0nk',
-      label: 'Seed A Company',
+      value: "h427f4oukim48e9r",
+      label: "Seed A Company",
     },
     {
-      value: '68djomikiffl0nm',
-      label: 'Seed B Company',
+      value: "h427f4oukim48e9t",
+      label: "Seed B Company",
     },
   ];
   const [snackbar, setSnackbar] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [company, setCompany] = useState('');
-  const [role, setRole] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [company, setCompany] = useState("");
+  const [role, setRole] = useState("");
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -48,15 +48,20 @@ export const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formValues = {username, password, roleId: role, companyId: company}
+      const formValues = {
+        username,
+        password,
+        roleId: role,
+        companyId: company,
+      };
       const res = await postSignUp(formValues);
       localStorage.setItem("token", res.data);
       localStorage.setItem("user", username);
       history.push("/dashboard");
     } catch (e) {
-      setSnackbar(true );
+      setSnackbar(true);
     }
-  }
+  };
 
   return (
     <SignCard
@@ -69,16 +74,37 @@ export const SignUp = () => {
         <>
           <Grid item container spacing={3}>
             <Grid item xs={12}>
-              <TextField fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+              <TextField
+                fullWidth
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
-              <TextField type="password" fullWidth label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <TextField
+                type="password"
+                fullWidth
+                label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
-              <SelectDropdown helperText="Please select your company" items={companies} value={company} onChange={(e) => setCompany(e.target.value)}/>
+              <SelectDropdown
+                helperText="Please select your company"
+                items={companies}
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
-              <SelectDropdown helperText="Please select your role" items={roles} value={role} onChange={(e) => setRole(e.target.value)} />
+              <SelectDropdown
+                helperText="Please select your role"
+                items={roles}
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
               <Button
@@ -92,7 +118,14 @@ export const SignUp = () => {
                   },
                 }}
                 onClick={handleSubmit}
-                disabled={username === '' && password === '' && company === '' && role === '' ? true : false}
+                disabled={
+                  username === "" &&
+                  password === "" &&
+                  company === "" &&
+                  role === ""
+                    ? true
+                    : false
+                }
               >
                 Sign up
               </Button>
@@ -114,4 +147,4 @@ export const SignUp = () => {
       }
     />
   );
-}
+};

@@ -17,7 +17,7 @@ module.exports = {
     }
   },
   getAllOccupancyByEmployeeIdApi: async (req, res) => {
-    const { employeeId } = req.query;
+    const { employeeId } = req.params;
     try {
       const occupancies = await fetchAllOccupancyByEmployeeIdFromDb(employeeId);
       res.json(occupancies);
