@@ -1,11 +1,11 @@
 import React, {forwardRef, useEffect} from 'react';
 import {makeStyles} from "@material-ui/core/styles";
-import {Box, Button, Grid, Paper, Typography} from "@material-ui/core";
+import {Box, Paper, Typography} from "@material-ui/core";
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import RoomIcon from '@material-ui/icons/Room';
 import {getAvailableSeats, reserveSeat} from "../../../utils/API";
 import {convertDate} from "../../../utils/tools";
-import MaterialTable from "material-table";
+import MaterialTable, {MTableToolbar} from "material-table";
 import EventSeatIcon from '@material-ui/icons/EventSeat';
 
 import {DatePicker} from "../../common"
@@ -71,18 +71,11 @@ const columns = [
     field: 'chairName'
   },
 ]
-const buildings = ['Hightower', 'Mediumtower', 'Lowtower'];
-const floors = [1, 2, 3];
-const seats = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 export const Reservation = () => {
-  const classes = useStyles();
   
   const [companyId, setCompanyId] = React.useState('1fn50i1187kiidrmqu');
   const [availableSeats, setAvailableSeats] = React.useState([]);
-  const [building, setBuilding] = React.useState('');
-  const [floor, setFloor] = React.useState('');
-  const [seat, setSeat] = React.useState('');
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   
   useEffect(() => {
@@ -104,18 +97,6 @@ export const Reservation = () => {
     setSelectedDate(date);
   };
   
-  const handleBuildingChange = (event) => {
-    setBuilding(event.target.value);
-  };
-  
-  const handleFloorChange = (event) => {
-    setFloor(event.target.value);
-  };
-  
-  const handleSeatChange = (event) => {
-    setSeat(event.target.value);
-  };
-  
   const handleReserveSeat = async (event, rowData) => {
     // get userId from localhost
     const userId = '1fn50i1187kiidrmw2'
@@ -129,31 +110,24 @@ export const Reservation = () => {
     
   }
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({date: selectedDate, building, floor, seat});
-  }
-  
   const renderTableTitle = () => {
     return (
-      <Typography variant="h5">
-        <RoomIcon color="secondary" fontSize="large" style={{verticalAlign: 'middle'}}/> Location
-      </Typography>
+      <Box pt={3}>
+        <Typography variant="h5">
+          <ScheduleIcon color="secondary" fontSize="large" style={{verticalAlign: 'middle'}}/> Date
+        </Typography>
+        <Box ml={3} mr={3} mb={4}>
+          <DatePicker selectedDate={selectedDate} handleDateChange={handleDateChange} fullWidth={false}/>
+        </Box>
+        <Typography variant="h5">
+          <RoomIcon color="secondary" fontSize="large" style={{verticalAlign: 'middle'}}/> Location
+        </Typography>
+      </Box>
     )
   }
   return (
     <form>
-      <Box ml={3} mt={3} mr={3} pt={3} pl={3} component={Paper} variant="outlined">
-        <Typography m={3} variant="h5">
-          <ScheduleIcon color="secondary" fontSize="large" style={{verticalAlign: 'middle'}}/> Date
-        </Typography>
-        <Grid item xs={12} sm={4}>
-          <Box ml={3} mr={3} mb={3}>
-            <DatePicker selectedDate={selectedDate} handleDateChange={handleDateChange} fullWidth={false}/>
-          </Box>
-        </Grid>
-      </Box>
-      <Box mb={3} ml={3} mr={3} component={Paper} variant="outlined">
+      <Box m={3} component={Paper} variant="outlined">
         <MaterialTable
           pr={3}
           icons={tableIcons}
@@ -171,8 +145,16 @@ export const Reservation = () => {
             doubleHorizontalScroll: true,
             detailPanelType: 'single',
             actionsColumnIndex: -1,
+            searchFieldAlignment: "right",
             actionsCellStyle: {
               paddingRight: '25px'
+            },
+            rowStyle: {
+              hover: {
+                "&:hover": {
+                  backgroundColor: 'lightgrey'
+                }
+              }
             }
           }}
           localization={{
@@ -183,69 +165,16 @@ export const Reservation = () => {
               emptyDataSourceMessage: 'No seats available to this day'
             }
           }}
+          components={{
+            Toolbar: props => (
+              <div style={{paddingRight: '40px'}}>
+                <MTableToolbar {...props} />
+              </div>
+            )
+          }}
         
         />
       </Box>
-      {/*<Grid item container>*/}
-      {/*  <Grid item xs={12} sm={4}>*/}
-      {/*    <Box ml={3} mr={3}>*/}
-      {/*      <TextField*/}
-      {/*        select*/}
-      {/*        label="Building"*/}
-      {/*        value={building}*/}
-      {/*        onChange={handleBuildingChange}*/}
-      {/*        fullWidth*/}
-      {/*      >*/}
-      {/*        {buildings.map((option) => (*/}
-      {/*          <MenuItem key={option} value={option}>*/}
-      {/*            {option}*/}
-      {/*          </MenuItem>*/}
-      {/*        ))}*/}
-      {/*      </TextField>*/}
-      {/*    </Box>*/}
-      {/*  </Grid>*/}
-      {/*  <Grid item xs={12} sm={4}>*/}
-      {/*    <Box ml={3} mr={3}>*/}
-      {/*      <TextField*/}
-      {/*        select*/}
-      {/*        label="Floor"*/}
-      {/*        value={floor}*/}
-      {/*        onChange={handleFloorChange}*/}
-      {/*        fullWidth*/}
-      {/*      >*/}
-      {/*        {floors.map((option) => (*/}
-      {/*          <MenuItem key={option} value={option}>*/}
-      {/*            {option}*/}
-      {/*          </MenuItem>*/}
-      {/*        ))}*/}
-      {/*      </TextField>*/}
-      {/*    </Box>*/}
-      {/*  </Grid>*/}
-      {/*  <Grid item xs={12} sm={4}>*/}
-      {/*    <Box ml={3} mr={3}>*/}
-      {/*      <TextField*/}
-      {/*        select*/}
-      {/*        label="Seat"*/}
-      {/*        value={seat}*/}
-      {/*        onChange={handleSeatChange}*/}
-      {/*        fullWidth*/}
-      {/*      >*/}
-      {/*        {seats.map((option, index) => (*/}
-      {/*          <MenuItem key={option} value={option} disabled={index===0|| index=== 3}>*/}
-      {/*            {option}*/}
-      {/*          </MenuItem>*/}
-      {/*        ))}*/}
-      {/*      </TextField>*/}
-      {/*    </Box>*/}
-      {/*  </Grid>*/}
-      {/*</Grid>*/}
-      <Grid container justify="flex-end">
-        <Box mr={3}>
-          <Button onClick={handleSubmit} className={classes.contained}>
-            Reserve
-          </Button>
-        </Box>
-      </Grid>
     </form>
   );
 }
