@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { Badge } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { Grid, Box } from "@material-ui/core";
@@ -17,14 +18,19 @@ export function Dashboard() {
   };
 
   const getOccupancies = async () => {
-    await axios.get("/api/occupy", { params: { date: day } }).then((res) => {
-      setData(res.data);
-    });
+    await axios
+      .get("/api/occupy", { params: { date: selectedDate } })
+      .then((res) => {
+        console.log(res);
+      });
   };
 
-  useEffect(() => {
-    getOccupancies();
-  }, [day]);
+  useEffect(async () => {
+    const user = localStorage.getItem("user");
+    await axios
+      .get(`/api/users/username`, { params: { username: user } })
+      .then((res) => console.log(res));
+  }, [selectedDate]);
 
   return (
     <Grid container>
