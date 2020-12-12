@@ -1,84 +1,88 @@
 import React, { useState } from "react";
-// import axios from "axios";
-import Button from "@material-ui/core/Button";
-import { Grid } from "@material-ui/core/";
-// import Snackbar from "@material-ui/core/Snackbar";
-// import MuiAlert from "@material-ui/lab/Alert";
+import {Button, Grid, TextField, Snackbar} from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
+import { useHistory } from "react-router-dom";
 
-import { SignCard, TextFieldInput } from "../../common/components";
-import signIn from "../../common/images/SignUpPhoto.png";
+import { SignCard } from "../../common/components";
+import signUp from "../../common/images/SignUpPhoto.png";
+import {postSignIn} from "../../../utils"
 
-export const SignIn = (props) => {
-  // const form = useSelector((state) => state.form.signInForm);
-  // const [snackbar, setSnackbar] = useState(false);
-  // const { handleSubmit, pristine, history } = props;
-  // let disable = () =>
-  //   !pristine &&
-  //   form.values &&
-  //   form.values.username &&
-  //   form.values.password &&
-  //   form.values.username !== "" &&
-  //   form.values.password !== ""
-  //     ? false
-  //     : true;
+export const SignIn = () => {
+  const history = useHistory();
 
-  // const handleSignIn = async (formValues, dispatch) => {
-  //   try {
-  //     const res = await axios.post("/auth/signin", formValues);
-  //     localStorage.setItem("token", res.data);
-  //     localStorage.setItem("user", formValues.username);
-  //     dispatch(setViewerToken(res.data));
-  //     history.push("/");
-  //   } catch (e) {
-  //     setSnackbar(true);
-  //   }
-  // };
-  // const handleClose = (event, reason) => {
-  //   if (reason === "clickaway") {
-  //     return;
-  //   }
-  //   setSnackbar(false);
-  // };
+  const [snackbar, setSnackbar] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbar(false);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formValues = {username, password}
+      const res = await postSignIn(formValues);
+      localStorage.setItem("token", res.data);
+      localStorage.setItem("user", username);
+      history.push("/dashboard");
+    } catch (e) {
+      setSnackbar(true );
+    }
+  }
 
   return (
     <SignCard
-        title="Sign In"
-        image={signIn}
-        question="Already have an account? "
-        linkTitle="Sign Up"
-        link="signup"
-        content={
-          <form>
-            <Grid item container spacing={3}>
-              <Grid item xs={12}>
-                <TextFieldInput name="username" label="Username" />
-              </Grid>
-              <Grid item xs={12}>
-                <TextFieldInput name="password" label="Password" />
-              </Grid>
-              <Grid item xs={12}>
-                <TextFieldInput name="company" label="Company" />
-              </Grid>
-
-              <Grid item xs={12}>
-                <Button
-                  variant="contained"
-                  style={{
-                    color: "white",
-                    backgroundColor: "#fd8369",
-                    borderRadius: 25,
-                    "&:hover": {
-                      backgroundColor: "#fd8369",
-                    },
-                  }}
-                >
-                  Sign In
-                </Button>
-              </Grid>
+      title="Sign In"
+      image={signUp}
+      question="Don't have an account? "
+      linkTitle="Sign Up"
+      link="signup"
+      content={
+        <>
+          <Grid item container spacing={3}>
+            <Grid item xs={12}>
+              <TextField fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
             </Grid>
-          </form>
-        }
-      />
+            <Grid item xs={12}>
+              <TextField type="password" fullWidth label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                style={{
+                  color: "white",
+                  backgroundColor: "#fd8369",
+                  borderRadius: 25,
+                  "&:hover": {
+                    backgroundColor: "#fd8369",
+                  },
+                }}
+                onClick={handleSubmit}
+                disabled={username === '' && password === '' ? true : false}
+              >
+                Sign In
+              </Button>
+            </Grid>
+          </Grid>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            open={snackbar}
+            onClose={handleClose}
+          >
+            <MuiAlert onClose={handleClose} severity="error">
+              We couldn’t find an account matching the username and password you
+              entered. Please check your username and password and try again.
+            </MuiAlert>
+          </Snackbar>
+        </>
+      }
+    />
   );
-};
-
+}
