@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Badge } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { Grid, Box } from "@material-ui/core";
@@ -6,10 +6,32 @@ import { Grid, Box } from "@material-ui/core";
 import { SeatingDetail } from '../../common/components';
 
 export function Dashboard() {
-  const [selectedDate, handleDateChange] = useState(new Date());
-  const d = new Date(2020, 11, 22);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [display, setDisplay] = useState(false);
+  const d = new Date(2020, 11, 12);
   const d2 = new Date(2020, 11, 18);
   const days = [d, d2];
+
+  useEffect(() => {
+    const today = new Date();
+    setSelectedDate(today);
+    days.forEach(day => {
+      if (today.toDateString() === day.toDateString()) {
+        return setDisplay(true);
+      }
+    })
+  }, [])
+
+  const handleDateChange = (date) => {
+    setSelectedDate(date);
+    for (let i = 0; i < days.length; i++) {
+      if (date.toDateString() === days[i].toDateString()) {
+        return setDisplay(true);
+      } else {
+        setDisplay(false);
+      }
+    }
+  }
 
   return (
       <Grid container>
@@ -45,7 +67,7 @@ export function Dashboard() {
         </Grid>
         <Grid item>
           <Box mt={3} ml={3} mr={3}>
-            <SeatingDetail/>
+            {display ? <SeatingDetail /> : ""}
           </Box>
         </Grid>
       </Grid>
