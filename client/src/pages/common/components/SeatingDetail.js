@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export const SeatingDetail = () => {
+export const SeatingDetail = (props) => {
   const classes = useStyles();
 
   return (
@@ -27,27 +27,27 @@ export const SeatingDetail = () => {
             SM
           </Avatar>
         }
-        title="Sean Marten"
-        subheader="Software Engineer"
+        title={props.name}
+        subheader={props.role}
       />
       <CardContent>
         <Typography variant="body2" color="textSecondary" component="p">
-          Company: The Software Company
+          Company: {props.company}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          Department: Software Engineering
+          Department: {props.department}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          Building: Hightower
+          Building: {props.building}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          Floor: 5
+          Floor: {props.floor}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          Desk: 15
+          Desk: {props.desk}
         </Typography>
         <Typography variant="body2" color="textSecondary" component="p">
-          Seat: 3
+          Seat: {props.seat}
         </Typography>
       </CardContent>
     </Card>
