@@ -3,26 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
-// Input/populate roles
-const roles = [
-  {
-    value: 'Software Engineer',
-    label: 'Software Engineer',
-  },
-  {
-    value: 'Associate',
-    label: 'Associate',
-  },
-  {
-    value: 'President',
-    label: 'President',
-  },
-  {
-    value: 'Chief Executive Officer',
-    label: 'Chief Executive Officer',
-  },
-];
-
 const useStyles = makeStyles((theme) => ({
   root: {
     '& .MuiTextField-root': {
@@ -32,13 +12,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export function SelectDropdown() {
+export const SelectDropdown = (props) => {
   const classes = useStyles();
-  const [role, setRole] = React.useState('');
-
-  const handleChange = (event) => {
-    setRole(event.target.value);
-  };
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
@@ -47,12 +22,12 @@ export function SelectDropdown() {
           id="standard-select"
           select
           label="Select"
-          value={role}
-          onChange={handleChange}
-          helperText="Please select your role"
+          value={props.value}
+          onChange={props.onChange}
+          helperText={props.helperText}
           // labelWidth={80}
         >
-          {roles.map((option) => (
+          {props.items.map((option) => (
             <MenuItem key={option.value} value={option.value}>
               {option.label}
             </MenuItem>

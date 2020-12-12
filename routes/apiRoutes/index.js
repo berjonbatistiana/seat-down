@@ -9,7 +9,7 @@ const occupancyRoutes = require("./occupancyRoutes");
 const floorRoutes = require("./floorRoutes");
 const buildingRoutes = require("./buildingRoutes");
 
-// router.use(authMiddleware);
+router.use(authMiddleware);
 router.use("/users", userRoutes);
 router.use("/desks", deskRoutes);
 router.use("/company", companyRoutes);
