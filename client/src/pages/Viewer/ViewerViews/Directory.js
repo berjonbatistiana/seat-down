@@ -7,7 +7,7 @@ import { DatePicker, EmployeeGrid } from "../../../pages/common/";
 
 export const Directory = () => {
   const [data, setData] = useState([]);
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(convertDate(new Date()));
 
   const handleDateChange = (date) => {
     setSelectedDate(convertDate(date));
