@@ -6,10 +6,11 @@ import { convertDate } from "../../../utils/tools";
 import { DatePicker, EmployeeGrid } from "../../../pages/common/";
 
 export const Directory = () => {
+  const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
   const handleDateChange = (date) => {
-    setSelectedDate(date);
+    setSelectedDate(convertDate(date));
   };
 
   const columns = [
@@ -19,18 +20,17 @@ export const Directory = () => {
     { field: "userId", title: "User ID" },
   ];
 
-  const [data, setData] = useState([]);
-  const [day, changeDay] = useState(convertDate(new Date()));
-
   const getOccupancies = async () => {
-    await axios.get("/api/occupy", { params: { date: day } }).then((res) => {
-      setData(res.data);
-    });
+    await axios
+      .get("/api/occupy", { params: { date: selectedDate } })
+      .then((res) => {
+        setData(res.data);
+      });
   };
 
   useEffect(() => {
     getOccupancies();
-  }, [day]);
+  }, [selectedDate]);
 
   return (
     <div>
@@ -47,9 +47,10 @@ export const Directory = () => {
         </Grid>
         <Grid item>
           <Box m={3} style={{ alignSelf: "center" }}>
-            <div onChange={(e) => changeDay(e.target.value)}>
-              <DatePicker />
-            </div>
+            <DatePicker
+              handleDateChange={handleDateChange}
+              selectedDate={selectedDate}
+            />
           </Box>
         </Grid>
       </Grid>
