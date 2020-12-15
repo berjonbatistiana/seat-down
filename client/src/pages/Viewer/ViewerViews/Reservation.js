@@ -10,6 +10,7 @@ import {
   findUserByUsername,
 } from "../../../utils";
 import {convertDate, isDatePast} from "../../../utils/tools";
+
 import MaterialTable, { MTableToolbar } from "material-table";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
 
@@ -73,20 +74,19 @@ const columns = [
 
 export const Reservation = () => {
   const [userId, setUserId] = React.useState('');
-  const [companyId, setCompanyId] = React.useState('');
   const [hasSeat, setHasSeat] = React.useState(false);
   const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  const [selectedDate, setSelectedDate] = React.useState(getLocalDate());
 
   async function fetchData() {
     const date = convertDate(selectedDate);
+    
     setSeatsLoading(true);
     
     const {data:user} = await findUserByUsername(localStorage.getItem('user'));
     
     setUserId(user.id);
-    setCompanyId(user.companyId)
     
     const { data: seat } = await doesUserHaveSeatDate({ userId:user.id, date });
     setHasSeat(!!seat);
@@ -130,7 +130,7 @@ export const Reservation = () => {
 
   const handleRemoveSeat = async () => {
     const date = convertDate(selectedDate);
-    const removedSeat = await removeSeatDate({ date, userId });
+    await removeSeatDate({ date, userId });
     fetchData().catch((e) => {
       console.error(e);
     });
