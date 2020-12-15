@@ -41,6 +41,21 @@ export const findCompanyById = async (companyId) => {
     throw new Error(e);
   }
 }
+export const addCompany = async (name) => {
+  try {
+    return await axios.post("/api/company", { name });
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const addRole = async (name) => {
+  try {
+    return await axios.post("/api/roles", { name });
+  } catch (e) {
+    throw new Error(e);
+  }
+};
 
 export const reserveSeat = async (formValues) => {
   try {
