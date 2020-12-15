@@ -62,10 +62,10 @@ export const getAvailableSeats = async ({ companyId, date }) => {
   }
 };
 
-export const getEmployeeDirectory = async ({companyId, date}) => {
+export const getEmployeeDirectory = async ({companyId}) => {
   try{
     // needs date, companyId
-    return await axios.get(`/api/users/directory/${companyId}/${date}`);
+    return await axios.get(`/api/users/directory/${companyId}/`);
   } catch (e){
     console.error(`API Error: Could not find employee directory. \n ${e}`);
     throw new Error(e);

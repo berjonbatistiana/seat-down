@@ -17,20 +17,31 @@ export const Directory = () => {
   
   const columns = [
     {field: "username", title: "Name"},
-    {field: "Role", title: "role"},
+    {field: "role", title: "Role"},
     {field: "chairName", title: "Assigned Chair"},
     {field: "floorName", title: "Floor"},
     {field: "buildingName", title: "Building"}
   ];
   
   const fetchData = async () => {
-  
-    const {data:user} = await findUserByUsername(localStorage.getItem('user'));
-  
+    
+    const {data: user} = await findUserByUsername(localStorage.getItem('user'));
+    
     setUserId(user.id);
     setCompanyId(user.companyId)
     
-    const {data: directory} = await getEmployeeDirectory({companyId: user.companyId, date: selectedDate});
+    const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
+    directory.map(user => {
+        if (user.occupancyDate && user.occupancyDate !== selectedDate) {
+          user.chairName = '';
+          user.floorName = '';
+          user.buildingName = '';
+          return user;
+        } else {
+          return user;
+        }
+      }
+    )
     setData(directory);
     
   }

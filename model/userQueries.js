@@ -12,13 +12,14 @@ const findUserByUsername = `
   WHERE username = ?;
   `;
 
-const getEmployeeDirectoryOnDate = `
+const getEmployeeDirectory = `
   SELECT
     username,
     roles.name AS role,
     chairs.name AS chairName,
     floors.name AS floorName,
-    buildings.name AS buildingName
+    buildings.name AS buildingName,
+    occupancyDate
   FROM users
   JOIN roles
   ON users.roleId = roles.id
@@ -32,11 +33,7 @@ const getEmployeeDirectoryOnDate = `
   ON floors.id = desks.floorId
   LEFT JOIN buildings
   ON floors.buildingId = buildings.id
-  WHERE users.companyId = ?
-  AND (
-    occupancy.occupancyDate = ? OR
-    occupancy.occupancyDate IS NULL
-  );
+  WHERE users.companyId = ?;
 `
 const insertUserQuery = `
   INSERT INTO users (id, username, password, roleId, companyId)
@@ -56,7 +53,7 @@ module.exports = {
   findAllUsers,
   findUserByIdQuery,
   findUserByUsername,
-  getEmployeeDirectoryOnDate,
+  getEmployeeDirectory,
   insertUserQuery,
   updateUserPasswordQuery,
   deleteUserByIdQuery,

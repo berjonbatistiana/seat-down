@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const {
   getAllUsersApi,
-  getEmployeeDirectoryOnDateApi,
+  getEmployeeDirectoryApi,
   getUserByUsernameApi,
   deleteUserByIdApi,
 } = require("../../../controllers/userController");
@@ -11,8 +11,8 @@ router.route("/")
   .get(getAllUsersApi);
 router.route("/:userId")
   .delete(deleteUserByIdApi);
-router.route("/directory/:companyId/:date")
-  .get(getEmployeeDirectoryOnDateApi)
+router.route("/directory/:companyId/")
+  .get(getEmployeeDirectoryApi)
 router.route("/")
   .get(getAllUsersApi);
 router.route("/username/:username")

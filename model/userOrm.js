@@ -4,7 +4,7 @@ const {
   findAllUsers,
   findUserByIdQuery,
   findUserByUsername,
-  getEmployeeDirectoryOnDate,
+  getEmployeeDirectory,
   insertUserQuery,
   updateUserPasswordQuery,
   deleteUserByIdQuery,
@@ -42,9 +42,9 @@ const fetchUserByIdFromDb = async (userId) => {
   }
 };
 
-const getEmployeeDirectoryOnDateFromDb = async (companyId, date) => {
+const getEmployeeDirectoryFromDb = async (companyId) => {
   try {
-    const [rows] = await connection.query(getEmployeeDirectoryOnDate, [companyId, date]);
+    const [rows] = await connection.query(getEmployeeDirectory, companyId);
     return rows;
   } catch (e){
     throw new Error(e)
@@ -115,7 +115,7 @@ module.exports = {
   fetchUsers,
   fetchUserByIdFromDb,
   fetchUserByUsernameFromDb,
-  getEmployeeDirectoryOnDateFromDb,
+  getEmployeeDirectoryFromDb,
   insertUserToDb,
   updatePasswordFromDb,
   deleteUserByIdFromDb,
