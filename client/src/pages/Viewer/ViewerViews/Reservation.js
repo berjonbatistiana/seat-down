@@ -9,7 +9,7 @@ import {
   removeSeatDate,
   findUserByUsername,
 } from "../../../utils";
-import {convertDate, isDateToday} from "../../../utils/tools";
+import {convertDate, isDatePast} from "../../../utils/tools";
 import MaterialTable, { MTableToolbar } from "material-table";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
 
@@ -99,6 +99,13 @@ export const Reservation = () => {
     
     setSeatsLoading(false);
   }
+  
+  function disablePrevDates(startDate) {
+    const startSeconds = Date.parse(startDate);
+    return (date) => {
+      return Date.parse(date) < startSeconds;
+    }
+  }
 
   useEffect(() => {
     fetchData().catch((e) => {
@@ -145,6 +152,7 @@ export const Reservation = () => {
             selectedDate={selectedDate}
             handleDateChange={handleDateChange}
             fullWidth={false}
+            disablePast={true}
           />
         </Box>
         <Typography variant="h5">
@@ -168,7 +176,7 @@ export const Reservation = () => {
           columns={columns}
           data={availableSeats}
           actions={
-            !hasSeat || (isDateToday(selectedDate))
+            !hasSeat
               ? [
                   {
                     icon: EventSeatIcon,

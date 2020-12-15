@@ -8,8 +8,11 @@ export const convertDate = (date) => {
   return [year, month, day].join("-");
 };
 
+
 export const isDatePast = (date) => {
-  const convertedDate = convertDate(date);
-  const today = convertDate(new Date((new Date(Date.now())).toString()));
+  // gets milliseconds of today and selected date without time and compares them.
+  const milliSelected = new Date(convertDate(date)).getTime();
+  const milliToday= new Date(new Date().toISOString().slice(0,10)).getTime();
   
+  return milliSelected < milliToday;
 }
