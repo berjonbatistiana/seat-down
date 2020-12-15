@@ -1,6 +1,7 @@
 const {
   fetchUsers,
   fetchUserByIdFromDb,
+  getEmployeeDirectoryOnDateFromDb,
   deleteUserByIdFromDb,
 } = require("../model/userOrm");
 
@@ -18,6 +19,15 @@ module.exports = {
     try {
       res.json(await fetchUserByIdFromDb(userId));
     } catch (e) {
+      res.status(400).json(e);
+    }
+  },
+  getEmployeeDirectoryOnDateApi: async (req, res) => {
+    const { companyId, date } = req.params;
+    try {
+      res.json(await getEmployeeDirectoryOnDateFromDb(companyId, date));
+    } catch(e){
+      console.error(`API Error: Failed to get employee directory on ${date}.`)
       res.status(400).json(e);
     }
   },

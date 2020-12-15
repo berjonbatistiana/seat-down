@@ -1,37 +1,44 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Grid, Box, Paper } from "@material-ui/core";
-import axios from "axios";
-import { convertDate } from "../../../utils/tools";
+import React, {useEffect, useState} from "react";
+import {Box, Grid, Paper, Typography} from "@material-ui/core";
+import {convertDate} from "../../../utils/tools";
+import {getEmployeeDirectory} from "../../../utils"
 
-import { DatePicker, EmployeeGrid } from "../../../pages/common/";
+import {DatePicker, EmployeeGrid} from "../../../pages/common/";
 
 export const Directory = () => {
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(convertDate(new Date()));
-
+  
   const handleDateChange = (date) => {
     setSelectedDate(convertDate(date));
   };
-
+  
   const columns = [
-    { field: "id", title: "ID" },
-    { field: "chairId", title: "Chair ID" },
-    { field: "occupancyDate", title: "Occupancy Date" },
-    { field: "userId", title: "User ID" },
+    {field: "username", title: "Name"},
+    {field: "Role", title: "role"},
+    {field: "chairName", title: "Assigned Chair"},
+    {field: "floorName", title: "Floor"},
+    {field: "buildingName", title: "Building"}
   ];
-
-  const getOccupancies = async () => {
-    await axios
-      .get("/api/occupy", { params: { date: selectedDate } })
-      .then((res) => {
-        setData(res.data);
-      });
-  };
-
+  
   useEffect(() => {
-    getOccupancies();
+    
+    const fetchData = async () => {
+      const companyId = '1fn50i1c5vkipclrgf';
+      const {data: directory} = await getEmployeeDirectory({companyId, date: selectedDate});
+      setData(directory);
+      
+      
+    }
+    
+    fetchData()
+      .catch(e => {
+        console.error(`Failed to fetch data ${e}`);
+        throw new Error(e)
+      })
+    
   }, [selectedDate]);
-
+  
   return (
     <div>
       <Grid container justify="space-between">
@@ -46,7 +53,7 @@ export const Directory = () => {
           </Box>
         </Grid>
         <Grid item>
-          <Box m={3} style={{ alignSelf: "center" }}>
+          <Box m={3} style={{alignSelf: "center"}}>
             <DatePicker
               handleDateChange={handleDateChange}
               selectedDate={selectedDate}

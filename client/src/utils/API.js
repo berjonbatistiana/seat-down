@@ -16,6 +16,14 @@ export const postSignIn = async (formValues) => {
   }
 }
 
+export const findUserById = async (userId) => {
+  try {
+    return await axios.get(`/users/${userId}`);
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
 export const reserveSeat = async (formValues) => {
   try {
     // Needs date, chairId, userId
@@ -33,6 +41,16 @@ export const getAvailableSeats = async ({companyId, date}) => {
     return await axios.get(`/api/chairs/available/${companyId}/${date}`);
   } catch (e){
     console.error(`API Error: Could not find available seats. \n ${e}`);
+    throw new Error(e);
+  }
+}
+
+export const getEmployeeDirectory = async ({companyId, date}) => {
+  try{
+    // needs date, companyId
+    return await axios.get(`/api/users/directory/${companyId}/${date}`);
+  } catch (e){
+    console.error(`API Error: Could not find employee directory. \n ${e}`);
     throw new Error(e);
   }
 }
