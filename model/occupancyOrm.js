@@ -4,6 +4,7 @@ const {
   findOccupancyByEmployeeIdQuery,
   findOccupancyByIdQuery,
   insertOccupancyQuery,
+  doesUserHaveSeatOnDateQuery,
   deleteOccupancyByIdQuery,
 } = require("./occupancyQueries");
 const connection = require("../config/connection");
@@ -52,6 +53,15 @@ const insertOccupancyToDb = async (date, chairId, userId) => {
   }
 };
 
+const doesUserHaveSeatOnDateFromDb = async (date, userId) => {
+  try{
+    const [rows] = await connection.query(doesUserHaveSeatOnDateQuery, [date, userId]);
+    return rows[0]
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
 const deleteOccupancyByIdFromDb = async (occupancyId) => {
   try {
     const [rows] = await connection.query(findOccupancyByIdQuery, occupancyId);
@@ -67,5 +77,6 @@ module.exports = {
   fetchAllOccupancyByEmployeeIdFromDb,
   findOccupancyByIdFromDb,
   insertOccupancyToDb,
+  doesUserHaveSeatOnDateFromDb,
   deleteOccupancyByIdFromDb,
 };
