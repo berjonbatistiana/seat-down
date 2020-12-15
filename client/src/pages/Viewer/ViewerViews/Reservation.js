@@ -8,9 +8,8 @@ import {
   reserveSeat,
   removeSeatDate,
   findUserByUsername,
-  findCompanyById
 } from "../../../utils";
-import { convertDate } from "../../../utils/tools";
+import {convertDate, isDateToday} from "../../../utils/tools";
 import MaterialTable, { MTableToolbar } from "material-table";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
 
@@ -169,7 +168,7 @@ export const Reservation = () => {
           columns={columns}
           data={availableSeats}
           actions={
-            !hasSeat
+            !hasSeat || (isDateToday(selectedDate))
               ? [
                   {
                     icon: EventSeatIcon,

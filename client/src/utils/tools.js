@@ -7,3 +7,9 @@ export const convertDate = (date) => {
   }
   return [year, month, day].join("-");
 };
+
+export const isDatePast = (date) => {
+  const convertedDate = convertDate(date);
+  const today = convertDate(new Date((new Date(Date.now())).toString()));
+  
+}
