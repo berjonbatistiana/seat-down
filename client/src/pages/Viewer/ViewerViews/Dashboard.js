@@ -23,30 +23,8 @@ export function Dashboard() {
     return new Date(match[1], match[2] - 1, match[3]);
   };
   
-  const getReservationData = async () => {
-    if (!!userId) {
-      const {
-        data: {
-          buildingName: building,
-          floorName: floor,
-          deskName: desk,
-          chairName: seat
-        }
-      } = await getChairLocation(currentOccupancy.chairId)
-      const {
-        data: {
-          roleName,
-          companyName
-        }
-      } = await getUserInfoById(userId)
-      
-      setCurrentData({roleName, companyName, building, floor, desk, seat});
-    }
-  };
-  
-  
   useEffect(() => {
-    // let found = false;
+    let found = false;
     
     const user = localStorage.getItem("user");
     findUserByUsername(user)
@@ -60,12 +38,12 @@ export function Dashboard() {
               data.forEach(seat => {
                 if (seat.occupancyDate === selectedDate) {
                   setcurrentOccupancy(seat);
-                  // found = true;
+                  found = true;
                 }
-                // if (!found) {
-                //   setcurrentOccupancy({});
-                // }
               });
+            if (!found) {
+              setcurrentOccupancy({});
+            }
           })
       })
       .catch(e => {
@@ -86,11 +64,33 @@ export function Dashboard() {
   }, [userId]);
   
   useEffect(() => {
+  
+    const getReservationData = async () => {
+      if (!!userId) {
+        const {
+          data: {
+            buildingName: building,
+            floorName: floor,
+            deskName: desk,
+            chairName: seat
+          }
+        } = await getChairLocation(currentOccupancy.chairId)
+        const {
+          data: {
+            roleName,
+            companyName
+          }
+        } = await getUserInfoById(userId)
+      
+        setCurrentData({roleName, companyName, building, floor, desk, seat});
+      }
+    };
+    
     getReservationData()
       .catch(e => {
         console.error(e);
       })
-  }, [currentOccupancy]);
+  }, [currentOccupancy, userId]);
   
   const handleDateChange = (date) => {
     setSelectedDate(convertDate(date));
