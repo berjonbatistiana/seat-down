@@ -2,13 +2,13 @@ import React from "react";
 import { Typography, Grid, Box, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 // import {} from "../../../pages/common";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import entrywayColour from "../../../pages/common/images/entryway-colour.svg";
 import Button from "@material-ui/core/Button";
 import { Footer } from "../../common/components";
-import MoneyOffIcon from "@material-ui/icons/MoneyOff";
-import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
-import BarChartIcon from "@material-ui/icons/BarChart";
+// import MoneyOffIcon from "@material-ui/icons/MoneyOff";
+// import EmojiPeopleIcon from "@material-ui/icons/EmojiPeople";
+// import BarChartIcon from "@material-ui/icons/BarChart";
 import SaveMoney from "../../common/images/PaymentProcessed.png"
 import WorkplaceAnalytics from "../../common/images/hockeystickgrowth.jpg"
 import StaySafe from "../../common/images/Self Quarantine.jpg"

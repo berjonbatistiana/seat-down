@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import axios from "axios";
 import {Badge, Box, Grid} from "@material-ui/core";
 import {DatePicker} from "@material-ui/pickers";
 import {findUserByUsername, getAllEmployeeSeats, getChairLocation, getUserInfoById} from "../../../utils";
@@ -27,59 +26,63 @@ export function Dashboard() {
   const getReservationData = async () => {
     if (!!userId) {
       const {
-        buildingName: building,
-        floorName: floor,
-        deskName: desk,
-        chairName: seat
+        data: {
+          buildingName: building,
+          floorName: floor,
+          deskName: desk,
+          chairName: seat
+        }
       } = await getChairLocation(currentOccupancy.chairId)
       const {
-        roleName,
-        companyName
+        data: {
+          roleName,
+          companyName
+        }
       } = await getUserInfoById(userId)
+      
       setCurrentData({roleName, companyName, building, floor, desk, seat});
     }
   };
   
+  
   useEffect(() => {
-    let found = false;
+    // let found = false;
     
     const user = localStorage.getItem("user");
     findUserByUsername(user)
       .then(({data}) => {
         setUserId(data.id);
+        
+        getAllEmployeeSeats(data.id)
+          .then(({data}) => {
+            setReservations(data);
+            if (!!data.length)
+              data.forEach(seat => {
+                if (seat.occupancyDate === selectedDate) {
+                  setcurrentOccupancy(seat);
+                  // found = true;
+                }
+                // if (!found) {
+                //   setcurrentOccupancy({});
+                // }
+              });
+          })
       })
       .catch(e => {
         console.error(e)
       })
-    
-    getAllEmployeeSeats(userId)
-      .then(({data}) => {
-        setReservations(data);
-        if (!!reservations.length)
-          reservations.forEach(reservation => {
-            if (reservation.occupancyDate === selectedDate) {
-              setcurrentOccupancy(reservation);
-              found = true;
-            }
-            if (!found) {
-              setcurrentOccupancy({});
-            }
-          });
-      })
-      .catch(e => {
-        console.error(e)
-      });
   }, [selectedDate]);
   
   useEffect(() => {
     
-    getAllEmployeeSeats(userId)
-      .then(({data}) => {
-        setReservations(data);
-      })
-      .catch(e => {
-        console.error(e)
-      });
+    if (!!userId)
+      getAllEmployeeSeats(userId)
+        .then(({data}) => {
+          setReservations(data);
+        })
+        .catch(e => {
+          console.error(e)
+        });
   }, [userId]);
   
   useEffect(() => {
@@ -93,7 +96,6 @@ export function Dashboard() {
     setSelectedDate(convertDate(date));
     setUnformattedDate(date);
   };
-  
   return (
     <Grid container>
       <Grid item>

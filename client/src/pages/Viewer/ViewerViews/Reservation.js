@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from "react";
+import React, {forwardRef, useCallback, useEffect} from "react";
 import { Box, Button, Paper, Typography } from "@material-ui/core";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import RoomIcon from "@material-ui/icons/Room";
@@ -8,7 +8,6 @@ import {
   reserveSeat,
   removeSeatDate,
   findUserByUsername,
-  findCompanyById
 } from "../../../utils";
 import { convertDate } from "../../../utils/tools";
 import MaterialTable, { MTableToolbar } from "material-table";
@@ -74,20 +73,18 @@ const columns = [
 
 export const Reservation = () => {
   const [userId, setUserId] = React.useState('');
-  const [companyId, setCompanyId] = React.useState('');
   const [hasSeat, setHasSeat] = React.useState(false);
   const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
 
-  async function fetchData() {
+  const fetchData = useCallback(async () => {
     const date = convertDate(selectedDate);
     setSeatsLoading(true);
     
     const {data:user} = await findUserByUsername(localStorage.getItem('user'));
     
     setUserId(user.id);
-    setCompanyId(user.companyId)
     
     const { data: seat } = await doesUserHaveSeatDate({ userId:user.id, date });
     setHasSeat(!!seat);
@@ -99,13 +96,14 @@ export const Reservation = () => {
     }
     
     setSeatsLoading(false);
-  }
+  }, [selectedDate]);
 
   useEffect(() => {
+    
     fetchData().catch((e) => {
       console.error(e);
     });
-  }, [selectedDate]);
+  }, [fetchData]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
@@ -124,7 +122,7 @@ export const Reservation = () => {
 
   const handleRemoveSeat = async () => {
     const date = convertDate(selectedDate);
-    const removedSeat = await removeSeatDate({ date, userId });
+    await removeSeatDate({ date, userId });
     fetchData().catch((e) => {
       console.error(e);
     });
