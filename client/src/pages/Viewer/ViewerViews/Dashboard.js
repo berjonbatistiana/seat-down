@@ -36,6 +36,9 @@ export function Dashboard() {
 
   useEffect(() => {
     let found = false;
+    if (!reservations.length) {
+      return;
+    }
     reservations.forEach((reservation) => {
       if (reservation.occupancyDate === selectedDate) {
         setcurrentOccupancy(reservation);
@@ -137,12 +140,14 @@ export function Dashboard() {
               dayComponent
             ) => {
               let badge = false;
-              reservations.forEach((reservation) => {
-                const date = parseDate(reservation.occupancyDate);
-                if (date.valueOf() === day.valueOf()) {
-                  badge = true;
-                }
-              });
+              if (reservations.length) {
+                reservations.forEach((reservation) => {
+                  const date = parseDate(reservation.occupancyDate);
+                  if (date.valueOf() === day.valueOf()) {
+                    badge = true;
+                  }
+                });
+              }
               return (
                 <Badge
                   variant={badge ? "dot" : undefined}

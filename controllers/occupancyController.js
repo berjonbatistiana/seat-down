@@ -43,10 +43,10 @@ module.exports = {
     }
   },
   doesUserHaveSeatOnDateApi: async (req, res) => {
-    const {date, userId} = req.params;
+    const { date, userId } = req.params;
     try {
       res.json(await doesUserHaveSeatOnDateFromDb(date, userId));
-    } catch (e){
+    } catch (e) {
       res.status(400).json(e);
     }
   },
