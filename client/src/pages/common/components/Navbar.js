@@ -33,7 +33,7 @@ export function Navbar() {
                 fontWeight: "bold",
               }}
             >
-              Seat Down
+              Workspace
             </Link>
           </Typography>
           <Typography className={classes.menuButton}>
