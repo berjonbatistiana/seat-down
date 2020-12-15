@@ -1,6 +1,5 @@
 const {
   fetchUsers,
-  fetchUserByIdFromDb,
   getEmployeeDirectoryOnDateFromDb,
   fetchUserByUsernameFromDb,
   deleteUserByIdFromDb,
@@ -21,14 +20,7 @@ module.exports = {
       const user = await fetchUserByUsernameFromDb(username);
       res.json(user);
     } catch (e) {
-      res.status(400).json(e);
-    }
-  },
-  getUserByIdApi: async (req, res) => {
-    const { userId } = req.params;
-    try {
-      res.json(await fetchUserByIdFromDb(userId));
-    } catch (e) {
+      console.error(`API Error: Failed to get user by username`);
       res.status(400).json(e);
     }
   },

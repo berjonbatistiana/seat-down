@@ -1,11 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Box, Grid, Paper, Typography} from "@material-ui/core";
 import {convertDate} from "../../../utils/tools";
-import {getEmployeeDirectory} from "../../../utils"
+import {findUserByUsername, getEmployeeDirectory} from "../../../utils"
 
 import {DatePicker, EmployeeGrid} from "../../../pages/common/";
 
 export const Directory = () => {
+  const [userId, setUserId] = useState('')
+  const [companyId, setCompanyId] = useState('')
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(convertDate(new Date()));
   
@@ -21,15 +23,19 @@ export const Directory = () => {
     {field: "buildingName", title: "Building"}
   ];
   
-  useEffect(() => {
+  const fetchData = async () => {
+  
+    const {data:user} = await findUserByUsername(localStorage.getItem('user'));
+  
+    setUserId(user.id);
+    setCompanyId(user.companyId)
     
-    const fetchData = async () => {
-      const companyId = '1fn50i1c5vkipclrgf';
-      const {data: directory} = await getEmployeeDirectory({companyId, date: selectedDate});
-      setData(directory);
-      
-      
-    }
+    const {data: directory} = await getEmployeeDirectory({companyId: user.companyId, date: selectedDate});
+    setData(directory);
+    
+  }
+  
+  useEffect(() => {
     
     fetchData()
       .catch(e => {

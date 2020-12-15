@@ -24,6 +24,24 @@ export const findUserById = async (userId) => {
   }
 }
 
+export const findUserByUsername = async (username) => {
+  try {
+    return await axios.get(`/api/users/username/${username}`)
+  } catch (e){
+    console.error(`API Error: Failed to get user by username`);
+    throw new Error(e);
+  }
+}
+
+export const findCompanyById = async (companyId) => {
+  try {
+    return await axios.get(`/api/company/${companyId}`)
+  } catch (e) {
+    console.error(`API Error: Failed to get company by id ${companyId}\n ${e}`)
+    throw new Error(e);
+  }
+}
+
 export const reserveSeat = async (formValues) => {
   try {
     // Needs date, chairId, userId

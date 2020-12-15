@@ -7,7 +7,7 @@ const findUserByIdQuery = `
   WHERE id = ?;
   `;
 const findUserByUsername = `
-  SELECT id, username, password
+  SELECT id, username, password, companyId
   FROM users
   WHERE username = ?;
   `;
