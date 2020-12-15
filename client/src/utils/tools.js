@@ -7,3 +7,8 @@ export const convertDate = (date) => {
   }
   return [year, month, day].join("-");
 };
+
+export const getLocalDate = () => {
+  const date = new Date(Date.now());
+  return new Date(date.toString());
+}
