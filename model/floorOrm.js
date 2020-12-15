@@ -44,15 +44,18 @@ const insertFloorToDb = async (companyId, buildingId, name, deskCapacity) => {
 };
 
 const updateFloorCompanyByIdFromDB = async (floorId, companyId) => {
-  try {
-    await connection.query(updateFloorCompanyQuery, [companyId, floorId]);
+  try{
+    await connection.query(updateFloorCompanyQuery, [
+      companyId,
+      floorId
+    ]);
     const [floorResult] = await connection.query(findFloorByIdQuery, floorId);
     return floorResult[0];
   } catch (e) {
-    console.error("Error updating company from floor.");
+    console.error('Error updating company from floor.')
     throw new Error(e);
   }
-};
+}
 
 const deleteFloorByIdFromDB = async (floorId) => {
   try {

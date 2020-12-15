@@ -3,7 +3,7 @@ const findAllUsers = `
   FROM users;
   `;
 const findUserByIdQuery = `
-  SELECT id, username, password, roleId, companyId FROM users
+  SELECT id, username, password FROM users
   WHERE id = ?;
   `;
 const findUserByUsername = `

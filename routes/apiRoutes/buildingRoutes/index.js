@@ -7,6 +7,6 @@ const {
 } = require("../../../controllers/buildingController");
 
 router.route("/").get(getAllBuildingsApi).post(insertBuildingApi);
-router.route("/:buildingId").get(getBuildingByIdApi).delete(deleteBuildingApi);
+router.route("/:chairId").get(getBuildingByIdApi).delete(deleteBuildingApi);
 
 module.exports = router;

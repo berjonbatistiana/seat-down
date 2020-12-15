@@ -1,18 +1,13 @@
-import React, { forwardRef, useEffect } from "react";
-import { Box, Button, Paper, Typography } from "@material-ui/core";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-import RoomIcon from "@material-ui/icons/Room";
-import {
-  doesUserHaveSeatDate,
-  getAvailableSeats,
-  reserveSeat,
-  removeSeatDate,
-} from "../../../utils";
-import { convertDate } from "../../../utils/tools";
-import MaterialTable, { MTableToolbar } from "material-table";
-import EventSeatIcon from "@material-ui/icons/EventSeat";
+import React, {forwardRef, useEffect} from 'react';
+import {Box, Button, Paper, Typography} from "@material-ui/core";
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import RoomIcon from '@material-ui/icons/Room';
+import {doesUserHaveSeatDate, getAvailableSeats, reserveSeat, removeSeatDate} from "../../../utils";
+import {convertDate} from "../../../utils/tools";
+import MaterialTable, {MTableToolbar} from "material-table";
+import EventSeatIcon from '@material-ui/icons/EventSeat';
 
-import { DatePicker } from "../../common";
+import {DatePicker} from "../../common"
 import {
   AddBox,
   ArrowDownward,
@@ -28,132 +23,120 @@ import {
   Remove,
   SaveAlt,
   Search,
-  ViewColumn,
+  ViewColumn
 } from "@material-ui/icons";
 
 const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
-  DetailPanel: forwardRef((props, ref) => (
-    <ChevronRight {...props} ref={ref} />
-  )),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
-  PreviousPage: forwardRef((props, ref) => (
-    <ChevronLeft {...props} ref={ref} />
-  )),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref}/>),
+  Check: forwardRef((props, ref) => <Check {...props} ref={ref}/>),
+  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref}/>),
+  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref}/>),
+  DetailPanel: forwardRef((props, ref) => <ChevronRight {...props} ref={ref}/>),
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref}/>),
+  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref}/>),
+  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref}/>),
+  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref}/>),
+  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref}/>),
+  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref}/>),
+  PreviousPage: forwardRef((props, ref) => <ChevronLeft {...props} ref={ref}/>),
+  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref}/>),
+  Search: forwardRef((props, ref) => <Search {...props} ref={ref}/>),
+  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref}/>),
+  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref}/>),
+  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref}/>)
 };
 
 const columns = [
   {
-    title: "Building",
-    field: "buildingName",
+    title: 'Building',
+    field: 'buildingName'
   },
   {
-    title: "Floor",
-    field: "floorName",
+    title: 'Floor',
+    field: 'floorName',
   },
   {
-    title: "Chair",
-    field: "chairName",
+    title: 'Chair',
+    field: 'chairName'
   },
-];
+]
 
 export const Reservation = () => {
-  const [companyId, setCompanyId] = React.useState("1fn50i1187kiidrmqu"); // from localstorage
-  const [userId, setUserId] = React.useState("1fn50i1187kiidrmw2"); // from localstorage
+  
+  const [companyId, setCompanyId] = React.useState('1fn50i1187kiidrmqu'); // from localstorage
+  const [userId, setUserId] = React.useState('1fn50i1187kiidrmw2'); // from localstorage
   const [hasSeat, setHasSeat] = React.useState(false);
   const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState(new Date());
-
+  
   async function fetchData() {
     const date = convertDate(selectedDate);
     setSeatsLoading(true);
-
-    const { data: seat } = await doesUserHaveSeatDate({ userId, date });
-    setHasSeat(!!seat);
+  
+    const {data: seat} = await doesUserHaveSeatDate({userId, date});
+    setHasSeat(!!seat)
     if (!seat) {
-      const { data: seats } = await getAvailableSeats({ companyId, date });
+      const {data: seats} = await getAvailableSeats({companyId, date});
       setAvailableSeats(seats);
     } else {
       setAvailableSeats([]);
     }
     setSeatsLoading(false);
   }
-
+  
   useEffect(() => {
-    fetchData().catch((e) => {
-      console.error(e);
-    });
-  }, [companyId]);
-
+      
+      fetchData().catch(e => {
+        console.error(e)
+      })
+      
+    }, [companyId]
+  )
+  
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
+  
   const handleReserveSeat = async (event, rowData) => {
     // get userId from localhost
-    const userId = "1fn50i1187kiidrmw2";
-    const { chairId } = rowData;
+    const userId = '1fn50i1187kiidrmw2'
+    const {chairId} = rowData;
     const date = convertDate(selectedDate);
-
-    await reserveSeat({ userId, chairId, date });
+    
+    await reserveSeat({userId, chairId, date});
     setHasSeat(true);
-    fetchData().catch((e) => {
-      console.error(e);
-    });
-  };
-
+    fetchData().catch(e => {
+      console.error(e)
+    })
+    
+    
+  }
+  
   const handleRemoveSeat = async () => {
-    const date = convertDate(selectedDate);
-    const removedSeat = await removeSeatDate({ date, userId });
-    console.log(removedSeat);
-    fetchData().catch((e) => {
-      console.error(e);
-    });
-  };
-
+    const date = convertDate(selectedDate)
+    const removedSeat = await removeSeatDate({date, userId});
+    console.log(removedSeat)
+    fetchData().catch(e => {
+      console.error(e)
+    })
+  }
+  
   const renderTableTitle = () => {
     return (
       <Box pt={3}>
         <Typography variant="h5">
-          <ScheduleIcon
-            color="secondary"
-            fontSize="large"
-            style={{ verticalAlign: "middle" }}
-          />{" "}
-          Date
+          <ScheduleIcon color="secondary" fontSize="large" style={{verticalAlign: 'middle'}}/> Date
         </Typography>
         <Box ml={3} mr={3} mb={4}>
-          <DatePicker
-            selectedDate={selectedDate}
-            handleDateChange={handleDateChange}
-            fullWidth={false}
-          />
+          <DatePicker selectedDate={selectedDate} handleDateChange={handleDateChange} fullWidth={false}/>
         </Box>
         <Typography variant="h5">
-          <RoomIcon
-            color="secondary"
-            fontSize="large"
-            style={{ verticalAlign: "middle" }}
-          />{" "}
-          Location
+          <RoomIcon color="secondary" fontSize="large" style={{verticalAlign: 'middle'}}/> Location
         </Typography>
       </Box>
-    );
-  };
+    )
+  }
   return (
     <form>
       <Box m={3} component={Paper} variant="outlined">
@@ -163,40 +146,36 @@ export const Reservation = () => {
           title={renderTableTitle()}
           columns={columns}
           data={availableSeats}
-          actions={
-            !hasSeat
-              ? [
-                  {
-                    icon: EventSeatIcon,
-                    tooltip: "Reserve Seat",
-                    onClick: handleReserveSeat,
-                  },
-                ]
-              : []
-          }
+          actions={ !hasSeat?[
+            {
+              icon: EventSeatIcon,
+              tooltip: 'Reserve Seat',
+              onClick: handleReserveSeat
+            }
+          ]:[]}
           options={{
             doubleHorizontalScroll: true,
-            detailPanelType: "single",
+            detailPanelType: 'single',
             actionsColumnIndex: -1,
             searchFieldAlignment: "right",
             actionsCellStyle: {
-              padding: "25px",
+              padding: '25px'
             },
           }}
           localization={{
             header: {
-              actions: "Reserve",
+              actions: 'Reserve'
             },
             body: {
-              emptyDataSourceMessage: areSeatsLoading ? (
+              emptyDataSourceMessage:
+              areSeatsLoading?
                 <Typography variant="h6">
                   Loading seats, please wait.
-                </Typography>
-              ) : !hasSeat ? (
+                </Typography> :
+                !hasSeat ?
                 <Typography variant="h6">
-                  Sorry, no seats are available for this day.
-                </Typography>
-              ) : (
+                Sorry, no seats are available for this day.
+              </Typography> :
                 <Typography variant="h6">
                   Sorry, You already have a seat.
                   <Button
@@ -217,18 +196,18 @@ export const Reservation = () => {
                   </Button>
                   to remove previous reservation.
                 </Typography>
-              ),
-            },
+            }
           }}
           components={{
-            Toolbar: (props) => (
-              <div style={{ paddingRight: "40px" }}>
+            Toolbar: props => (
+              <div style={{paddingRight: '40px'}}>
                 <MTableToolbar {...props} />
               </div>
-            ),
+            )
           }}
+        
         />
       </Box>
     </form>
   );
-};
+}
