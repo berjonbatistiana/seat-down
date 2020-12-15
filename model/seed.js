@@ -192,11 +192,11 @@ async function seed() {
   const d1 = convertDate(date1);
   const d2 = convertDate(date2);
   const AA11 = await insertOccupancyToDb(d1, AA1Chair1.id, regUserA1.id);
-  const AA12 = await insertOccupancyToDb(d2, AA1Chair2.id, regUserA2.id);
+  // const AA12 = await insertOccupancyToDb(d2, AA1Chair2.id, regUserA2.id);
   const AB11 = await insertOccupancyToDb(d1, AB1Chair1.id, regUserA3.id);
-  const AB12 = await insertOccupancyToDb(d2, AB1Chair2.id, regUserA4.id);
-  const AB21 = await insertOccupancyToDb(d1, AB2Chair1.id, regUserA5.id);
-  const AB22 = await insertOccupancyToDb(d2, AB2Chair2.id, regUserA6.id);
+  // const AB12 = await insertOccupancyToDb(d2, AB1Chair2.id, regUserA4.id);
+  // const AB21 = await insertOccupancyToDb(d1, AB2Chair1.id, regUserA5.id);
+  // const AB22 = await insertOccupancyToDb(d2, AB2Chair2.id, regUserA6.id);
   const AB23 = await insertOccupancyToDb(d1, AB2Chair3.id, regUserA7.id);
   const AB31 = await insertOccupancyToDb(d2, AB3Chair1.id, regUserA8.id);
   const BA11 = await insertOccupancyToDb(d1, BA1Chair1.id, regUserB1.id);

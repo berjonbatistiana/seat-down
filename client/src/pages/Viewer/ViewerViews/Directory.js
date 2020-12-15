@@ -1,37 +1,61 @@
-import React, { useState, useEffect } from "react";
-import { Typography, Grid, Box, Paper } from "@material-ui/core";
-import axios from "axios";
-import { convertDate } from "../../../utils/tools";
+import React, {useEffect, useState} from "react";
+import {Box, Grid, Paper, Typography} from "@material-ui/core";
+import {convertDate} from "../../../utils/tools";
+import {findUserByUsername, getEmployeeDirectory} from "../../../utils"
 
-import { DatePicker, EmployeeGrid } from "../../../pages/common/";
+import {DatePicker, EmployeeGrid} from "../../../pages/common/";
 
 export const Directory = () => {
+  const [userId, setUserId] = useState('')
+  const [companyId, setCompanyId] = useState('')
   const [data, setData] = useState([]);
   const [selectedDate, setSelectedDate] = useState(convertDate(new Date()));
-
+  
   const handleDateChange = (date) => {
     setSelectedDate(convertDate(date));
   };
-
+  
   const columns = [
-    { field: "id", title: "ID" },
-    { field: "chairId", title: "Chair ID" },
-    { field: "occupancyDate", title: "Occupancy Date" },
-    { field: "userId", title: "User ID" },
+    {field: "username", title: "Name"},
+    {field: "role", title: "Role"},
+    {field: "chairName", title: "Assigned Chair"},
+    {field: "floorName", title: "Floor"},
+    {field: "buildingName", title: "Building"}
   ];
-
-  const getOccupancies = async () => {
-    await axios
-      .get("/api/occupy", { params: { date: selectedDate } })
-      .then((res) => {
-        setData(res.data);
-      });
-  };
-
+  
+  const fetchData = async () => {
+    
+    const {data: user} = await findUserByUsername(localStorage.getItem('user'));
+    
+    setUserId(user.id);
+    setCompanyId(user.companyId)
+    
+    const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
+    directory.map(user => {
+        if (user.occupancyDate && user.occupancyDate !== selectedDate) {
+          user.chairName = '';
+          user.floorName = '';
+          user.buildingName = '';
+          return user;
+        } else {
+          return user;
+        }
+      }
+    )
+    setData(directory);
+    
+  }
+  
   useEffect(() => {
-    getOccupancies();
+    
+    fetchData()
+      .catch(e => {
+        console.error(`Failed to fetch data ${e}`);
+        throw new Error(e)
+      })
+    
   }, [selectedDate]);
-
+  
   return (
     <div>
       <Grid container justify="space-between">
@@ -46,7 +70,7 @@ export const Directory = () => {
           </Box>
         </Grid>
         <Grid item>
-          <Box m={3} style={{ alignSelf: "center" }}>
+          <Box m={3} style={{alignSelf: "center"}}>
             <DatePicker
               handleDateChange={handleDateChange}
               selectedDate={selectedDate}

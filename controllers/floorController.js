@@ -12,7 +12,7 @@ module.exports = {
       const floors = await fetchAllFloorsFromDb();
       res.json(floors);
     } catch (e) {
-      console.error("API Error: Could not fetch all Floors");
+      console.error("DB Error: Could not fetch all Floors");
       res.status(400).json(e);
     }
   },
@@ -22,7 +22,7 @@ module.exports = {
       const floor = await fetchFloorByIdFromDb(floorId);
       res.json(floor);
     } catch (e) {
-      console.error("API Error: Could not find floor with id: " + floorId);
+      console.error("DB Error: Could not find floor with id: " + floorId);
       res.status(400).json(e);
     }
   },
@@ -39,7 +39,7 @@ module.exports = {
       );
     } catch (e) {
       console.error(
-        `API Error: Could not insert new floor: {${companyId}, ${buildingId}, ${name}, ${deskCapacity}`
+        `DB Error: Could not insert new floor: {${companyId}, ${buildingId}, ${name}, ${deskCapacity}`
       );
       res.status(400).json(e);
     }
@@ -55,7 +55,7 @@ module.exports = {
       res.json(updatedFloor);
     } catch (e) {
       console.error(
-        `API Error: Could not update floor: ${floorId} with company: ${companyId}.`
+        `DB Error: Could not update floor: ${floorId} with company: ${companyId}.`
       );
       res.status(400).json(e);
     }
@@ -67,7 +67,7 @@ module.exports = {
       const deletedFloor = await deleteFloorByIdFromDb(floorId);
       res.json(deletedFloor);
     } catch (e) {
-      console.error(`API Error: Could not delete floor: ${floorId}`);
+      console.error(`DB Error: Could not delete floor: ${floorId}`);
       res.status(400).json(e);
     }
   },

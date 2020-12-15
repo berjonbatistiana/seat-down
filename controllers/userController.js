@@ -1,6 +1,6 @@
 const {
   fetchUsers,
-  fetchUserByIdFromDb,
+  getEmployeeDirectoryFromDb,
   fetchUserByUsernameFromDb,
   deleteUserByIdFromDb,
 } = require("../model/userOrm");
@@ -20,14 +20,16 @@ module.exports = {
       const user = await fetchUserByUsernameFromDb(username);
       res.json(user);
     } catch (e) {
+      console.error(`DB Error: Failed to get user by username`);
       res.status(400).json(e);
     }
   },
-  getUserByIdApi: async (req, res) => {
-    const { userId } = req.params;
+  getEmployeeDirectoryApi: async (req, res) => {
+    const { companyId } = req.params;
     try {
-      res.json(await fetchUserByIdFromDb(userId));
-    } catch (e) {
+      res.json(await getEmployeeDirectoryFromDb(companyId));
+    } catch(e){
+      console.error(`DB Error: Failed to get employee directory on ${companyId}.\n ${e}`)
       res.status(400).json(e);
     }
   },

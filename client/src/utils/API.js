@@ -16,6 +16,31 @@ export const postSignIn = async (formValues) => {
   }
 };
 
+export const findUserById = async (userId) => {
+  try {
+    return await axios.get(`/users/${userId}`);
+  } catch (e) {
+    throw new Error(e);
+  }
+}
+
+export const findUserByUsername = async (username) => {
+  try {
+    return await axios.get(`/api/users/username/${username}`)
+  } catch (e){
+    console.error(`API Error: Failed to get user by username`);
+    throw new Error(e);
+  }
+}
+
+export const findCompanyById = async (companyId) => {
+  try {
+    return await axios.get(`/api/company/${companyId}`)
+  } catch (e) {
+    console.error(`API Error: Failed to get company by id ${companyId}\n ${e}`)
+    throw new Error(e);
+  }
+}
 export const addCompany = async (name) => {
   try {
     return await axios.post("/api/company", { name });
@@ -52,7 +77,17 @@ export const getAvailableSeats = async ({ companyId, date }) => {
   }
 };
 
-export const doesUserHaveSeatDate = async ({ date, userId }) => {
+export const getEmployeeDirectory = async ({companyId}) => {
+  try{
+    // needs date, companyId
+    return await axios.get(`/api/users/directory/${companyId}/`);
+  } catch (e){
+    console.error(`API Error: Could not find employee directory. \n ${e}`);
+    throw new Error(e);
+  }
+}
+
+export const doesUserHaveSeatDate = async ({date, userId}) => {
   try {
     // needs date, userId
     return await axios.get(`/api/occupy/hasSeat/${userId}/${date}`);
