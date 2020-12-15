@@ -20,7 +20,7 @@ export const reserveSeat = async (formValues) => {
   try {
     // Needs date, chairId, userId
     return await axios.post("/api/occupy", formValues);
-    
+
   } catch (e){
     console.error(`API Error: Could not reserve seat. \n ${e}`);
     throw new Error(e);
@@ -57,3 +57,4 @@ export const removeSeatDate = async({date, userId}) => {
     throw new Error(e);
   }
 }
+

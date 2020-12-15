@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {Button, Grid, TextField, Snackbar} from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useHistory } from "react-router-dom";
@@ -6,37 +6,17 @@ import { useHistory } from "react-router-dom";
 import { SignCard, SelectDropdown } from "../../common/components";
 import signUp from "../../common/images/SignUpPhoto.png";
 import {postSignUp} from "../../../utils"
+import axios from "axios";
 
 export const SignUp = () => {
   const history = useHistory();
-
-  // Input/populate roles
-  const roles = [
-    {
-      value: '68djomikiffl0lz',
-      label: 'Admin',
-    },
-    {
-      value: '68djomikiffl0ni',
-      label: 'User',
-    },
-  ];
-
-  const companies = [
-    {
-      value: '68djomikiffl0nk',
-      label: 'Seed A Company',
-    },
-    {
-      value: '68djomikiffl0nm',
-      label: 'Seed B Company',
-    },
-  ];
   const [snackbar, setSnackbar] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [company, setCompany] = useState('');
   const [role, setRole] = useState('');
+  const [roles, setRoles] = useState([]);
+  const [companies, setCompanies] = useState([]);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -57,6 +37,35 @@ export const SignUp = () => {
       setSnackbar(true );
     }
   }
+
+  const getRoles = async () => {
+    await axios
+      .get("/api/roles")
+      .then((res) => {
+        const rolesArr = []
+        res.data.forEach(role => {
+          rolesArr.push({label: role.name, value: role.id})
+        })
+        setRoles(rolesArr);
+      });
+  };
+
+  const getCompanies = async () => {
+    await axios
+      .get("/api/company")
+      .then((res) => {
+        const companiesArr = []
+        res.data.forEach(company => {
+          companiesArr.push({label: company.name, value: company.id})
+        })
+        setCompanies(companiesArr);
+      });
+  };
+
+  useEffect(() => {
+    getRoles();
+    getCompanies();
+  }, []);
 
   return (
     <SignCard
