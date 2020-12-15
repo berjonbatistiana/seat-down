@@ -7,3 +7,4 @@ export * from "./EmployeeGrid";
 export * from "./SeatingDetail";
 export * from "./UserNavbar";
 export * from "./AdderModal";
+export * from "./Footer";
