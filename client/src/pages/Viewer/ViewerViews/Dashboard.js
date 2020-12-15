@@ -24,7 +24,21 @@ export function Dashboard() {
     return new Date(match[1], match[2] - 1, match[3]);
   };
   
-  
+  const getReservationData = async () => {
+    if (!!userId) {
+      const {
+        buildingName: building,
+        floorName: floor,
+        deskName: desk,
+        chairName: seat
+      } = await getChairLocation(currentOccupancy.chairId)
+      const {
+        roleName,
+        companyName
+      } = await getUserInfoById(userId)
+      setCurrentData({roleName, companyName, building, floor, desk, seat});
+    }
+  };
   
   useEffect(() => {
     let found = false;
