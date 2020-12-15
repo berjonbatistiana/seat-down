@@ -1,7 +1,9 @@
 const {
   fetchAllOccupancyFromDb,
+  fetchAllOccupancyByEmployeeIdFromDb,
   findOccupancyByIdFromDb,
   insertOccupancyToDb,
+  doesUserHaveSeatOnDateFromDb,
   deleteOccupancyByIdFromDb,
 } = require("../model/occupancyOrm");
 
@@ -10,6 +12,15 @@ module.exports = {
     const { date } = req.query;
     try {
       const occupancies = await fetchAllOccupancyFromDb(date);
+      res.json(occupancies);
+    } catch (e) {
+      res.status(400).json(e);
+    }
+  },
+  getAllOccupancyByEmployeeIdApi: async (req, res) => {
+    const { employeeId } = req.params;
+    try {
+      const occupancies = await fetchAllOccupancyByEmployeeIdFromDb(employeeId);
       res.json(occupancies);
     } catch (e) {
       res.status(400).json(e);
@@ -27,6 +38,14 @@ module.exports = {
     const { date, chairId, userId } = req.body;
     try {
       res.json(await insertOccupancyToDb(date, chairId, userId));
+    } catch (e) {
+      res.status(400).json(e);
+    }
+  },
+  doesUserHaveSeatOnDateApi: async (req, res) => {
+    const { date, userId } = req.params;
+    try {
+      res.json(await doesUserHaveSeatOnDateFromDb(date, userId));
     } catch (e) {
       res.status(400).json(e);
     }

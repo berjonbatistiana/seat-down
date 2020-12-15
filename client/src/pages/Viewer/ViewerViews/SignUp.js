@@ -1,158 +1,155 @@
-import React, { Component } from "react";
-// import axios from "axios";
-import Button from "@material-ui/core/Button";
-import { Grid } from "@material-ui/core/";
-import { SignCard, TextFieldInput, SelectDropdown } from "../../common/components";
+import React, { useState, useEffect } from "react";
+import { Button, Grid, TextField, Snackbar } from "@material-ui/core";
+import MuiAlert from "@material-ui/lab/Alert";
+import { useHistory } from "react-router-dom";
+
+import { SignCard, SelectDropdown } from "../../common/components";
 import signUp from "../../common/images/SignUpPhoto.png";
+import { postSignUp } from "../../../utils";
+import axios from "axios";
 
-export class SignUp extends Component {
-  // state = {
-  //   snackbar: false,
-  // };
+export const SignUp = () => {
+  const history = useHistory();
+  const [snackbar, setSnackbar] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [company, setCompany] = useState("");
+  const [role, setRole] = useState("");
+  const [roles, setRoles] = useState([]);
+  const [companies, setCompanies] = useState([]);
 
-  // handleSignUp = async (formValues, dispatch) => {
-  //   try {
-  //     const res = await axios.post("/auth/signup", formValues);
-  //     localStorage.setItem("token", res.data);
-  //     localStorage.setItem("user", formValues.username);
-  //     this.props.setViewerToken(res.data);
-  //     this.props.history.push("/challenge");
-  //   } catch (e) {
-  //     this.setState({ snackbar: true });
-  //   }
-  // };
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbar(false);
+  };
 
-  // handleClose = (event, reason) => {
-  //   if (reason === "clickaway") {
-  //     return;
-  //   }
-  //   this.setState({ snackbar: false });
-  // };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formValues = {
+        username,
+        password,
+        roleId: role,
+        companyId: company,
+      };
+      const res = await postSignUp(formValues);
+      localStorage.setItem("token", res.data);
+      localStorage.setItem("user", username);
+      history.push("/dashboard");
+    } catch (e) {
+      setSnackbar(true);
+    }
+  };
 
-  render() {
-    // const { handleSubmit, pristine, form } = this.props;
-    // let disable = () =>
-    //   !pristine &&
-    //   form.values &&
-    //   form.values.username &&
-    //   form.values.password &&
-    //   form.values.username !== "" &&
-    //   form.values.password !== ""
-    //     ? false
-    //     : true;
-    return (
-      <SignCard
-        title="Sign Up"
-        image={signUp}
-        question="Already have an account? "
-        linkTitle="Sign In"
-        link="signin"
-        content={
-          <form>
-            <Grid item container spacing={3}>
-              <Grid item xs={12}>
-                <TextFieldInput name="username" label="Username" />
-              </Grid>
-              <Grid item xs={12}>
-                <TextFieldInput name="password" label="Password" />
-              </Grid>
-              {/* <Grid item xs={12}>
-                <TextFieldInput
-                  name="confirmPassword"
-                  label="Confirm Password"
-                />
-              </Grid> */}
-              <Grid item xs={12}>
-                <TextFieldInput name="company" label="Company" />
-              </Grid>
-              <Grid item xs={12}>
-                <SelectDropdown>
+  const getRoles = async () => {
+    await axios.get("/api/roles").then((res) => {
+      const rolesArr = [];
+      res.data.forEach((role) => {
+        rolesArr.push({ label: role.name, value: role.id });
+      });
+      setRoles(rolesArr);
+    });
+  };
 
-                </SelectDropdown>
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  variant="contained"
-                  style={{
-                    color: "white",
-                    backgroundColor: "#fd8369",
-                    borderRadius: 25,
-                    "&:hover": {
-                      backgroundColor: "#fd8369",
-                    },
-                  }}
-                >
-                  Sign up
-                </Button>
-              </Grid>
+  const getCompanies = async () => {
+    await axios.get("/api/company").then((res) => {
+      const companiesArr = [];
+      res.data.forEach((company) => {
+        companiesArr.push({ label: company.name, value: company.id });
+      });
+      setCompanies(companiesArr);
+    });
+  };
+
+  useEffect(() => {
+    getRoles();
+    getCompanies();
+  }, []);
+
+  return (
+    <SignCard
+      title="Sign Up"
+      image={signUp}
+      question="Already have an account? "
+      linkTitle="Sign In"
+      link="signin"
+      content={
+        <>
+          <Grid item container spacing={3}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </Grid>
-          </form>
-        }
-      />
-    );
-  }
-}
-
-// import React from 'react';
-// import { Typography, Grid } from "@material-ui/core";
-// import Box from "@material-ui/core/Box";
-// import Hidden from "@material-ui/core/Hidden";
-// import SignUpPhoto from "../../../pages/common/images/SignUpPhoto.png";
-
-// // import { Link as RouterLink } from "react-router-dom";
-// // import Link from "@material-ui/core/Link";
-
-// // import { accentColor, secondaryColor } from "./accentColor";
-
-// export const SignUp = () => {
-//   return (
-//     <div>
-//       <Grid
-//       container
-//       direction="row"
-//       style={{ textAlign: "center", height: "93vh" }}
-//       justify="center"
-//       alignItems="stretch"
-//     >
-//       <Hidden xsDown>
-//         <Grid
-//           justify="center"
-//           container
-//           alignItems="center"
-//           item
-//           xs={12}
-//           sm={6}
-//           md={8}
-//           style={{ backgroundColor: "White", width: "100%" }}
-//         >
-//           <Grid item>
-//             <img alt="oops" src={SignUpPhoto} style={{ width: "75%" }} />
-//           </Grid>
-//         </Grid>
-//       </Hidden>
-//       <Grid justify="center" container alignItems="center" item sm={6} md={4}>
-//         <Box p={2}>
-//           <Typography variant="h4" component="h1">
-//             <Box fontWeight="fontWeightBold" mt={12} mb={2}>
-//               {"Sign Up"}
-//             </Box>
-//           </Typography>
-//           <Box>{"props.content"}</Box>
-//           <Typography variant="body1" component="div">
-//             <Box m={2}>
-//               {"props.question"}
-//               {/* <Link
-//                 to={"props.link"}
-//                 component={RouterLink}
-//                 style={{ color: "blue" }}
-//               >
-//                 {"props.linkTitle"}
-//               </Link> */}
-//             </Box>
-//           </Typography>
-//         </Box>
-//       </Grid>
-//     </Grid>
-//     </div>
-//   )
-// }
+            <Grid item xs={12}>
+              <TextField
+                type="password"
+                fullWidth
+                label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <SelectDropdown
+                helperText="Please select your company"
+                items={companies}
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <SelectDropdown
+                helperText="Please select your role"
+                items={roles}
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                style={{
+                  color: "white",
+                  backgroundColor: "#fd8369",
+                  borderRadius: 25,
+                  "&:hover": {
+                    backgroundColor: "#fd8369",
+                  },
+                }}
+                onClick={handleSubmit}
+                disabled={
+                  username === "" &&
+                  password === "" &&
+                  company === "" &&
+                  role === ""
+                    ? true
+                    : false
+                }
+              >
+                Sign up
+              </Button>
+            </Grid>
+          </Grid>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            open={snackbar}
+            onClose={handleClose}
+          >
+            <MuiAlert onClose={handleClose} severity="error">
+              The username you have entered is not available.
+            </MuiAlert>
+          </Snackbar>
+        </>
+      }
+    />
+  );
+};

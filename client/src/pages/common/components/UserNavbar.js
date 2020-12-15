@@ -64,23 +64,24 @@ const AntTab = withStyles((theme) => ({
 export const UserNavbar = () => {
   const location = useLocation();
   const [value, setValue] = useState(0);
-
-
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+  const user = localStorage.getItem("user");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     location.pathname === '/dashboard' ? setValue(0) : location.pathname === '/reserve' ? setValue(1) : setValue(2);
   }, [location.pathname])
 
-  return (
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return token && (location.pathname === '/dashboard' || location.pathname === '/reserve' || location.pathname === '/directory') ? (
     <div>
       <AppBar position="static" color="transparent" elevation={0}>
         <AntTabs value={value} onChange={handleChange}>
           <AntTab
             style={{color: location.pathname === '/dashboard' ? '#5fc5d1' : ''}}
-            component={RouteLink} to="/dashboard" label={<div><PermContactCalendarIcon fontSize="small" style={{verticalAlign: 'middle'}}/> User's Calendar</div>} {...a11yProps(0)}
+            component={RouteLink} to="/dashboard" label={<div><PermContactCalendarIcon fontSize="small" style={{verticalAlign: 'middle'}}/> {user}'s Calendar</div>} {...a11yProps(0)}
           />
           <AntTab
             style={{color: location.pathname === '/reserve' ? '#5fc5d1' : ''}}
@@ -93,5 +94,5 @@ export const UserNavbar = () => {
         </AntTabs>
       </AppBar>
     </div>
-  );
+  ) : "";
 }
