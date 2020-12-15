@@ -2,6 +2,12 @@ const findOccupancyByDateQuery = `
   SELECT * FROM occupancy
   WHERE occupancyDate = ?;
 `;
+
+const findOccupancyByEmployeeIdQuery = `
+  SELECT * FROM occupancy
+  WHERE userId = ?;
+`;
+
 const findOccupancyByIdQuery = `
   SELECT * FROM occupancy
   WHERE id = ?;
@@ -22,6 +28,7 @@ const deleteOccupancyByIdQuery = `
 
 module.exports = {
   findOccupancyByDateQuery,
+  findOccupancyByEmployeeIdQuery,
   findOccupancyByIdQuery,
   insertOccupancyQuery,
   doesUserHaveSeatOnDateQuery,
