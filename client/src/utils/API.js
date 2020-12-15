@@ -6,7 +6,7 @@ export const postSignUp = async (formValues) => {
   } catch (e) {
     throw new Error(e);
   }
-}
+};
 
 export const postSignIn = async (formValues) => {
   try {
@@ -14,7 +14,7 @@ export const postSignIn = async (formValues) => {
   } catch (e) {
     throw new Error(e);
   }
-}
+};
 
 export const findUserById = async (userId) => {
   try {
@@ -28,22 +28,21 @@ export const reserveSeat = async (formValues) => {
   try {
     // Needs date, chairId, userId
     return await axios.post("/api/occupy", formValues);
-
-  } catch (e){
+  } catch (e) {
     console.error(`API Error: Could not reserve seat. \n ${e}`);
     throw new Error(e);
   }
-}
+};
 
-export const getAvailableSeats = async ({companyId, date}) => {
-  try{
+export const getAvailableSeats = async ({ companyId, date }) => {
+  try {
     // needs date, companyId
     return await axios.get(`/api/chairs/available/${companyId}/${date}`);
-  } catch (e){
+  } catch (e) {
     console.error(`API Error: Could not find available seats. \n ${e}`);
     throw new Error(e);
   }
-}
+};
 
 export const getEmployeeDirectory = async ({companyId, date}) => {
   try{
@@ -58,21 +57,22 @@ export const getEmployeeDirectory = async ({companyId, date}) => {
 export const doesUserHaveSeatDate = async ({date, userId}) => {
   try {
     // needs date, userId
-    return await axios.get(`/api/occupy/${userId}/${date}`);
-  } catch(e){
-    console.error(`API Error: Could not get seats for ${userId} on ${date}.`)
-    throw new Error(e)
-  }
-}
-
-export const removeSeatDate = async({date, userId}) => {
-  try{
-    // needs date, userId
-    const {data} = await doesUserHaveSeatDate({date, userId});
-    return await axios.delete(`/api/occupy/${data.id}`);
-  } catch (e){
-    console.error(`API Error: Could not remove seats for ${userId} on ${date}.`)
+    return await axios.get(`/api/occupy/hasSeat/${userId}/${date}`);
+  } catch (e) {
+    console.error(`API Error: Could not get seats for ${userId} on ${date}.`);
     throw new Error(e);
   }
-}
+};
 
+export const removeSeatDate = async ({ date, userId }) => {
+  try {
+    // needs date, userId
+    const { data } = await doesUserHaveSeatDate({ date, userId });
+    return await axios.delete(`/api/occupy/${data.id}`);
+  } catch (e) {
+    console.error(
+      `API Error: Could not remove seats for ${userId} on ${date}.`
+    );
+    throw new Error(e);
+  }
+};

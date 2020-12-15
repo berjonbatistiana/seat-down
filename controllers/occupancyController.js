@@ -1,5 +1,6 @@
 const {
   fetchAllOccupancyFromDb,
+  fetchAllOccupancyByEmployeeIdFromDb,
   findOccupancyByIdFromDb,
   insertOccupancyToDb,
   doesUserHaveSeatOnDateFromDb,
@@ -11,6 +12,15 @@ module.exports = {
     const { date } = req.query;
     try {
       const occupancies = await fetchAllOccupancyFromDb(date);
+      res.json(occupancies);
+    } catch (e) {
+      res.status(400).json(e);
+    }
+  },
+  getAllOccupancyByEmployeeIdApi: async (req, res) => {
+    const { employeeId } = req.params;
+    try {
+      const occupancies = await fetchAllOccupancyByEmployeeIdFromDb(employeeId);
       res.json(occupancies);
     } catch (e) {
       res.status(400).json(e);
@@ -33,10 +43,10 @@ module.exports = {
     }
   },
   doesUserHaveSeatOnDateApi: async (req, res) => {
-    const {date, userId} = req.params;
+    const { date, userId } = req.params;
     try {
       res.json(await doesUserHaveSeatOnDateFromDb(date, userId));
-    } catch (e){
+    } catch (e) {
       res.status(400).json(e);
     }
   },

@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import {Button, Grid, TextField, Snackbar} from "@material-ui/core";
+import { Button, Grid, TextField, Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useHistory } from "react-router-dom";
 
 import { SignCard, SelectDropdown } from "../../common/components";
 import signUp from "../../common/images/SignUpPhoto.png";
-import {postSignUp} from "../../../utils"
+import { postSignUp } from "../../../utils";
 import axios from "axios";
 
 export const SignUp = () => {
   const history = useHistory();
   const [snackbar, setSnackbar] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [company, setCompany] = useState('');
-  const [role, setRole] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [company, setCompany] = useState("");
+  const [role, setRole] = useState("");
   const [roles, setRoles] = useState([]);
   const [companies, setCompanies] = useState([]);
 
@@ -28,38 +28,39 @@ export const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const formValues = {username, password, roleId: role, companyId: company}
+      const formValues = {
+        username,
+        password,
+        roleId: role,
+        companyId: company,
+      };
       const res = await postSignUp(formValues);
       localStorage.setItem("token", res.data);
       localStorage.setItem("user", username);
       history.push("/dashboard");
     } catch (e) {
-      setSnackbar(true );
+      setSnackbar(true);
     }
-  }
+  };
 
   const getRoles = async () => {
-    await axios
-      .get("/api/roles")
-      .then((res) => {
-        const rolesArr = []
-        res.data.forEach(role => {
-          rolesArr.push({label: role.name, value: role.id})
-        })
-        setRoles(rolesArr);
+    await axios.get("/api/roles").then((res) => {
+      const rolesArr = [];
+      res.data.forEach((role) => {
+        rolesArr.push({ label: role.name, value: role.id });
       });
+      setRoles(rolesArr);
+    });
   };
 
   const getCompanies = async () => {
-    await axios
-      .get("/api/company")
-      .then((res) => {
-        const companiesArr = []
-        res.data.forEach(company => {
-          companiesArr.push({label: company.name, value: company.id})
-        })
-        setCompanies(companiesArr);
+    await axios.get("/api/company").then((res) => {
+      const companiesArr = [];
+      res.data.forEach((company) => {
+        companiesArr.push({ label: company.name, value: company.id });
       });
+      setCompanies(companiesArr);
+    });
   };
 
   useEffect(() => {
@@ -78,16 +79,37 @@ export const SignUp = () => {
         <>
           <Grid item container spacing={3}>
             <Grid item xs={12}>
-              <TextField fullWidth label="Username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+              <TextField
+                fullWidth
+                label="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
-              <TextField type="password" fullWidth label="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <TextField
+                type="password"
+                fullWidth
+                label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
-              <SelectDropdown helperText="Please select your company" items={companies} value={company} onChange={(e) => setCompany(e.target.value)}/>
+              <SelectDropdown
+                helperText="Please select your company"
+                items={companies}
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
-              <SelectDropdown helperText="Please select your role" items={roles} value={role} onChange={(e) => setRole(e.target.value)} />
+              <SelectDropdown
+                helperText="Please select your role"
+                items={roles}
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              />
             </Grid>
             <Grid item xs={12}>
               <Button
@@ -101,7 +123,14 @@ export const SignUp = () => {
                   },
                 }}
                 onClick={handleSubmit}
-                disabled={username === '' && password === '' && company === '' && role === '' ? true : false}
+                disabled={
+                  username === "" &&
+                  password === "" &&
+                  company === "" &&
+                  role === ""
+                    ? true
+                    : false
+                }
               >
                 Sign up
               </Button>
@@ -123,4 +152,4 @@ export const SignUp = () => {
       }
     />
   );
-}
+};

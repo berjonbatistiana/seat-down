@@ -3,6 +3,7 @@ const {
   getAllUsersApi,
   getUserByIdApi,
   getEmployeeDirectoryOnDateApi,
+  getUserByUsernameApi,
   deleteUserByIdApi,
 } = require("../../../controllers/userController");
 
@@ -13,4 +14,8 @@ router.route("/:userId")
   .delete(deleteUserByIdApi);
 router.route("/directory/:companyId/:date")
   .get(getEmployeeDirectoryOnDateApi)
+router.route("/")
+  .get(getAllUsersApi);
+router.route("/username/:username")
+  .get(getUserByUsernameApi);
 module.exports = router;

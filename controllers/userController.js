@@ -2,6 +2,7 @@ const {
   fetchUsers,
   fetchUserByIdFromDb,
   getEmployeeDirectoryOnDateFromDb,
+  fetchUserByUsernameFromDb,
   deleteUserByIdFromDb,
 } = require("../model/userOrm");
 
@@ -10,6 +11,15 @@ module.exports = {
     try {
       const users = await fetchUsers();
       res.json(users);
+    } catch (e) {
+      res.status(400).json(e);
+    }
+  },
+  getUserByUsernameApi: async (req, res) => {
+    const { username } = req.params;
+    try {
+      const user = await fetchUserByUsernameFromDb(username);
+      res.json(user);
     } catch (e) {
       res.status(400).json(e);
     }
