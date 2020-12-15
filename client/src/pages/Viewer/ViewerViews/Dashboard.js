@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Badge } from "@material-ui/core";
+import { Badge, Grid, Box, Typography } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
-import { Grid, Box } from "@material-ui/core";
 
 import { SeatingDetail } from "../../common/components";
 import { convertDate } from "../../../utils/tools";
@@ -116,7 +115,7 @@ export function Dashboard() {
 
   useEffect(async () => {
     await axios
-      .get(`/api/occupy/employee/h427f4oukim48ew6`)
+      .get(`/api/occupy/employee/${userId}`)
       .then(({ data }) => {
         setReservations(data);
       });
@@ -167,7 +166,7 @@ export function Dashboard() {
           {Object.keys(currentOccupancy).length !== 0 ? (
             <SeatingDetail reservationData={currentData} />
           ) : (
-            <h2>No reservation on this date</h2>
+            <Typography variant="h6">No reservation on this date</Typography>
           )}
         </Box>
       </Grid>
