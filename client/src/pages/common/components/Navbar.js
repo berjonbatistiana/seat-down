@@ -41,7 +41,7 @@ export function Navbar() {
                 fontWeight: "bold",
               }}
             >
-              Seat Down
+              Workspace
             </Link>
           </Typography>
           {token ? (
