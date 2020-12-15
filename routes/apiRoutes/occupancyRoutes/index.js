@@ -9,7 +9,7 @@ const {
 } = require("../../../controllers/occupancyController");
 
 router.route("/").get(getAllOccupancyApi).post(insertOccupancyApi);
-router.route("/:userId/:date").get(doesUserHaveSeatOnDateApi);
+router.route("/hasSeat/:userId/:date").get(doesUserHaveSeatOnDateApi);
 router
   .route("/:occupancyId")
   .get(getOccupyByIdApi)
