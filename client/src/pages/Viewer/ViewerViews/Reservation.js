@@ -1,19 +1,20 @@
 import React, {forwardRef, useCallback, useEffect} from "react";
-import { Box, Button, Paper, Typography } from "@material-ui/core";
+import {Box, Button, Paper, Typography} from "@material-ui/core";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import RoomIcon from "@material-ui/icons/Room";
 import {
   doesUserHaveSeatDate,
-  getAvailableSeats,
-  reserveSeat,
-  removeSeatDate,
   findUserByUsername,
+  getAvailableSeats,
+  removeSeatDate,
+  reserveSeat,
 } from "../../../utils";
-import { convertDate } from "../../../utils/tools";
-import MaterialTable, { MTableToolbar } from "material-table";
+import {convertDate, getLocalDate} from "../../../utils/tools";
+
+import MaterialTable, {MTableToolbar} from "material-table";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
 
-import { DatePicker } from "../../common";
+import {DatePicker} from "../../common";
 import {
   AddBox,
   ArrowDownward,
@@ -33,27 +34,27 @@ import {
 } from "@material-ui/icons";
 
 const tableIcons = {
-  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref} />),
-  Check: forwardRef((props, ref) => <Check {...props} ref={ref} />),
-  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref} />),
+  Add: forwardRef((props, ref) => <AddBox {...props} ref={ref}/>),
+  Check: forwardRef((props, ref) => <Check {...props} ref={ref}/>),
+  Clear: forwardRef((props, ref) => <Clear {...props} ref={ref}/>),
+  Delete: forwardRef((props, ref) => <DeleteOutline {...props} ref={ref}/>),
   DetailPanel: forwardRef((props, ref) => (
-    <ChevronRight {...props} ref={ref} />
+    <ChevronRight {...props} ref={ref}/>
   )),
-  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref} />),
-  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref} />),
-  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref} />),
-  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref} />),
-  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref} />),
-  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref} />),
+  Edit: forwardRef((props, ref) => <Edit {...props} ref={ref}/>),
+  Export: forwardRef((props, ref) => <SaveAlt {...props} ref={ref}/>),
+  Filter: forwardRef((props, ref) => <FilterList {...props} ref={ref}/>),
+  FirstPage: forwardRef((props, ref) => <FirstPage {...props} ref={ref}/>),
+  LastPage: forwardRef((props, ref) => <LastPage {...props} ref={ref}/>),
+  NextPage: forwardRef((props, ref) => <ChevronRight {...props} ref={ref}/>),
   PreviousPage: forwardRef((props, ref) => (
-    <ChevronLeft {...props} ref={ref} />
+    <ChevronLeft {...props} ref={ref}/>
   )),
-  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref} />),
-  Search: forwardRef((props, ref) => <Search {...props} ref={ref} />),
-  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref} />),
-  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref} />),
-  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref} />),
+  ResetSearch: forwardRef((props, ref) => <Clear {...props} ref={ref}/>),
+  Search: forwardRef((props, ref) => <Search {...props} ref={ref}/>),
+  SortArrow: forwardRef((props, ref) => <ArrowDownward {...props} ref={ref}/>),
+  ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref}/>),
+  ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref}/>),
 };
 
 const columns = [
@@ -76,20 +77,21 @@ export const Reservation = () => {
   const [hasSeat, setHasSeat] = React.useState(false);
   const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
-
+  const [selectedDate, setSelectedDate] = React.useState(getLocalDate());
+  
   const fetchData = useCallback(async () => {
     const date = convertDate(selectedDate);
+    
     setSeatsLoading(true);
     
-    const {data:user} = await findUserByUsername(localStorage.getItem('user'));
+    const {data: user} = await findUserByUsername(localStorage.getItem('user'));
     
     setUserId(user.id);
     
-    const { data: seat } = await doesUserHaveSeatDate({ userId:user.id, date });
+    const {data: seat} = await doesUserHaveSeatDate({userId: user.id, date});
     setHasSeat(!!seat);
     if (!seat) {
-      const { data: seats } = await getAvailableSeats({ companyId:user.companyId, date });
+      const {data: seats} = await getAvailableSeats({companyId: user.companyId, date});
       setAvailableSeats(seats);
     } else {
       setAvailableSeats([]);
@@ -97,37 +99,37 @@ export const Reservation = () => {
     
     setSeatsLoading(false);
   }, [selectedDate]);
-
+  
   useEffect(() => {
     
     fetchData().catch((e) => {
       console.error(e);
     });
   }, [fetchData]);
-
+  
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-
+  
   const handleReserveSeat = async (event, rowData) => {
-    const { chairId } = rowData;
+    const {chairId} = rowData;
     const date = convertDate(selectedDate);
-
-    await reserveSeat({ userId, chairId, date });
+    
+    await reserveSeat({userId, chairId, date});
     setHasSeat(true);
     fetchData().catch((e) => {
       console.error(e);
     });
   };
-
+  
   const handleRemoveSeat = async () => {
     const date = convertDate(selectedDate);
-    await removeSeatDate({ date, userId });
+    await removeSeatDate({date, userId});
     fetchData().catch((e) => {
       console.error(e);
     });
   };
-
+  
   const renderTableTitle = () => {
     return (
       <Box pt={3}>
@@ -135,7 +137,7 @@ export const Reservation = () => {
           <ScheduleIcon
             color="secondary"
             fontSize="large"
-            style={{ verticalAlign: "middle" }}
+            style={{verticalAlign: "middle"}}
           />{" "}
           Date
         </Typography>
@@ -144,13 +146,14 @@ export const Reservation = () => {
             selectedDate={selectedDate}
             handleDateChange={handleDateChange}
             fullWidth={false}
+            disablePast={true}
           />
         </Box>
         <Typography variant="h5">
           <RoomIcon
             color="secondary"
             fontSize="large"
-            style={{ verticalAlign: "middle" }}
+            style={{verticalAlign: "middle"}}
           />{" "}
           Location
         </Typography>
@@ -169,12 +172,12 @@ export const Reservation = () => {
           actions={
             !hasSeat
               ? [
-                  {
-                    icon: EventSeatIcon,
-                    tooltip: "Reserve Seat",
-                    onClick: handleReserveSeat,
-                  },
-                ]
+                {
+                  icon: EventSeatIcon,
+                  tooltip: "Reserve Seat",
+                  onClick: handleReserveSeat,
+                },
+              ]
               : []
           }
           options={{
@@ -225,7 +228,7 @@ export const Reservation = () => {
           }}
           components={{
             Toolbar: (props) => (
-              <div style={{ paddingRight: "40px" }}>
+              <div style={{paddingRight: "40px"}}>
                 <MTableToolbar {...props} />
               </div>
             ),

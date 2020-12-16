@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Box, Grid, Paper, Typography} from "@material-ui/core";
-import {convertDate} from "../../../utils/tools";
+import {convertDate, getLocalDate} from "../../../utils/tools";
 import {findUserByUsername, getEmployeeDirectory} from "../../../utils"
 
 import {DatePicker, EmployeeGrid} from "../../../pages/common/";
 
 export const Directory = () => {
   const [data, setData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(convertDate(new Date()));
+  const [selectedDate, setSelectedDate] = useState(convertDate(getLocalDate()));
   
   const handleDateChange = (date) => {
     setSelectedDate(convertDate(date));
@@ -27,8 +27,7 @@ export const Directory = () => {
     const fetchData = async () => {
     
       const {data: user} = await findUserByUsername(localStorage.getItem('user'));
-    
-    
+      
       const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
       directory.map(user => {
           if (user.occupancyDate && user.occupancyDate !== selectedDate) {
