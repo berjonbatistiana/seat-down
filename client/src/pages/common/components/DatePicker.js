@@ -13,6 +13,7 @@ export const DatePicker = (props) => {
       margin="normal"
       value={props.selectedDate}
       onChange={props.handleDateChange}
+      disablePast={props.disablePast}
       KeyboardButtonProps={{
         "aria-label": "change date",
       }}

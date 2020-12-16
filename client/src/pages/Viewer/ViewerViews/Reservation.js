@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect } from "react";
+import React, {forwardRef, useEffect, useState} from "react";
 import { Box, Button, Paper, Typography } from "@material-ui/core";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import RoomIcon from "@material-ui/icons/Room";
@@ -8,9 +8,9 @@ import {
   reserveSeat,
   removeSeatDate,
   findUserByUsername,
-  findCompanyById
 } from "../../../utils";
-import { convertDate } from "../../../utils/tools";
+import {convertDate, isDatePast} from "../../../utils/tools";
+
 import MaterialTable, { MTableToolbar } from "material-table";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
 
@@ -74,21 +74,22 @@ const columns = [
 
 export const Reservation = () => {
   const [userId, setUserId] = React.useState('');
-  const [companyId, setCompanyId] = React.useState('');
   const [hasSeat, setHasSeat] = React.useState(false);
   const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+  // const [selectedDate, setSelectedDate] = React.useState(getLocalDate());
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
 
   async function fetchData() {
     const date = convertDate(selectedDate);
+
     setSeatsLoading(true);
-    
+
     const {data:user} = await findUserByUsername(localStorage.getItem('user'));
-    
+
     setUserId(user.id);
-    setCompanyId(user.companyId)
-    
+
     const { data: seat } = await doesUserHaveSeatDate({ userId:user.id, date });
     setHasSeat(!!seat);
     if (!seat) {
@@ -97,8 +98,15 @@ export const Reservation = () => {
     } else {
       setAvailableSeats([]);
     }
-    
+
     setSeatsLoading(false);
+  }
+
+  function disablePrevDates(startDate) {
+    const startSeconds = Date.parse(startDate);
+    return (date) => {
+      return Date.parse(date) < startSeconds;
+    }
   }
 
   useEffect(() => {
@@ -124,7 +132,7 @@ export const Reservation = () => {
 
   const handleRemoveSeat = async () => {
     const date = convertDate(selectedDate);
-    const removedSeat = await removeSeatDate({ date, userId });
+    await removeSeatDate({ date, userId });
     fetchData().catch((e) => {
       console.error(e);
     });
@@ -146,6 +154,7 @@ export const Reservation = () => {
             selectedDate={selectedDate}
             handleDateChange={handleDateChange}
             fullWidth={false}
+            disablePast={true}
           />
         </Box>
         <Typography variant="h5">
