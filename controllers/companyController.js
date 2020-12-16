@@ -23,15 +23,11 @@ module.exports = {
     }
   },
   insertCompanyApi: async (req, res) => {
-    const { name, address } = req.body;
+    const { name } = req.body;
     try {
-      res.json(
-        await insertCompanyToDb(
-          name,
-          address
-        )
-      );
+      res.json(await insertCompanyToDb(name));
     } catch (e) {
+      console.log(e);
       res.status(400).json(e);
     }
   },

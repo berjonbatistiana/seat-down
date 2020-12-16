@@ -3,9 +3,9 @@ import { Button, Grid, TextField, Snackbar } from "@material-ui/core";
 import MuiAlert from "@material-ui/lab/Alert";
 import { useHistory } from "react-router-dom";
 
-import { SignCard, SelectDropdown } from "../../common/components";
+import { SignCard, SelectDropdown, AdderModal } from "../../common/components";
 import signUp from "../../common/images/SignUpPhoto.png";
-import { postSignUp } from "../../../utils";
+import { postSignUp, addCompany, addRole } from "../../../utils";
 import axios from "axios";
 
 export const SignUp = () => {
@@ -17,6 +17,7 @@ export const SignUp = () => {
   const [role, setRole] = useState("");
   const [roles, setRoles] = useState([]);
   const [companies, setCompanies] = useState([]);
+  const [modalChange, setModalChange] = useState(false);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -66,7 +67,11 @@ export const SignUp = () => {
   useEffect(() => {
     getRoles();
     getCompanies();
-  }, []);
+  }, [modalChange]);
+
+  const handleModalClose = () => {
+    setModalChange(!modalChange);
+  };
 
   return (
     <SignCard
@@ -95,21 +100,39 @@ export const SignUp = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Grid>
-            <Grid item xs={12}>
-              <SelectDropdown
-                helperText="Please select your company"
-                items={companies}
-                value={company}
-                onChange={(e) => setCompany(e.target.value)}
-              />
+            <Grid container justify="center" alignItems="center">
+              <Grid item xs={8}>
+                <SelectDropdown
+                  helperText="Please select your company"
+                  items={companies}
+                  value={company}
+                  onChange={(e) => setCompany(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <AdderModal
+                  modalName="Company"
+                  addFn={addCompany}
+                  onModalClose={handleModalClose}
+                />
+              </Grid>
             </Grid>
-            <Grid item xs={12}>
-              <SelectDropdown
-                helperText="Please select your role"
-                items={roles}
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              />
+            <Grid container justify="center" alignItems="center">
+              <Grid item xs={8}>
+                <SelectDropdown
+                  helperText="Please select your role"
+                  items={roles}
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                />
+              </Grid>
+              <Grid item xs={4}>
+                <AdderModal
+                  modalName="Role"
+                  addFn={addRole}
+                  onModalClose={handleModalClose}
+                />
+              </Grid>
             </Grid>
             <Grid item xs={12}>
               <Button

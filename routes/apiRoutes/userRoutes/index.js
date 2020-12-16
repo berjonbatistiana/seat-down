@@ -1,12 +1,20 @@
 const router = require("express").Router();
 const {
   getAllUsersApi,
-  getUserByIdApi,
+  getEmployeeDirectoryApi,
   getUserByUsernameApi,
   deleteUserByIdApi,
 } = require("../../../controllers/userController");
 
-router.route("/").get(getAllUsersApi);
-router.route("/:userId").get(getUserByIdApi).delete(deleteUserByIdApi);
-router.route("/username/:username").get(getUserByUsernameApi);
+// Matches api/users/
+router.route("/")
+  .get(getAllUsersApi);
+router.route("/:userId")
+  .delete(deleteUserByIdApi);
+router.route("/directory/:companyId/")
+  .get(getEmployeeDirectoryApi)
+router.route("/")
+  .get(getAllUsersApi);
+router.route("/username/:username")
+  .get(getUserByUsernameApi);
 module.exports = router;

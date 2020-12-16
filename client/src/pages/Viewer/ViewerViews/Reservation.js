@@ -7,6 +7,8 @@ import {
   getAvailableSeats,
   reserveSeat,
   removeSeatDate,
+  findUserByUsername,
+  findCompanyById
 } from "../../../utils";
 import { convertDate } from "../../../utils/tools";
 import MaterialTable, { MTableToolbar } from "material-table";
@@ -71,8 +73,8 @@ const columns = [
 ];
 
 export const Reservation = () => {
-  const [companyId, setCompanyId] = React.useState("1fn50i1187kiidrmqu"); // from localstorage
-  const [userId, setUserId] = React.useState("1fn50i1187kiidrmw2"); // from localstorage
+  const [userId, setUserId] = React.useState('');
+  const [companyId, setCompanyId] = React.useState('');
   const [hasSeat, setHasSeat] = React.useState(false);
   const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
@@ -81,15 +83,21 @@ export const Reservation = () => {
   async function fetchData() {
     const date = convertDate(selectedDate);
     setSeatsLoading(true);
-
-    const { data: seat } = await doesUserHaveSeatDate({ userId, date });
+    
+    const {data:user} = await findUserByUsername(localStorage.getItem('user'));
+    
+    setUserId(user.id);
+    setCompanyId(user.companyId)
+    
+    const { data: seat } = await doesUserHaveSeatDate({ userId:user.id, date });
     setHasSeat(!!seat);
     if (!seat) {
-      const { data: seats } = await getAvailableSeats({ companyId, date });
+      const { data: seats } = await getAvailableSeats({ companyId:user.companyId, date });
       setAvailableSeats(seats);
     } else {
       setAvailableSeats([]);
     }
+    
     setSeatsLoading(false);
   }
 
@@ -97,15 +105,13 @@ export const Reservation = () => {
     fetchData().catch((e) => {
       console.error(e);
     });
-  }, [companyId]);
+  }, [selectedDate]);
 
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
 
   const handleReserveSeat = async (event, rowData) => {
-    // get userId from localhost
-    const userId = "1fn50i1187kiidrmw2";
     const { chairId } = rowData;
     const date = convertDate(selectedDate);
 
@@ -119,7 +125,6 @@ export const Reservation = () => {
   const handleRemoveSeat = async () => {
     const date = convertDate(selectedDate);
     const removedSeat = await removeSeatDate({ date, userId });
-    console.log(removedSeat);
     fetchData().catch((e) => {
       console.error(e);
     });
