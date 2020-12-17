@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Box, Grid, Paper, Typography} from "@material-ui/core";
+import {Box, Button, Grid, Paper, Typography} from "@material-ui/core";
 import {compareDate, getLocalDate} from "../../../utils/tools";
 import {findCompanyById, findUserByUsername, getEmployeeDirectory} from "../../../utils"
 
@@ -9,6 +9,8 @@ export const Directory = () => {
   const [data, setData] = useState([]);
   const [company, setCompany] = useState('');
   const [selectedDate, setSelectedDate] = useState(getLocalDate());
+  const [areSeatsLoading, setSeatsLoading] = useState(false);
+  
   
   const handleDateChange = (date) => {
     setSelectedDate((date));
@@ -25,14 +27,16 @@ export const Directory = () => {
   useEffect(() => {
     
     const fetchData = async () => {
-      
+      setSeatsLoading(true);
+      setData([]);
       const {data: user} = await findUserByUsername(localStorage.getItem('user'));
       const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
+      const filteredDirectory = [];
+      const notYetFiltered = {};
+      
       findCompanyById(user.companyId).then(({data}) => {
         setCompany(data.name);
       });
-      const filteredDirectory = [];
-      const notYetFiltered = {};
       for (let i = 0; i < directory.length; i++) {
         
         // check if this entry haven't had a chair before
@@ -65,8 +69,8 @@ export const Directory = () => {
           )
         }
       }
-      
       setData(filteredDirectory);
+      setSeatsLoading(false);
     }
     
     
@@ -106,6 +110,19 @@ export const Directory = () => {
             title={"Everyone at The Software Company"}
             data={data}
             columns={columns}
+            localization={{
+              body: {
+                emptyDataSourceMessage: areSeatsLoading ? (
+                  <Typography variant="h6">
+                    Loading directory, please wait.
+                  </Typography>
+                ) : (
+                  <Typography variant="h6">
+                    There is no one in this company.
+                  </Typography>
+                ),
+              },
+            }}
           />
         </Paper>
       </Box>

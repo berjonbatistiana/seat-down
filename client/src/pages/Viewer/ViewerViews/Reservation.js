@@ -201,7 +201,7 @@ export const Reservation = () => {
                 </Typography>
               ) : (
                 <Typography variant="h6">
-                  Sorry, You already have a seat.
+                  You already have a seat.
                   <Button
                     variant="contained"
                     style={{
