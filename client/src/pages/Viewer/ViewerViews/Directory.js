@@ -1,58 +1,87 @@
 import React, {useEffect, useState} from "react";
-import {Box, Grid, Paper, Typography} from "@material-ui/core";
-import {convertDate, getLocalDate} from "../../../utils/tools";
+import {Box, Button, Grid, Paper, Typography} from "@material-ui/core";
+import {compareDate, getLocalDate} from "../../../utils/tools";
 import {findCompanyById, findUserByUsername, getEmployeeDirectory} from "../../../utils"
 
 import {DatePicker, EmployeeGrid} from "../../../pages/common/";
 
 export const Directory = () => {
   const [data, setData] = useState([]);
-  // const [selectedDate, setSelectedDate] = useState(new Date());
   const [company, setCompany] = useState('');
   const [selectedDate, setSelectedDate] = useState(getLocalDate());
+  const [areSeatsLoading, setSeatsLoading] = useState(false);
+  
+  
   const handleDateChange = (date) => {
-    setSelectedDate(convertDate(date));
+    setSelectedDate((date));
   };
-
+  
   const columns = [
     {field: "username", title: "Name"},
     {field: "role", title: "Role"},
-    {field: "chairName", title: "Assigned Chair"},
+    {field: "chairName", title: "Assigned Chair", defaultSort: "desc"},
     {field: "floorName", title: "Floor"},
     {field: "buildingName", title: "Building"}
   ];
-
-  const fetchData = async () => {
-
-    const {data: user} = await findUserByUsername(localStorage.getItem('user'));
-    const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
-    findCompanyById(user.companyId).then(({data}) => {
-      setCompany(data.name);
-    });
-    directory.map(user => {
-        if (user.occupancyDate && user.occupancyDate !== selectedDate) {
-          user.chairName = '';
-          user.floorName = '';
-          user.buildingName = '';
-          return user;
-        } else {
-          return user;
+  
+  useEffect(() => {
+    
+    const fetchData = async () => {
+      setSeatsLoading(true);
+      setData([]);
+      const {data: user} = await findUserByUsername(localStorage.getItem('user'));
+      const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
+      const filteredDirectory = [];
+      const notYetFiltered = {};
+      
+      findCompanyById(user.companyId).then(({data}) => {
+        setCompany(data.name);
+      });
+      for (let i = 0; i < directory.length; i++) {
+        
+        // check if this entry haven't had a chair before
+        if (!directory[i].occupancyDate) {
+          filteredDirectory.push(directory[i]); // add it to the filtered directory
+          continue;                             // proceed to next item
+        }
+        
+        // check if this entry had a chair before as this is of this date
+        if (compareDate(directory[i].occupancyDate, selectedDate)) {
+          // if it was previously checked, remove it from there
+          notYetFiltered[directory[i].username] = false;
+          filteredDirectory.push(directory[i]); // add it to the filtered directory
+        }
+        // check if this entry had a  chair before and is NOT of this date
+        else
+          if (notYetFiltered[directory[i].username] === undefined) {// check if it is not yet in the previously checked table
+            notYetFiltered[directory[i].username] = directory[i]; // add it
+          }
+      }
+      
+      // deal with remaining company members who are not yet filtered
+      for (const item in notYetFiltered){
+        if (notYetFiltered[item]){
+          filteredDirectory.push(
+            {
+              username: notYetFiltered[item].username,
+              role: notYetFiltered[item].role,
+            }
+          )
         }
       }
-    )
-    setData(directory);
-  }
-
-  useEffect(() => {
-
+      setData(filteredDirectory);
+      setSeatsLoading(false);
+    }
+    
+    
     fetchData()
       .catch(e => {
         console.error(`Failed to fetch data ${e}`);
         throw new Error(e)
       })
-
+    
   }, [selectedDate]);
-
+  
   return (
     <div>
       <Grid container justify="space-between">
@@ -81,6 +110,19 @@ export const Directory = () => {
             title={"Everyone at The Software Company"}
             data={data}
             columns={columns}
+            localization={{
+              body: {
+                emptyDataSourceMessage: areSeatsLoading ? (
+                  <Typography variant="h6">
+                    Loading directory, please wait.
+                  </Typography>
+                ) : (
+                  <Typography variant="h6">
+                    There is no one in this company.
+                  </Typography>
+                ),
+              },
+            }}
           />
         </Paper>
       </Box>

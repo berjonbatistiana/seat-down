@@ -8,12 +8,14 @@ export const convertDate = (date) => {
   return [year, month, day].join("-");
 };
 
-export const isDatePast = (date) => {
-  // gets milliseconds of today and selected date without time and compares them.
-  const milliSelected = new Date(convertDate(date)).getTime();
-  const milliToday= new Date(new Date().toISOString().slice(0,10)).getTime();
+export const compareDate = (dateA, dateB) => {
+  // gets milliseconds of both dates.
+  dateA = typeof dateA ==='object'? convertDate(dateA):dateA
+  dateB = typeof dateB ==='object'? convertDate(dateB):dateB
+  const milliSDateA = new Date(dateA).getTime();
+  const milliDateB = new Date(dateB).getTime();
   
-  return milliSelected < milliToday;
+  return milliSDateA === milliDateB;
 }
 
 export const getLocalDate = () => {
