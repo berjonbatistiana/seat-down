@@ -12,7 +12,21 @@ const findUserByUsername = `
   WHERE username = ?;
   `;
 
-const getEmployeeDirectory = `
+const getUserInfoQuery = `
+  SELECT
+    users.id AS userId,
+    username,
+    roles.name AS roleName,
+    companies.name AS companyName
+  FROM users
+  JOIN roles
+  ON roles.id = users.roleId
+  JOIN companies
+  ON companies.id = users.companyId
+  WHERE users.id = ?;
+`
+
+const getEmployeeDirectoryQuery = `
   SELECT
     username,
     roles.name AS role,
@@ -53,7 +67,8 @@ module.exports = {
   findAllUsers,
   findUserByIdQuery,
   findUserByUsername,
-  getEmployeeDirectory,
+  getEmployeeDirectoryQuery,
+  getUserInfoQuery,
   insertUserQuery,
   updateUserPasswordQuery,
   deleteUserByIdQuery,

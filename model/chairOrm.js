@@ -4,6 +4,7 @@ const {
   findChairByIdQuery,
   insertChairQuery,
   deleteChairByIdQuery,
+  getChairLocationQuery,
   findAllAvailableChairsByCompanyQuery
 } = require("./chairQueries");
 const connection = require("../config/connection");
@@ -50,6 +51,15 @@ const deleteChairByIdFromDb = async (chairId) => {
   }
 };
 
+const getChairLocationFromDb = async (chairId) => {
+  try {
+    const [rows] = await connection.query(getChairLocationQuery, chairId)
+    return rows[0];
+  } catch (e) {
+    throw new Error(e)
+  }
+}
+
 const findAllAvailableChairsByCompanyFromDb = async (companyId, date) => {
   try {
     const [rows] = await connection.query(findAllAvailableChairsByCompanyQuery, [date, companyId]);
@@ -64,5 +74,6 @@ module.exports = {
   fetchChairByIdFromDb,
   insertChairToDb,
   deleteChairByIdFromDb,
+  getChairLocationFromDb,
   findAllAvailableChairsByCompanyFromDb,
 };

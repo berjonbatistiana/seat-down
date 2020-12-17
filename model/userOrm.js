@@ -4,7 +4,8 @@ const {
   findAllUsers,
   findUserByIdQuery,
   findUserByUsername,
-  getEmployeeDirectory,
+  getEmployeeDirectoryQuery,
+  getUserInfoQuery,
   insertUserQuery,
   updateUserPasswordQuery,
   deleteUserByIdQuery,
@@ -44,12 +45,21 @@ const fetchUserByIdFromDb = async (userId) => {
 
 const getEmployeeDirectoryFromDb = async (companyId) => {
   try {
-    const [rows] = await connection.query(getEmployeeDirectory, companyId);
+    const [rows] = await connection.query(getEmployeeDirectoryQuery, companyId);
     return rows;
   } catch (e){
     throw new Error(e)
   }
 };
+
+const getUserInfoFromDb = async (userId) => {
+  try {
+    const [rows] = await connection.query(getUserInfoQuery, userId);
+    return rows[0];
+  } catch (e) {
+    throw new Error(e);
+  }
+}
 
 const insertUserToDb = async (username, password, roleId, companyId) => {
   const salt = await bcrypt.genSalt(10);
@@ -116,6 +126,7 @@ module.exports = {
   fetchUserByIdFromDb,
   fetchUserByUsernameFromDb,
   getEmployeeDirectoryFromDb,
+  getUserInfoFromDb,
   insertUserToDb,
   updatePasswordFromDb,
   deleteUserByIdFromDb,
