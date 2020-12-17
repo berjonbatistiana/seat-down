@@ -1,18 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {Box, Grid, Paper, Typography} from "@material-ui/core";
 import {convertDate, getLocalDate} from "../../../utils/tools";
-import {findUserByUsername, getEmployeeDirectory} from "../../../utils"
+import {findCompanyById, findUserByUsername, getEmployeeDirectory} from "../../../utils"
 
 import {DatePicker, EmployeeGrid} from "../../../pages/common/";
 
 export const Directory = () => {
   const [data, setData] = useState([]);
-  const [selectedDate, setSelectedDate] = useState(convertDate(getLocalDate()));
-  
+  // const [selectedDate, setSelectedDate] = useState(new Date());
+  const [company, setCompany] = useState('');
+  const [selectedDate, setSelectedDate] = useState(getLocalDate());
   const handleDateChange = (date) => {
     setSelectedDate(convertDate(date));
   };
-  
+
   const columns = [
     {field: "username", title: "Name"},
     {field: "role", title: "Role"},
@@ -20,45 +21,45 @@ export const Directory = () => {
     {field: "floorName", title: "Floor"},
     {field: "buildingName", title: "Building"}
   ];
-  
-  
-  useEffect(() => {
-  
-    const fetchData = async () => {
-    
-      const {data: user} = await findUserByUsername(localStorage.getItem('user'));
-      
-      const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
-      directory.map(user => {
-          if (user.occupancyDate && user.occupancyDate !== selectedDate) {
-            user.chairName = '';
-            user.floorName = '';
-            user.buildingName = '';
-            return user;
-          } else {
-            return user;
-          }
+
+  const fetchData = async () => {
+
+    const {data: user} = await findUserByUsername(localStorage.getItem('user'));
+    const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
+    findCompanyById(user.companyId).then(({data}) => {
+      setCompany(data.name);
+    });
+    directory.map(user => {
+        if (user.occupancyDate && user.occupancyDate !== selectedDate) {
+          user.chairName = '';
+          user.floorName = '';
+          user.buildingName = '';
+          return user;
+        } else {
+          return user;
         }
-      )
-      setData(directory);
-    
-    }
-    
+      }
+    )
+    setData(directory);
+  }
+
+  useEffect(() => {
+
     fetchData()
       .catch(e => {
         console.error(`Failed to fetch data ${e}`);
         throw new Error(e)
       })
-    
+
   }, [selectedDate]);
-  
+
   return (
     <div>
       <Grid container justify="space-between">
         <Grid item>
           <Box mt={3} ml={3} mr={3}>
             <Typography variant="h5">
-              Everyone at The Software Company
+              Everyone at {company}
             </Typography>
             <Typography variant="body1">
               {`${data.length} ${data.length > 1 ? "people" : "person"}`}

@@ -35,7 +35,7 @@ export const About = () => {
         style={{ minHeight: "50vh", backgroundColor: "#f5f5f5"}}
         justify="center"
         alignItems="center"
-        
+
       >
         <Grid item xs={12} sm={6} lg={5}>
           <Box m={3} mt={6}>

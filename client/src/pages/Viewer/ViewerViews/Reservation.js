@@ -9,7 +9,8 @@ import {
   removeSeatDate,
   reserveSeat,
 } from "../../../utils";
-import {convertDate, getLocalDate} from "../../../utils/tools";
+import {convertDate, isDatePast, getLocalDate} from "../../../utils/tools";
+
 
 import MaterialTable, {MTableToolbar} from "material-table";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
@@ -78,16 +79,12 @@ export const Reservation = () => {
   const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState(getLocalDate());
-  
+
   const fetchData = useCallback(async () => {
     const date = convertDate(selectedDate);
-    
     setSeatsLoading(true);
-    
     const {data: user} = await findUserByUsername(localStorage.getItem('user'));
-    
     setUserId(user.id);
-    
     const {data: seat} = await doesUserHaveSeatDate({userId: user.id, date});
     setHasSeat(!!seat);
     if (!seat) {
@@ -96,32 +93,32 @@ export const Reservation = () => {
     } else {
       setAvailableSeats([]);
     }
-    
+
     setSeatsLoading(false);
   }, [selectedDate]);
-  
+
   useEffect(() => {
-    
+
     fetchData().catch((e) => {
       console.error(e);
     });
   }, [fetchData]);
-  
+
   const handleDateChange = (date) => {
     setSelectedDate(date);
   };
-  
+
   const handleReserveSeat = async (event, rowData) => {
     const {chairId} = rowData;
     const date = convertDate(selectedDate);
-    
+
     await reserveSeat({userId, chairId, date});
     setHasSeat(true);
     fetchData().catch((e) => {
       console.error(e);
     });
   };
-  
+
   const handleRemoveSeat = async () => {
     const date = convertDate(selectedDate);
     await removeSeatDate({date, userId});
@@ -129,7 +126,7 @@ export const Reservation = () => {
       console.error(e);
     });
   };
-  
+
   const renderTableTitle = () => {
     return (
       <Box pt={3}>

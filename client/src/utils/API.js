@@ -142,3 +142,51 @@ export const removeSeatDate = async ({ date, userId }) => {
     throw new Error(e);
   }
 };
+
+export const getCompanyAndUserData = async (username) => {
+  let roleName = "";
+  let companyName = "";
+  let userId = "";
+  let reservations = [];
+  await axios.get(`/api/users/username/${username}`).then(async ({ data }) => {
+    userId = data.id;
+    await axios
+      .all([
+        axios.get(`/api/roles/${data.roleId}`),
+        axios.get(`/api/company/${data.companyId}`),
+        axios.get(`/api/occupy/employee/${data.id}`)
+      ])
+      .then((res) => {
+        roleName = res[0].data.name;
+        companyName = res[1].data.name;
+        reservations.push(res[2].data);
+      });
+  });
+  return { userId, roleName, companyName, reservations };
+};
+
+export const getReservationData = async (chairId) => {
+  let building = "";
+  let floor = "";
+  let desk = "";
+  let seat = "";
+  await axios
+    .get(`/api/chairs/${chairId}`)
+    .then(async ({ data }) => {
+      seat = data.name;
+      await axios.get(`/api/desks/${data.deskId}`).then(async ({ data }) => {
+        desk = data.name;
+        await axios
+          .get(`/api/floor/${data.floorId}`)
+          .then(async ({ data }) => {
+            floor = data.name;
+            await axios
+              .get(`/api/building/${data.buildingId}`)
+              .then(({ data }) => {
+                building = data.name;
+              });
+          });
+      });
+    });
+  return { building, floor, desk, seat };
+};

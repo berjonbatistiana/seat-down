@@ -7,7 +7,7 @@ const findUserByIdQuery = `
   WHERE id = ?;
   `;
 const findUserByUsername = `
-  SELECT id, username, password, companyId
+  SELECT id, username, password, companyId, roleId
   FROM users
   WHERE username = ?;
   `;
@@ -38,7 +38,7 @@ const getEmployeeDirectoryQuery = `
   JOIN roles
   ON users.roleId = roles.id
   LEFT JOIN occupancy
-  ON users.id = occupancy.userId
+  ON users.id = occupancy.userId 
   LEFT JOIN chairs
   ON occupancy.chairId = chairs.id
   LEFT JOIN desks

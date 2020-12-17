@@ -14,8 +14,8 @@ function TabPanel(props) {
     <div
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
+      id={`scrollable-auto-tabpanel-${index}`}
+      aria-labelledby={`scrollable-auto-tab-${index}`}
       {...other}
     >
       {value === index && (
@@ -35,8 +35,8 @@ TabPanel.propTypes = {
 
 function a11yProps(index) {
   return {
-    id: `simple-tab-${index}`,
-    'aria-controls': `simple-tabpanel-${index}`,
+    id: `scrollable-auto-tab-${index}`,
+    'aria-controls': `scrollable-auto-tabpanel-${index}`,
   };
 }
 
@@ -78,7 +78,7 @@ export const UserNavbar = () => {
   return token && (location.pathname === '/dashboard' || location.pathname === '/reserve' || location.pathname === '/directory') ? (
     <div>
       <AppBar position="static" color="transparent" elevation={0}>
-        <AntTabs value={value} onChange={handleChange}>
+        <AntTabs variant="scrollable" scrollButtons="auto" value={value} onChange={handleChange}>
           <AntTab
             style={{color: location.pathname === '/dashboard' ? '#5fc5d1' : ''}}
             component={RouteLink} to="/dashboard" label={<div><PermContactCalendarIcon fontSize="small" style={{verticalAlign: 'middle'}}/> {user}'s Calendar</div>} {...a11yProps(0)}

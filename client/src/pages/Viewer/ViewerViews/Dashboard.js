@@ -1,150 +1,137 @@
-import React, {useEffect, useState} from "react";
-import {Badge, Box, Grid} from "@material-ui/core";
-import {DatePicker} from "@material-ui/pickers";
-import {findUserByUsername, getAllEmployeeSeats, getChairLocation, getUserInfoById} from "../../../utils";
-import {SeatingDetail} from "../../common/components";
-import {convertDate} from "../../../utils/tools";
+import React from "react";
+import { DatePicker } from "@material-ui/pickers";
+import { Grid, Box, Typography, Badge } from "@material-ui/core";
+import { convertDate } from "../../../utils/tools";
+
+import { getReservationData, getCompanyAndUserData } from "../../../utils"
+
+import { SeatingDetail } from '../../common/components';
 
 const DATE_PATTERN = /^(.*?)-(.*?)-(.*?)$/;
 
-export function Dashboard() {
-  const [selectedDate, setSelectedDate] = useState(convertDate(new Date()));
-  const [unformattedDate, setUnformattedDate] = useState(new Date());
-  const [userId, setUserId] = useState("");
-  const [reservations, setReservations] = useState([]);
-  const [currentOccupancy, setcurrentOccupancy] = useState({});
-  const [currentData, setCurrentData] = useState({});
-  
-  const parseDate = (date) => {
-    const match = date.match(DATE_PATTERN);
-    if (!match) {
-      return;
-    }
-    return new Date(match[1], match[2] - 1, match[3]);
-  };
-  
-  useEffect(() => {
-    let found = false;
-    
+const parseDate = (date) => {
+  const match = date.match(DATE_PATTERN);
+  if (!match) {
+    return;
+  }
+  return new Date(match[1], match[2] - 1, match[3]);
+};
+
+export class Dashboard extends React.Component {
+  state = {
+    name: '',
+    userId: '',
+    role: '',
+    company: '',
+    seat: '',
+    building: '',
+    floor: '',
+    desk: '',
+    chairId: '',
+    currentOccupancy: {},
+    selectedDate: new Date(),
+    display: false,
+    days: [],
+  }
+
+  componentDidMount() {
+    const today = new Date();
+    this.setState({selectedDate: today});
     const user = localStorage.getItem("user");
-    findUserByUsername(user)
-      .then(({data}) => {
-        setUserId(data.id);
-        
-        getAllEmployeeSeats(data.id)
-          .then(({data}) => {
-            setReservations(data);
-            if (!!data.length)
-              data.forEach(seat => {
-                if (seat.occupancyDate === selectedDate) {
-                  setcurrentOccupancy(seat);
-                  found = true;
-                }
-              });
-            if (!found) {
-              setcurrentOccupancy({});
-            }
-          })
+    getCompanyAndUserData(user).then(res => {
+      this.setState({
+        name: user,
+        role: res.roleName,
+        company: res.companyName,
+        userId: res.userId,
+        reservations: res.reservations[0]
       })
-      .catch(e => {
-        console.error(e)
+      this.state.reservations.forEach(reservation => {
+        if (reservation.occupancyDate === convertDate(this.state.selectedDate)) {
+          this.setState({currentOccupancy: reservation, chairId: reservation.chairId, display: true});
+          getReservationData(reservation.chairId).then(({building, desk, floor, seat}) => {
+            this.setState({building, desk, floor, seat})
+          });
+        }
+      });
+    })
+  }
+
+  handleDateChange = (date) => {
+    this.setState({selectedDate: date});
+    const user = localStorage.getItem("user");
+    getCompanyAndUserData(user).then(res => {
+      this.setState({
+        role: res.roleName,
+        company: res.companyName,
+        userId: res.userId,
+        reservations: res.reservations[0]
       })
-  }, [selectedDate]);
-  
-  useEffect(() => {
-    
-    if (!!userId)
-      getAllEmployeeSeats(userId)
-        .then(({data}) => {
-          setReservations(data);
-        })
-        .catch(e => {
-          console.error(e)
-        });
-  }, [userId]);
-  
-  useEffect(() => {
-  
-    const getReservationData = async () => {
-      if (!!userId) {
-        const {
-          data: {
-            buildingName: building,
-            floorName: floor,
-            deskName: desk,
-            chairName: seat
-          }
-        } = await getChairLocation(currentOccupancy.chairId)
-        const {
-          data: {
-            roleName,
-            companyName
-          }
-        } = await getUserInfoById(userId)
-      
-        setCurrentData({roleName, companyName, building, floor, desk, seat});
+      for (let i = 0; i < this.state.reservations.length; i++) {
+        if (this.state.reservations[i].occupancyDate === convertDate(this.state.selectedDate)) {
+          this.setState({currentOccupancy: this.state.reservations[i], chairId: this.state.reservations[i].chairId, display: true});
+          getReservationData(this.state.reservations[i].chairId).then(({building, desk, floor, seat}) => {
+            this.setState({building, desk, floor, seat});
+          });
+          break;
+        } else {
+          this.setState({currentOccupancy: {}, display: false});
+        }
       }
-    };
-    
-    getReservationData()
-      .catch(e => {
-        console.error(e);
-      })
-  }, [currentOccupancy, userId]);
-  
-  const handleDateChange = (date) => {
-    setSelectedDate(convertDate(date));
-    setUnformattedDate(date);
-  };
-  return (
-    <Grid container>
-      <Grid item>
-        <Box mt={3} ml={3} mr={3}>
-          <DatePicker
-            autoOk
-            orientation="landscape"
-            variant="static"
-            openTo="date"
-            value={unformattedDate}
-            onChange={handleDateChange}
-            renderDay={(
-              day,
-              _selectedDate,
-              _isInCurrentMonth,
-              dayComponent
-            ) => {
-              let badge = false;
-              if (reservations.length) {
-                reservations.forEach((reservation) => {
-                  const date = parseDate(reservation.occupancyDate);
-                  if (date.valueOf() === day.valueOf()) {
-                    badge = true;
-                  }
-                });
-              }
-              return (
-                <Badge
-                  variant={badge ? "dot" : undefined}
-                  color={badge ? "secondary" : undefined}
-                  badgeContent={badge ? "" : undefined}
-                  overlap="circle"
-                >
-                  {dayComponent}
-                </Badge>
-              );
-            }}
-          />
-        </Box>
+    })
+  }
+
+  render () {
+    return (
+      <Grid container>
+        <Grid item>
+          <Box mt={3} ml={3} mr={3}>
+            <DatePicker
+              autoOk
+              orientation="landscape"
+              variant="static"
+              openTo="date"
+              value={this.state.selectedDate}
+              onChange={this.handleDateChange}
+              renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => {
+                let badge = false;
+                if (this.state.reservations) {
+                  this.state.reservations.forEach((reservation) => {
+                    const date = parseDate(reservation.occupancyDate);
+                    if (date.valueOf() === day.valueOf()) {
+                      badge = true;
+                    }
+                  });
+                }
+                return (
+                  <Badge
+                    variant={badge ? "dot" : undefined}
+                    color={badge ? "secondary" : undefined}
+                    badgeContent={badge ? "" : undefined}
+                    overlap="circle"
+                  >
+                    {dayComponent}
+                  </Badge>
+                );
+              }}
+            />
+          </Box>
+        </Grid>
+        <Grid item>
+          <Box mt={3} ml={3} mr={3}>
+            {this.state.display ? <SeatingDetail
+              initial={this.state.name[0]}
+              name={this.state.name}
+              role={this.state.role}
+              company={this.state.company}
+              floor={this.state.floor}
+              desk={this.state.desk}
+              seat={this.state.seat}
+              building={this.state.building}
+            /> : <Typography variant="h6">No reservation on this date</Typography>}
+          </Box>
+        </Grid>
       </Grid>
-      <Grid item>
-        <Box mt={3} ml={3} mr={3}>
-          {Object.keys(currentOccupancy).length !== 0 ? (
-            <SeatingDetail reservationData={currentData}/>
-          ) : (
-            <h2>No reservation on this date</h2>
-          )}
-        </Box>
-      </Grid>
-    </Grid>
-  );
+    );
+  }
 }
