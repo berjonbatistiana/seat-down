@@ -1,11 +1,11 @@
 import React from "react";
 import { DatePicker } from "@material-ui/pickers";
 import { Grid, Box, Typography, Badge } from "@material-ui/core";
+
 import { convertDate } from "../../../utils/tools";
-
 import { getReservationData, getCompanyAndUserData } from "../../../utils"
-
-import { SeatingDetail } from '../../common/components';
+import { SeatingDetail, UpcomingListItem } from '../../common/components';
+import parse from "date-fns/parse";
 
 const DATE_PATTERN = /^(.*?)-(.*?)-(.*?)$/;
 
@@ -29,6 +29,7 @@ export class Dashboard extends React.Component {
     desk: '',
     chairId: '',
     currentOccupancy: {},
+    upcoming: [],
     selectedDate: new Date(),
     display: false,
     days: [],
@@ -46,7 +47,12 @@ export class Dashboard extends React.Component {
         userId: res.userId,
         reservations: res.reservations[0]
       })
+      let today = convertDate(new Date());
+      let upcomingArr = [];
       this.state.reservations.forEach(reservation => {
+        if (reservation.occupancyDate > today) {
+          upcomingArr.push(reservation.occupancyDate);
+        }
         if (reservation.occupancyDate === convertDate(this.state.selectedDate)) {
           this.setState({currentOccupancy: reservation, chairId: reservation.chairId, display: true});
           getReservationData(reservation.chairId).then(({building, desk, floor, seat}) => {
@@ -54,6 +60,7 @@ export class Dashboard extends React.Component {
           });
         }
       });
+      this.setState({upcoming: upcomingArr.sort()})
     })
   }
 
@@ -84,6 +91,17 @@ export class Dashboard extends React.Component {
   render () {
     return (
       <Grid container>
+        <Grid item>
+          <Box mt={3} ml={3} mr={3}>
+            {this.state.upcoming.map(date => {
+              const parsedDate = parse(date, 'yyyy-MM-dd', new Date());
+              return (
+                <UpcomingListItem date={date} onClick={() => this.handleDateChange(parsedDate)} />
+              )
+            })
+            }
+          </Box>
+        </Grid>
         <Grid item>
           <Box mt={3} ml={3} mr={3}>
             <DatePicker

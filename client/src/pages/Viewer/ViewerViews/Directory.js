@@ -17,7 +17,7 @@ export const Directory = () => {
   const columns = [
     {field: "username", title: "Name"},
     {field: "role", title: "Role"},
-    {field: "chairName", title: "Assigned Chair"},
+    {field: "chairName", title: "Assigned Chair", defaultSort: "desc"},
     {field: "floorName", title: "Floor"},
     {field: "buildingName", title: "Building"}
   ];
