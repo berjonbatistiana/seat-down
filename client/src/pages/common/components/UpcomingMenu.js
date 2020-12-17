@@ -17,9 +17,7 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box>
-          <Typography>{children}</Typography>
-        </Box>
+          {children}
       )}
     </div>
   );
@@ -36,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     backgroundColor: theme.palette.background.paper,
     display: 'flex',
-    height: '88vh',
+    height: '600px',
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
@@ -54,7 +52,7 @@ const AntTabs = withStyles({
 
 export function UpcomingMenu(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(1);
+  const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -85,9 +83,7 @@ export function UpcomingMenu(props) {
         </Box>
         {props.dates}
       </AntTabs>
-      <TabPanel>
         {props.content}
-      </TabPanel>
     </div>
   );
 }
