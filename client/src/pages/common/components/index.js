@@ -7,5 +7,5 @@ export * from "./SeatingDetail";
 export * from "./SelectDropdown";
 export * from "./SignCard";
 export * from "./TextFieldInput";
-export * from "./UpcomingListItem";
+export * from "./UpcomingMenu"
 export * from "./UserNavbar";

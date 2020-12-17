@@ -4,8 +4,10 @@ import { Grid, Box, Typography, Badge } from "@material-ui/core";
 
 import { convertDate } from "../../../utils/tools";
 import { getReservationData, getCompanyAndUserData } from "../../../utils"
-import { SeatingDetail, UpcomingListItem } from '../../common/components';
+import {SeatingDetail, UpcomingMenu } from '../../common/components';
 import parse from "date-fns/parse";
+import Tab from "@material-ui/core/Tab";
+import {withStyles} from "@material-ui/core/styles";
 
 const DATE_PATTERN = /^(.*?)-(.*?)-(.*?)$/;
 
@@ -16,6 +18,24 @@ const parseDate = (date) => {
   }
   return new Date(match[1], match[2] - 1, match[3]);
 };
+
+function a11yProps(index) {
+  return {
+    id: `vertical-tab-${index}`,
+    'aria-controls': `vertical-tabpanel-${index}`,
+  };
+}
+
+const AntTab = withStyles((theme) => ({
+  root: {
+    textTransform: 'none',
+    minWidth: 70,
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+}))((props) => <Tab disableRipple {...props} />);
+
 
 export class Dashboard extends React.Component {
   state = {
@@ -90,66 +110,63 @@ export class Dashboard extends React.Component {
 
   render () {
     return (
-      <Grid container>
-        <Grid item>
-          <Box mt={3} ml={3} mr={3}>
-            {this.state.upcoming.map(date => {
-              const parsedDate = parse(date, 'yyyy-MM-dd', new Date());
-              return (
-                <UpcomingListItem date={date} onClick={() => this.handleDateChange(parsedDate)} />
-              )
-            })
-            }
-          </Box>
-        </Grid>
-        <Grid item>
-          <Box mt={3} ml={3} mr={3}>
-            <DatePicker
-              autoOk
-              orientation="landscape"
-              variant="static"
-              openTo="date"
-              value={this.state.selectedDate}
-              onChange={this.handleDateChange}
-              renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => {
-                let badge = false;
-                if (this.state.reservations) {
-                  this.state.reservations.forEach((reservation) => {
-                    const date = parseDate(reservation.occupancyDate);
-                    if (date.valueOf() === day.valueOf()) {
-                      badge = true;
-                    }
-                  });
-                }
-                return (
-                  <Badge
-                    variant={badge ? "dot" : undefined}
-                    color={badge ? "secondary" : undefined}
-                    badgeContent={badge ? "" : undefined}
-                    overlap="circle"
-                  >
-                    {dayComponent}
-                  </Badge>
-                );
-              }}
-            />
-          </Box>
-        </Grid>
-        <Grid item>
-          <Box mt={3} ml={3} mr={3}>
-            {this.state.display ? <SeatingDetail
-              initial={this.state.name[0]}
-              name={this.state.name}
-              role={this.state.role}
-              company={this.state.company}
-              floor={this.state.floor}
-              desk={this.state.desk}
-              seat={this.state.seat}
-              building={this.state.building}
-            /> : <Typography variant="h6">No reservation on this date</Typography>}
-          </Box>
-        </Grid>
-      </Grid>
+      <UpcomingMenu
+        dates={this.state.upcoming.map(date => {
+          const parsedDate = parse(date, 'yyyy-MM-dd', new Date());
+          return (
+            <AntTab label={date} {...a11yProps(0)} onClick={() => this.handleDateChange(parsedDate)} />
+          )
+        })}
+        content={(<Grid container>
+          <Grid item>
+            <Box mt={3} ml={3} mr={3}>
+              <DatePicker
+                autoOk
+                orientation="landscape"
+                variant="static"
+                openTo="date"
+                value={this.state.selectedDate}
+                onChange={this.handleDateChange}
+                renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => {
+                  let badge = false;
+                  if (this.state.reservations) {
+                    this.state.reservations.forEach((reservation) => {
+                      const date = parseDate(reservation.occupancyDate);
+                      if (date.valueOf() === day.valueOf()) {
+                        badge = true;
+                      }
+                    });
+                  }
+                  return (
+                    <Badge
+                      variant={badge ? "dot" : undefined}
+                      color={badge ? "error" : undefined}
+                      badgeContent={badge ? "" : undefined}
+                      overlap="circle"
+                    >
+                      {dayComponent}
+                    </Badge>
+                  );
+                }}
+              />
+            </Box>
+          </Grid>
+          <Grid item>
+            <Box mt={3} ml={3} mr={3}>
+              {this.state.display ? <SeatingDetail
+                initial={this.state.name[0]}
+                name={this.state.name}
+                role={this.state.role}
+                company={this.state.company}
+                floor={this.state.floor}
+                desk={this.state.desk}
+                seat={this.state.seat}
+                building={this.state.building}
+              /> : <Typography variant="h6">No reservation on this date</Typography>}
+            </Box>
+          </Grid>
+        </Grid>)}
+      />
     );
   }
 }
