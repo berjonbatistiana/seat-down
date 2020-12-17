@@ -9,7 +9,7 @@ import {
   removeSeatDate,
   findUserByUsername,
 } from "../../../utils";
-import {convertDate, isDatePast} from "../../../utils/tools";
+import {convertDate, isDatePast, getLocalDate} from "../../../utils/tools";
 
 import MaterialTable, { MTableToolbar } from "material-table";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
@@ -77,9 +77,8 @@ export const Reservation = () => {
   const [hasSeat, setHasSeat] = React.useState(false);
   const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
-  // const [selectedDate, setSelectedDate] = React.useState(getLocalDate());
-  const [selectedDate, setSelectedDate] = useState(new Date());
-
+  const [selectedDate, setSelectedDate] = React.useState(getLocalDate());
+  // const [selectedDate, setSelectedDate] = useState(new Date());
 
   async function fetchData() {
     const date = convertDate(selectedDate);
