@@ -9,7 +9,7 @@ import {
   removeSeatDate,
   reserveSeat,
 } from "../../../utils";
-import {convertDate, isDatePast, getLocalDate} from "../../../utils/tools";
+import {convertDate, getLocalDate} from "../../../utils/tools";
 
 
 import MaterialTable, {MTableToolbar} from "material-table";
