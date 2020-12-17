@@ -21,26 +21,28 @@ export const Directory = () => {
     {field: "buildingName", title: "Building"}
   ];
   
-  const fetchData = async () => {
-    
-    const {data: user} = await findUserByUsername(localStorage.getItem('user'));
-    const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
-    directory.map(user => {
-        if (user.occupancyDate && user.occupancyDate !== selectedDate) {
-          user.chairName = '';
-          user.floorName = '';
-          user.buildingName = '';
-          return user;
-        } else {
-          return user;
-        }
-      }
-    )
-    setData(directory);
-    
-  }
   
   useEffect(() => {
+  
+    const fetchData = async () => {
+    
+      const {data: user} = await findUserByUsername(localStorage.getItem('user'));
+      
+      const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
+      directory.map(user => {
+          if (user.occupancyDate && user.occupancyDate !== selectedDate) {
+            user.chairName = '';
+            user.floorName = '';
+            user.buildingName = '';
+            return user;
+          } else {
+            return user;
+          }
+        }
+      )
+      setData(directory);
+    
+    }
     
     fetchData()
       .catch(e => {

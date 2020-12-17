@@ -3,6 +3,7 @@ const {
   fetchChairByIdFromDb,
   insertChairToDb,
   deleteChairByIdFromDb,
+  getChairLocationFromDb,
   findAllAvailableChairsByCompanyFromDb,
 } = require("../model/chairOrm");
 
@@ -23,12 +24,21 @@ module.exports = {
       res.status(400).json(e);
     }
   },
+  getChairLocationApi: async (req, res) => {
+    const {chairId} = req.params;
+    try {
+      res.json(await getChairLocationFromDb(chairId));
+    } catch (e){
+      console.error(`DB Error: Failed to get chair location by id: ${chairId}\n ${e}`)
+      res.status(400).json(e);
+    }
+  },
   getAllAvailableChairByCompanyIdApi: async (req, res) => {
     const { companyId, date } = req.params;
     try{
       res.json(await findAllAvailableChairsByCompanyFromDb(companyId, date))
     } catch (e){
-      console.log(`DB Error: Failed to find all available chairs by company id: ${companyId} on: ${date} \n ${e}`);
+      console.error(`DB Error: Failed to find all available chairs by company id: ${companyId} on: ${date} \n ${e}`);
       res.status(400).json(e);
     }
   },
