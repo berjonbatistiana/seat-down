@@ -142,7 +142,6 @@ export const Reservation = () => {
           <DatePicker
             selectedDate={selectedDate}
             handleDateChange={handleDateChange}
-            fullWidth={false}
             disablePast={true}
           />
         </Box>

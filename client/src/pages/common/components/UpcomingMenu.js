@@ -32,7 +32,6 @@ TabPanel.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    backgroundColor: theme.palette.background.paper,
     display: 'flex',
     height: '600px',
   },
@@ -50,7 +49,7 @@ const AntTabs = withStyles({
   },
 })(Tabs);
 
-export function UpcomingMenu(props) {
+export const UpcomingMenu = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
 

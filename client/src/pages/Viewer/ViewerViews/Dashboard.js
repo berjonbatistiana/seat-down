@@ -1,15 +1,12 @@
 import React from "react";
-import { DatePicker, Calendar } from "@material-ui/pickers";
-import { Grid, Box, Typography, Badge, Paper } from "@material-ui/core";
+import { Calendar } from "@material-ui/pickers";
+import {Grid, Box, Badge, Paper, Tab, Typography, Avatar, } from "@material-ui/core";
+import {withStyles} from "@material-ui/core/styles";
+import parse from "date-fns/parse";
 
 import { convertDate } from "../../../utils/tools";
 import { getReservationData, getCompanyAndUserData } from "../../../utils"
 import {SeatingDetail, UpcomingMenu } from '../../common/components';
-import parse from "date-fns/parse";
-import Tab from "@material-ui/core/Tab";
-import {withStyles} from "@material-ui/core/styles";
-import CardHeader from "@material-ui/core/CardHeader";
-import Avatar from "@material-ui/core/Avatar";
 
 const DATE_PATTERN = /^(.*?)-(.*?)-(.*?)$/;
 
@@ -54,7 +51,8 @@ export class Dashboard extends React.Component {
     upcoming: [],
     selectedDate: new Date(),
     display: false,
-    days: [],
+    days: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+    months: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
   }
 
   componentDidMount() {
@@ -121,58 +119,98 @@ export class Dashboard extends React.Component {
           )
         })}
         content={(
-          <Grid container>
+          <Grid container justify="center">
             <Grid item xs={12}>
-              <Box m={3}>
-                {this.state.display ? <SeatingDetail
-                  initial={this.state.name[0]}
-                  name={this.state.name}
-                  role={this.state.role}
-                  company={this.state.company}
-                  floor={this.state.floor}
-                  desk={this.state.desk}
-                  seat={this.state.seat}
-                  building={this.state.building}
-                /> :
-                  <SeatingDetail
-                    initial={this.state.name[0]}
-                    name={this.state.name}
-                    role={this.state.role}
-                    company={this.state.company}
-                    floor="No reservation on this date"
-                    desk="No reservation on this date"
-                    seat="No reservation on this date"
-                    building="No reservation on this date"
-                  />}
-                <DatePicker
-                  autoOk
-                  orientation="portrait"
-                  variant="static"
-                  openTo="date"
-                  value={this.state.selectedDate}
-                  onChange={this.handleDateChange}
-                  renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => {
-                    let badge = false;
-                    if (this.state.reservations) {
-                      this.state.reservations.forEach((reservation) => {
-                        const date = parseDate(reservation.occupancyDate);
-                        if (date.valueOf() === day.valueOf()) {
-                          badge = true;
-                        }
-                      });
-                    }
-                    return (
-                      <Badge
-                        variant={badge ? "dot" : undefined}
-                        color={badge ? "secondary" : undefined}
-                        badgeContent={badge ? "" : undefined}
-                        overlap="circle"
-                      >
-                        {dayComponent}
-                      </Badge>
-                    );
-                  }}
-                />
+              <Box p={2} style={{backgroundColor: "#6bd5e1"}}>
+                <Grid container justify="space-between" alignItems="center">
+                  <Grid item>
+                    <Box>
+                      <Grid container alignItems="center" spacing={2}>
+                        <Grid item>
+                          <Avatar  style={{backgroundColor: "#fd8369"}}>{this.state.name[0]}</Avatar>
+                        </Grid>
+                        <Grid item>
+                          <Typography>
+                            {this.state.name}
+                          </Typography>
+                          <Typography variant="body2" color="textSecondary">
+                            {this.state.role}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Box>
+                  </Grid>
+                  <Grid item style={{textAlign: "right"}}>
+                    <Typography color="textSecondary">
+                      {`${this.state.selectedDate.getFullYear()}`}
+                    </Typography>
+                    <Typography variant="h4">
+                      {`${this.state.days[this.state.selectedDate.getDay()]}, ${this.state.months[this.state.selectedDate.getMonth()]} ${this.state.selectedDate.getDate()}`}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Box>
+              <Box mt={3}>
+                <Grid container justify="center">
+                  <Grid item>
+                    <Box m={3}>
+                      <Calendar
+                        autoOk
+                        orientation="portrait"
+                        variant="static"
+                        openTo="date"
+                        date={this.state.selectedDate}
+                        onChange={this.handleDateChange}
+                        renderDay={(day, selectedDate, isInCurrentMonth, dayComponent) => {
+                          let badge = false;
+                          if (this.state.reservations) {
+                            this.state.reservations.forEach((reservation) => {
+                              const date = parseDate(reservation.occupancyDate);
+                              if (date.valueOf() === day.valueOf()) {
+                                badge = true;
+                              }
+                            });
+                          }
+                          return (
+                            <Badge
+                              variant={badge ? "dot" : undefined}
+                              color={badge ? "secondary" : undefined}
+                              badgeContent={badge ? "" : undefined}
+                              overlap="circle"
+                            >
+                              {dayComponent}
+                            </Badge>
+                          );
+                        }}
+                      />
+                    </Box>
+                  </Grid>
+                  <Grid item>
+                    <Box m={3}>
+                      {this.state.display ? <SeatingDetail
+                          initial={this.state.name[0]}
+                          name={this.state.name}
+                          role={this.state.role}
+                          company={this.state.company}
+                          floor={this.state.floor}
+                          desk={this.state.desk}
+                          seat={this.state.seat}
+                          building={this.state.building}
+                        /> :
+                        <SeatingDetail
+                          initial={this.state.name[0]}
+                          name={this.state.name}
+                          role={this.state.role}
+                          company={this.state.company}
+                          floor={`No reservation on this date`}
+                          desk="No reservation on this date"
+                          seat="No reservation on this date"
+                          building="No reservation on this date"
+                        />
+                      }
+                    </Box>
+                  </Grid>
+                </Grid>
               </Box>
             </Grid>
           </Grid>)}
