@@ -201,8 +201,8 @@ async function seed() {
   const AB31 = await insertOccupancyToDb(d2, AB3Chair1.id, regUserA8.id);
   const BA11 = await insertOccupancyToDb(d1, BA1Chair1.id, regUserB1.id);
   const BA12 = await insertOccupancyToDb(d2, BA1Chair2.id, regUserB2.id);
-  const BA13 = await insertOccupancyToDb(d1, BA1Chair3.id, regUserB3.id);
-  const BA21 = await insertOccupancyToDb(d2, BA2Chair1.id, regUserB4.id);
+  // const BA13 = await insertOccupancyToDb(d1, BA1Chair3.id, regUserB3.id);
+  // const BA21 = await insertOccupancyToDb(d2, BA2Chair1.id, regUserB4.id);
   const BA22 = await insertOccupancyToDb(d1, BA2Chair2.id, regUserB5.id);
   console.log("done");
   return;

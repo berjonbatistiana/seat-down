@@ -9,7 +9,7 @@ import {
   removeSeatDate,
   reserveSeat,
 } from "../../../utils";
-import {convertDate, isDatePast, getLocalDate} from "../../../utils/tools";
+import {convertDate, getLocalDate} from "../../../utils/tools";
 
 
 import MaterialTable, {MTableToolbar} from "material-table";
@@ -202,7 +202,7 @@ export const Reservation = () => {
                 </Typography>
               ) : (
                 <Typography variant="h6">
-                  Sorry, You already have a seat.
+                  You already have a seat.
                   <Button
                     variant="contained"
                     style={{

@@ -28,17 +28,18 @@ export const EmployeeGrid = (props) => {
 
   return (
     <MaterialTable
+      {...props}
       icons={tableIcons}
-      title={props.title}
-      data={props.data}
-      columns={props.columns}
+      // title={props.title}
+      // data={props.data}
+      // columns={props.columns}
       options={{
         showTitle: false,
         toolbarButtonAlignment: 'left',
         doubleHorizontalScroll: true,
         detailPanelType: 'single',
       }}
-      editable={props.editable}
+      // editable={props.editable}
       style={{boxShadow: 'none',}}
     />
   );
