@@ -66,42 +66,11 @@ export const SeatingTable = (props) => {
     },
   ];
   
-  const renderTableTitle = () => {
-    return (
-      <Box pt={3}>
-        <Typography variant="h5">
-          <ScheduleIcon
-            color="secondary"
-            fontSize="large"
-            style={{verticalAlign: "middle"}}
-          />{" "}
-          Date
-        </Typography>
-        <Box ml={3} mr={3} mb={4}>
-          <DatePicker
-            selectedDate={props.selectedDate}
-            handleDateChange={props.handleDateChange}
-            fullWidth={false}
-            disablePast={true}
-          />
-        </Box>
-        <Typography variant="h5">
-          <RoomIcon
-            color="secondary"
-            fontSize="large"
-            style={{verticalAlign: "middle"}}
-          />{" "}
-          Location
-        </Typography>
-      </Box>
-    );
-  };
-  
   return (
     <MaterialTable
       pr={3}
       icons={tableIcons}
-      title={renderTableTitle()}
+      title={props.renderTableTitle()}
       columns={columns}
       data={props.availableSeats}
       actions={
