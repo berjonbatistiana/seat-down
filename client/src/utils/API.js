@@ -222,3 +222,15 @@ export const getReservationData = async (chairId) => {
   });
   return { building, floor, desk, seat };
 };
+
+export const changePassword = async (formData) => {
+  try {
+    // needs username, password, newpassword
+    return await axios.patch(`/api/users/changePassword`);
+  } catch (e) {
+    console.error(
+      `API Error: Could not change password for ${formData.username}.`
+    );
+    throw new Error(e);
+  }
+}

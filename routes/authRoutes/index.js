@@ -6,8 +6,8 @@ const {
 } = require("../../controllers/authController");
 const signInMiddleware = require("../../middlewares/signInMiddleware");
 
+// Matches /auth
 router.post("/signin", signInMiddleware, signInApi);
 router.post("/signup", signUpApi);
-router.patch("/changePassword", signInMiddleware, changePasswordApi);
 
 module.exports = router;
