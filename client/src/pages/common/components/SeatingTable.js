@@ -19,10 +19,7 @@ import {
   ViewColumn,
 } from "@material-ui/icons";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
-import { Box, Button, Typography } from "@material-ui/core";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-import { DatePicker } from "./DatePicker";
-import RoomIcon from "@material-ui/icons/Room";
+import { Button, Typography } from "@material-ui/core";
 
 export const SeatingTable = (props) => {
   const tableIcons = {
