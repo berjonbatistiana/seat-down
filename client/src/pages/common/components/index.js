@@ -9,3 +9,6 @@ export * from "./SignCard";
 export * from "./TextFieldInput";
 export * from "./UpcomingMenu"
 export * from "./UserNavbar";
+export * from "./AdderModal";
+export * from "./Footer";
+export * from "./SeatingTable";
