@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const {insertUserToDb, updatePasswordFromDb} = require("../model/userOrm");
+const { insertUserToDb, updatePasswordFromDb } = require("../model/userOrm");
 
 const tokenForUser = (id) => {
   return jwt.sign(
@@ -17,7 +17,7 @@ module.exports = {
     console.log(req.user.id);
   },
   signUpApi: async (req, res) => {
-    const {username, password, roleId, companyId} = req.body;
+    const { username, password, roleId, companyId } = req.body;
     try {
       const user = await insertUserToDb(username, password, roleId, companyId);
       res.json(tokenForUser(user.id));
@@ -26,9 +26,13 @@ module.exports = {
     }
   },
   changePasswordApi: async (req, res) => {
-    const {password, newPassword} = req.body;
+    const { password, newPassword } = req.body;
     try {
-      const user = await updatePasswordFromDb(req.user.id, password, newPassword);
+      const user = await updatePasswordFromDb(
+        req.user.id,
+        password,
+        newPassword
+      );
       res.json(user);
     } catch (e) {
       res.status(400).json(e);

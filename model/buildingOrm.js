@@ -1,4 +1,4 @@
-const uniqid = require('uniqid');
+const uniqid = require("uniqid");
 const {
   findAllBuildings,
   findBuildingByIdQuery,
@@ -29,10 +29,7 @@ const insertBuildingToDb = async (name, companyId) => {
   try {
     const id = uniqid();
     await connection.query(insertBuildingQuery, [id, name, companyId]);
-    const [buildingResult] = await connection.query(
-      findBuildingByIdQuery,
-      id
-    );
+    const [buildingResult] = await connection.query(findBuildingByIdQuery, id);
     return buildingResult[0];
   } catch (e) {
     throw new Error(e);

@@ -1,4 +1,4 @@
-const uniqid = require('uniqid');
+const uniqid = require("uniqid");
 const {
   findAllRolesQuery,
   findRoleByIdQuery,
@@ -28,14 +28,8 @@ const findRoleByIdFromDb = async (roleId) => {
 const insertRoleToDb = async (name) => {
   try {
     const id = uniqid();
-    await connection.query(insertRoleQuery, [
-      id,
-      name,
-    ]);
-    const [row] = await connection.query(
-      findRoleByIdQuery,
-      id
-    );
+    await connection.query(insertRoleQuery, [id, name]);
+    const [row] = await connection.query(findRoleByIdQuery, id);
     return row[0];
   } catch (e) {
     throw new Error(e);

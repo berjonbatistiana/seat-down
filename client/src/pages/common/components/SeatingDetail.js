@@ -1,8 +1,7 @@
 import React from "react";
-import {Box, Typography} from "@material-ui/core";
+import { Box, Typography } from "@material-ui/core";
 
 export const SeatingDetail = (props) => {
-
   return (
     <Box mb={3}>
       <Typography variant="body2" color="textSecondary" component="p">
@@ -22,4 +21,4 @@ export const SeatingDetail = (props) => {
       </Typography>
     </Box>
   );
-}
+};

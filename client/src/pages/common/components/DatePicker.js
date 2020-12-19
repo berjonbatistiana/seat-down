@@ -3,8 +3,6 @@ import React from "react";
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
 export const DatePicker = (props) => {
-  // The first commit of Material-UI
-
   return (
     <KeyboardDatePicker
       disableToolbar
