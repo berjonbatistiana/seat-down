@@ -19,14 +19,10 @@ import {
   ViewColumn
 } from '@material-ui/icons';
 import EventSeatIcon from "@material-ui/icons/EventSeat";
-import {Box, Button, Typography} from "@material-ui/core";
-import ScheduleIcon from "@material-ui/icons/Schedule";
-import {DatePicker} from "./DatePicker";
-import RoomIcon from "@material-ui/icons/Room";
-
+import {Typography, Link} from "@material-ui/core";
 
 export const SeatingTable = (props) => {
-  
+
   const tableIcons = {
     Add: forwardRef((props, ref) => <AddBox {...props} ref={ref}/>),
     Check: forwardRef((props, ref) => <Check {...props} ref={ref}/>),
@@ -50,7 +46,7 @@ export const SeatingTable = (props) => {
     ThirdStateCheck: forwardRef((props, ref) => <Remove {...props} ref={ref}/>),
     ViewColumn: forwardRef((props, ref) => <ViewColumn {...props} ref={ref}/>),
   };
-  
+
   const columns = [
     {
       title: "Building",
@@ -65,9 +61,10 @@ export const SeatingTable = (props) => {
       field: "chairName",
     },
   ];
-  
+
   return (
     <MaterialTable
+      style={{boxShadow: 'none'}}
       pr={3}
       icons={tableIcons}
       title={props.renderTableTitle()}
@@ -90,7 +87,7 @@ export const SeatingTable = (props) => {
         actionsColumnIndex: -1,
         searchFieldAlignment: "right",
         actionsCellStyle: {
-          padding: "25px",
+          padding: "16px",
         },
       }}
       localization={{
@@ -108,24 +105,15 @@ export const SeatingTable = (props) => {
             </Typography>
           ) : (
             <Typography variant="h6">
-              You already have a seat.
-              <Button
-                variant="contained"
-                style={{
-                  marginLeft: 5,
-                  marginRight: 5,
-                  color: "white",
-                  backgroundColor: "#fd8369",
-                  borderRadius: 25,
-                  "&:hover": {
-                    backgroundColor: "#fd8369",
-                  },
-                }}
+              {`You have reserved ${props.currentChair}. `}
+              <Link
+                color="secondary"
                 onClick={props.handleRemoveSeat}
+                style={{ cursor: "pointer"}}
               >
                 Click here
-              </Button>
-              to remove previous reservation.
+              </Link>
+              {` to remove the reservation.`}
             </Typography>
           ),
         },

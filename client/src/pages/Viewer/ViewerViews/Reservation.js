@@ -1,5 +1,5 @@
-import React, {forwardRef, useCallback, useEffect} from "react";
-import {Box, Button, Paper, Typography} from "@material-ui/core";
+import React, { useCallback, useEffect} from "react";
+import {Box, Paper, Typography} from "@material-ui/core";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import RoomIcon from "@material-ui/icons/Room";
 import {
@@ -8,6 +8,7 @@ import {
   getAvailableSeats,
   removeSeatDate,
   reserveSeat,
+  getChairLocation
 } from "../../../utils";
 import {convertDate, getLocalDate} from "../../../utils/tools";
 import {SeatingTable} from "../../common/components/"
@@ -20,6 +21,10 @@ export const Reservation = () => {
   const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
   const [selectedDate, setSelectedDate] = React.useState(getLocalDate());
+  const [currentChair, setCurrentChair] = React.useState(null);
+  const [currentBuilding, setCurrentBuilding] = React.useState(null);
+  const [currentFloor, setCurrentFloor] = React.useState(null);
+  const [currentDesk, setCurrentDesk] = React.useState(null);
 
   const fetchData = useCallback(async () => {
     const date = convertDate(selectedDate);
@@ -33,6 +38,12 @@ export const Reservation = () => {
       setAvailableSeats(seats);
     } else {
       setAvailableSeats([]);
+      getChairLocation(seat.chairId).then(({data}) => {
+        setCurrentChair(data.chairName);
+        setCurrentBuilding(data.buildingName);
+        setCurrentFloor(data.floorName);
+        setCurrentDesk(data.deskName);
+      });
     }
 
     setSeatsLoading(false);
@@ -67,7 +78,7 @@ export const Reservation = () => {
       console.error(e);
     });
   };
-  
+
   const renderTableTitle = () => {
     return (
       <Box pt={3}>
@@ -98,7 +109,7 @@ export const Reservation = () => {
     );
   };
 
-  
+
   return (
     <form>
       <Box m={3} component={Paper} variant="outlined">
@@ -110,6 +121,7 @@ export const Reservation = () => {
           handleReserveSeat={handleReserveSeat}
           handleDateChange={handleDateChange}
           availableSeats={availableSeats}
+          currentChair={`chair ${currentChair} of desk ${currentDesk} on floor ${currentFloor} in building ${currentBuilding}`}
         />
       </Box>
     </form>

@@ -73,7 +73,7 @@ export const getChairLocation = async (chairId) => {
   } catch (e){
     console.error(`API Error: Could not get chair location by id: ${chairId}\n ${e}`);
     throw new Error(e);
-    
+
   }
 }
 
