@@ -68,14 +68,14 @@ export const UserNavbar = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    location.pathname === '/dashboard' ? setValue(0) : location.pathname === '/reserve' ? setValue(1) : setValue(2);
+    location.pathname === '/dashboard' ? setValue(0) : location.pathname === '/reserve' ? setValue(1) : location.pathname === '/directory' ? setValue(2) : setValue(3);
   }, [location.pathname])
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  return token && (location.pathname === '/dashboard' || location.pathname === '/reserve' || location.pathname === '/directory') ? (
+  return token && (location.pathname === '/dashboard' || location.pathname === '/reserve' || location.pathname === '/directory' || location.pathname === '/configure') ? (
     <div>
       <AppBar position="static" color="transparent" elevation={0}>
         <AntTabs variant="scrollable" scrollButtons="auto" value={value} onChange={handleChange}>
@@ -90,6 +90,10 @@ export const UserNavbar = () => {
           <AntTab
             style={{color: location.pathname === '/directory' ? '#5fc5d1' : ''}}
             component={RouteLink} to="/directory" label={<div><SearchIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Employee Directory</div>} {...a11yProps(2)}
+          />
+          <AntTab
+            style={{color: location.pathname === '/configure' ? '#5fc5d1' : ''}}
+            component={RouteLink} to="/configure" label={<div><SearchIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Configure Company</div>} {...a11yProps(3)}
           />
         </AntTabs>
       </AppBar>

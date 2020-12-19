@@ -23,10 +23,11 @@ module.exports = {
     }
   },
   insertBuildingApi: async (req, res) => {
-    const { address, name } = req.body;
+    const { name, companyId } = req.body;
     try {
-      res.json(await insertBuildingToDb(address, name));
+      res.json(await insertBuildingToDb(name, companyId));
     } catch (e) {
+      console.log(e);
       res.status(400).json(e);
     }
   },

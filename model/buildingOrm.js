@@ -25,10 +25,10 @@ const fetchBuildingsByIdFromDb = async (buildingId) => {
   }
 };
 
-const insertBuildingToDb = async (address, name) => {
+const insertBuildingToDb = async (name, companyId) => {
   try {
     const id = uniqid();
-    await connection.query(insertBuildingQuery, [id, address, name]);
+    await connection.query(insertBuildingQuery, [id, name, companyId]);
     const [buildingResult] = await connection.query(
       findBuildingByIdQuery,
       id

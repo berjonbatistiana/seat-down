@@ -18,9 +18,10 @@ CREATE TABLE roles (
 
 CREATE TABLE buildings (
     id VARCHAR(255) NOT NULL,
-    address VARCHAR(255) NOT NULL,
+    companyId VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    FOREIGN KEY(companyId) REFERENCES companies(id)
 );
 
 CREATE TABLE users (

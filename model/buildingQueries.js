@@ -7,7 +7,7 @@ const findBuildingByIdQuery = `
   WHERE id = ?;
   `;
 const insertBuildingQuery = `
-  INSERT INTO buildings (id, address, name)
+  INSERT INTO buildings (id, name, companyId)
   VALUES (?, ?, ?);
   `;
 const deleteBuildingByIdQuery = `

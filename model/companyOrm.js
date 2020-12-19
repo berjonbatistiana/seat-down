@@ -30,7 +30,7 @@ const insertCompanyToDb = async (name) => {
   try {
     await connection.query(insertCompanyQuery, [
       id,
-      name,
+      name
     ]);
     const [companyResult] = await connection.query(
       findCompanyByIdQuery,
