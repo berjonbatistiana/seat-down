@@ -24,7 +24,7 @@ const getUserInfoQuery = `
   JOIN companies
   ON companies.id = users.companyId
   WHERE users.id = ?;
-`
+`;
 
 const getEmployeeDirectoryQuery = `
   SELECT
@@ -48,7 +48,7 @@ const getEmployeeDirectoryQuery = `
   LEFT JOIN buildings
   ON floors.buildingId = buildings.id
   WHERE users.companyId = ?;
-`
+`;
 const insertUserQuery = `
   INSERT INTO users (id, username, password, roleId, companyId)
   VALUES (?, ?, ?, ?, ?);

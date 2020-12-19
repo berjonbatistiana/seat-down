@@ -25,13 +25,7 @@ module.exports = {
   insertDeskApi: async (req, res) => {
     const { floorId, name, chairCapacity } = req.body;
     try {
-      res.json(
-        await insertDeskToDb(
-          floorId,
-          name,
-          parseInt(chairCapacity)
-        )
-      );
+      res.json(await insertDeskToDb(floorId, name, parseInt(chairCapacity)));
     } catch (e) {
       res.status(400).json(e);
     }
