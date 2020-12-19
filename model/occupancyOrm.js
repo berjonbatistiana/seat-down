@@ -54,13 +54,16 @@ const insertOccupancyToDb = async (date, chairId, userId) => {
 };
 
 const doesUserHaveSeatOnDateFromDb = async (date, userId) => {
-  try{
-    const [rows] = await connection.query(doesUserHaveSeatOnDateQuery, [date, userId]);
-    return rows[0]
+  try {
+    const [rows] = await connection.query(doesUserHaveSeatOnDateQuery, [
+      date,
+      userId,
+    ]);
+    return rows[0];
   } catch (e) {
     throw new Error(e);
   }
-}
+};
 
 const deleteOccupancyByIdFromDb = async (occupancyId) => {
   try {

@@ -21,8 +21,8 @@ async function seed() {
 
   console.log("adding buildings");
   //add building
-  const seedABuilding = await insertBuildingToDb(fake.address.city(), "Seed A");
-  const seedBBuilding = await insertBuildingToDb(fake.address.city(), "Seed B");
+  const seedABuilding = await insertBuildingToDb("Seed A");
+  const seedBBuilding = await insertBuildingToDb("Seed B");
 
   console.log("adding users");
   // add user

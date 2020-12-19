@@ -1,6 +1,7 @@
 const findAllChairsQuery = "SELECT * FROM chairs;";
 const findChairByIdQuery = "SELECT * FROM chairs WHERE id = ?;";
-const insertChairQuery = "INSERT INTO chairs (id, deskId, name) VALUES (?, ?, ?);";
+const insertChairQuery =
+  "INSERT INTO chairs (id, deskId, name) VALUES (?, ?, ?);";
 const deleteChairByIdQuery = "DELETE FROM chairs WHERE ID = ?;";
 const getChairLocationQuery = `
   SELECT
@@ -15,7 +16,7 @@ const getChairLocationQuery = `
   JOIN buildings
   ON floors.buildingId = buildings.id
   WHERE chairs.id = ?;
-`
+`;
 const findAllAvailableChairsByCompanyQuery = `
   SELECT
     companies.name AS companyName,

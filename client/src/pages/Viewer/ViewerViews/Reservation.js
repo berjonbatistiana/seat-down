@@ -1,5 +1,5 @@
-import React, { useCallback, useEffect} from "react";
-import {Box, Paper, Typography} from "@material-ui/core";
+import React, { forwardRef, useCallback, useEffect } from "react";
+import { Box, Button, Paper, Typography } from "@material-ui/core";
 import ScheduleIcon from "@material-ui/icons/Schedule";
 import RoomIcon from "@material-ui/icons/Room";
 import {
@@ -10,13 +10,13 @@ import {
   reserveSeat,
   getChairLocation
 } from "../../../utils";
-import {convertDate, getLocalDate} from "../../../utils/tools";
-import {SeatingTable} from "../../common/components/"
+import { convertDate, getLocalDate } from "../../../utils/tools";
+import { SeatingTable } from "../../common/components/";
 
-import {DatePicker} from "../../common";
+import { DatePicker } from "../../common";
 
 export const Reservation = () => {
-  const [userId, setUserId] = React.useState('');
+  const [userId, setUserId] = React.useState("");
   const [hasSeat, setHasSeat] = React.useState(false);
   const [areSeatsLoading, setSeatsLoading] = React.useState(false);
   const [availableSeats, setAvailableSeats] = React.useState([]);
@@ -29,12 +29,20 @@ export const Reservation = () => {
   const fetchData = useCallback(async () => {
     const date = convertDate(selectedDate);
     setSeatsLoading(true);
-    const {data: user} = await findUserByUsername(localStorage.getItem('user'));
+    const { data: user } = await findUserByUsername(
+      localStorage.getItem("user")
+    );
     setUserId(user.id);
-    const {data: seat} = await doesUserHaveSeatDate({userId: user.id, date});
+    const { data: seat } = await doesUserHaveSeatDate({
+      userId: user.id,
+      date,
+    });
     setHasSeat(!!seat);
     if (!seat) {
-      const {data: seats} = await getAvailableSeats({companyId: user.companyId, date});
+      const { data: seats } = await getAvailableSeats({
+        companyId: user.companyId,
+        date,
+      });
       setAvailableSeats(seats);
     } else {
       setAvailableSeats([]);
@@ -50,7 +58,6 @@ export const Reservation = () => {
   }, [selectedDate]);
 
   useEffect(() => {
-
     fetchData().catch((e) => {
       console.error(e);
     });
@@ -61,10 +68,10 @@ export const Reservation = () => {
   };
 
   const handleReserveSeat = async (event, rowData) => {
-    const {chairId} = rowData;
+    const { chairId } = rowData;
     const date = convertDate(selectedDate);
 
-    await reserveSeat({userId, chairId, date});
+    await reserveSeat({ userId, chairId, date });
     setHasSeat(true);
     fetchData().catch((e) => {
       console.error(e);
@@ -73,7 +80,7 @@ export const Reservation = () => {
 
   const handleRemoveSeat = async () => {
     const date = convertDate(selectedDate);
-    await removeSeatDate({date, userId});
+    await removeSeatDate({ date, userId });
     fetchData().catch((e) => {
       console.error(e);
     });
@@ -86,7 +93,7 @@ export const Reservation = () => {
           <ScheduleIcon
             color="secondary"
             fontSize="large"
-            style={{verticalAlign: "middle"}}
+            style={{ verticalAlign: "middle" }}
           />{" "}
           Date
         </Typography>
@@ -101,14 +108,13 @@ export const Reservation = () => {
           <RoomIcon
             color="secondary"
             fontSize="large"
-            style={{verticalAlign: "middle"}}
+            style={{ verticalAlign: "middle" }}
           />{" "}
           Location
         </Typography>
       </Box>
     );
   };
-
 
   return (
     <form>

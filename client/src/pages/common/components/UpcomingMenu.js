@@ -1,9 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import {makeStyles, withStyles} from '@material-ui/core/styles';
-import Tabs from '@material-ui/core/Tabs';
-import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
+import React from "react";
+import PropTypes from "prop-types";
+import { makeStyles, withStyles } from "@material-ui/core/styles";
+import Tabs from "@material-ui/core/Tabs";
+import Typography from "@material-ui/core/Typography";
+import Box from "@material-ui/core/Box";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -16,9 +16,7 @@ function TabPanel(props) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      {value === index && (
-          {children}
-      )}
+      {value === index && { children }}
     </div>
   );
 }
@@ -32,8 +30,8 @@ TabPanel.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    display: 'flex',
-    height: '600px',
+    display: "flex",
+    height: "600px",
   },
   tabs: {
     borderRight: `1px solid ${theme.palette.divider}`,
@@ -42,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 const AntTabs = withStyles({
   indicator: {
-    backgroundColor: '#5fc5d1',
+    backgroundColor: "#5fc5d1",
   },
 })(Tabs);
 
@@ -65,21 +63,17 @@ export const UpcomingMenu = (props) => {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Box mt={2} ml={2} mr={2} style={{textAlign: 'center'}}>
+        <Box mt={2} ml={2} mr={2} style={{ textAlign: "center" }}>
           <Box>
-            <Typography>
-              Upcoming
-            </Typography>
+            <Typography>Upcoming</Typography>
           </Box>
           <Box>
-            <Typography>
-              Dates
-            </Typography>
+            <Typography>Dates</Typography>
           </Box>
         </Box>
         {props.dates}
       </AntTabs>
-        {props.content}
+      {props.content}
     </div>
   );
-}
+};

@@ -1,5 +1,5 @@
 const bcrypt = require("bcryptjs");
-const uniqid = require('uniqid');
+const uniqid = require("uniqid");
 const {
   findAllUsers,
   findUserByIdQuery,
@@ -47,8 +47,8 @@ const getEmployeeDirectoryFromDb = async (companyId) => {
   try {
     const [rows] = await connection.query(getEmployeeDirectoryQuery, companyId);
     return rows;
-  } catch (e){
-    throw new Error(e)
+  } catch (e) {
+    throw new Error(e);
   }
 };
 
@@ -59,7 +59,7 @@ const getUserInfoFromDb = async (userId) => {
   } catch (e) {
     throw new Error(e);
   }
-}
+};
 
 const insertUserToDb = async (username, password, roleId, companyId) => {
   const salt = await bcrypt.genSalt(10);
@@ -73,14 +73,10 @@ const insertUserToDb = async (username, password, roleId, companyId) => {
       roleId,
       companyId,
     ]);
-    
-    const [userResult] = await connection.query(
-      findUserByIdQuery,
-      _id
-    );
+
+    const [userResult] = await connection.query(findUserByIdQuery, _id);
     return userResult[0];
   } catch (e) {
-    console.log(e)
     throw new Error(e);
   }
 };
@@ -90,25 +86,23 @@ const updatePasswordFromDb = async (userId, oldPassword, newPassword) => {
   try {
     const [rows] = await connection.query(findUserByIdQuery, userId);
     const user = rows[0];
-    console.log(user)
     const isVerified = await comparePassword(oldPassword, user.password);
-    
+
     if (isVerified) {
       const hashedPassword = await bcrypt.hash(newPassword, salt);
       const result = await connection.query(updateUserPasswordQuery, [
         hashedPassword,
-        userId
-      ])
-      
+        userId,
+      ]);
+
       return result[0];
     }
-    
+
     return -1;
   } catch (e) {
-    console.log(e)
     throw new Error(e);
   }
-}
+};
 
 const deleteUserByIdFromDb = async (userId) => {
   try {
