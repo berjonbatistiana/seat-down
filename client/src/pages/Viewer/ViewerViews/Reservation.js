@@ -108,6 +108,7 @@ export const Reservation = () => {
           renderTableTitle={renderTableTitle}
           handleRemoveSeat={handleRemoveSeat}
           handleReserveSeat={handleReserveSeat}
+          handleDateChange={handleDateChange}
           availableSeats={availableSeats}
         />
       </Box>
