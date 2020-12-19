@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Box, Button, Grid, Paper, Typography} from "@material-ui/core";
+import {Box, Grid, Paper, Typography} from "@material-ui/core";
 import {compareDate, getLocalDate} from "../../../utils/tools";
 import {findCompanyById, findUserByUsername, getEmployeeDirectory} from "../../../utils"
 
@@ -10,12 +10,12 @@ export const Directory = () => {
   const [company, setCompany] = useState('');
   const [selectedDate, setSelectedDate] = useState(getLocalDate());
   const [areSeatsLoading, setSeatsLoading] = useState(false);
-  
-  
+
+
   const handleDateChange = (date) => {
     setSelectedDate((date));
   };
-  
+
   const columns = [
     {field: "username", title: "Name"},
     {field: "role", title: "Role"},
@@ -23,9 +23,9 @@ export const Directory = () => {
     {field: "floorName", title: "Floor"},
     {field: "buildingName", title: "Building"}
   ];
-  
+
   useEffect(() => {
-    
+
     const fetchData = async () => {
       setSeatsLoading(true);
       setData([]);
@@ -33,18 +33,18 @@ export const Directory = () => {
       const {data: directory} = await getEmployeeDirectory({companyId: user.companyId});
       const filteredDirectory = [];
       const notYetFiltered = {};
-      
+
       findCompanyById(user.companyId).then(({data}) => {
         setCompany(data.name);
       });
       for (let i = 0; i < directory.length; i++) {
-        
+
         // check if this entry haven't had a chair before
         if (!directory[i].occupancyDate) {
           filteredDirectory.push(directory[i]); // add it to the filtered directory
           continue;                             // proceed to next item
         }
-        
+
         // check if this entry had a chair before as this is of this date
         if (compareDate(directory[i].occupancyDate, selectedDate)) {
           // if it was previously checked, remove it from there
@@ -57,7 +57,7 @@ export const Directory = () => {
             notYetFiltered[directory[i].username] = directory[i]; // add it
           }
       }
-      
+
       // deal with remaining company members who are not yet filtered
       for (const item in notYetFiltered){
         if (notYetFiltered[item]){
@@ -72,16 +72,16 @@ export const Directory = () => {
       setData(filteredDirectory);
       setSeatsLoading(false);
     }
-    
-    
+
+
     fetchData()
       .catch(e => {
         console.error(`Failed to fetch data ${e}`);
         throw new Error(e)
       })
-    
+
   }, [selectedDate]);
-  
+
   return (
     <div>
       <Grid container justify="space-between">
