@@ -27,10 +27,11 @@ module.exports = {
     }
   },
   insertFloorApi: async (req, res) => {
-    const { buildingId, name, deskCapacity } = req.body;
+    const { companyId, buildingId, name, deskCapacity } = req.body;
     try {
       res.json(
         await insertFloorToDb(
+          companyId,
           buildingId,
           name,
           parseInt(deskCapacity)
@@ -38,7 +39,7 @@ module.exports = {
       );
     } catch (e) {
       console.error(
-        `DB Error: Could not insert new floor: {${buildingId}, ${name}, ${deskCapacity}`
+        `DB Error: Could not insert new floor: {${companyId}, ${buildingId}, ${name}, ${deskCapacity}}`
       );
       res.status(400).json(e);
     }

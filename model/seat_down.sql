@@ -37,10 +37,12 @@ CREATE TABLE users (
 
 CREATE TABLE floors (
     id VARCHAR(255) NOT NULL,
+    companyId VARCHAR(255) NOT NULL,
     buildingId VARCHAR(255) NOT NULL,
     name VARCHAR(255) NOT NULL,
     deskCapacity INT DEFAULT 0,
     PRIMARY KEY(id),
+    FOREIGN KEY(companyId) REFERENCES companies(id),
     FOREIGN KEY(buildingId) REFERENCES buildings(id)
 );
 

@@ -131,8 +131,8 @@ export const addBuilding = async (name, companyId) => {
     return axios.post("/api/building", { name, companyId });
 };
 
-export const addFloor = async (name, buildingId, deskCapacity) => {
-    return axios.post("/api/floor", { name, buildingId, deskCapacity });
+export const addFloor = async (name, buildingId, deskCapacity, companyId) => {
+    return axios.post("/api/floor", { name, buildingId, deskCapacity, companyId });
 };
 
 export const addTable = async (name, floorId, chairCapacity) => {

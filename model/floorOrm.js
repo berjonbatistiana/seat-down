@@ -26,11 +26,12 @@ const fetchFloorByIdFromDb = async (floorId) => {
   }
 };
 
-const insertFloorToDb = async (buildingId, name, deskCapacity) => {
+const insertFloorToDb = async (companyId, buildingId, name, deskCapacity) => {
   const id = uniqid();
   try {
     await connection.query(insertFloorQuery, [
       id,
+      companyId,
       buildingId,
       name,
       deskCapacity,

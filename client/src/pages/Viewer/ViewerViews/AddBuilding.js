@@ -134,11 +134,12 @@ export const AddBuilding = () => {
   }
 
   const postToDb = async (buildingName, floorNames, tableNames, chairNames, numTables, numChairs) => {
-    const buildingRequests = [addBuilding(buildingName, await getCompanyId())]
+    const companyId = await getCompanyId()
+    const buildingRequests = [addBuilding(buildingName, companyId)]
     const buildingResponse = await individualPost(buildingRequests)
     const floorRequests = []
     floorNames[Object.keys(floorNames)[0]].forEach(floor => {
-      floorRequests.push(addFloor(floor, buildingResponse[0], numTables))
+      floorRequests.push(addFloor(floor, buildingResponse[0], numTables, companyId))
      })
     const floorResponse = await individualPost(floorRequests)
     const tableRequests = []
@@ -154,7 +155,7 @@ export const AddBuilding = () => {
         chairRequests.push(addChair(chair, tableResponse[index]))
       })
     })
-    const chairResponse = await individualPost(chairRequests);
+    await individualPost(chairRequests);
   }
 
   return (
