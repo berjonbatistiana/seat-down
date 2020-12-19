@@ -119,6 +119,30 @@ export const addRole = async (name) => {
   }
 };
 
+export const getBuildings = async () => {
+  try {
+    return await axios.get("/api/building");
+  } catch (e) {
+    throw new Error(e);
+  }
+};
+
+export const addBuilding = async (name, companyId) => {
+    return axios.post("/api/building", { name, companyId });
+};
+
+export const addFloor = async (name, buildingId, deskCapacity) => {
+    return axios.post("/api/floor", { name, buildingId, deskCapacity });
+};
+
+export const addTable = async (name, floorId, chairCapacity) => {
+    return axios.post("/api/desks", { name, floorId, chairCapacity });
+};
+
+export const addChair = async (name, deskId) => {
+    return  axios.post("/api/chairs", { name, deskId });
+};
+
 export const reserveSeat = async (formValues) => {
   try {
     // Needs date, chairId, userId
@@ -146,6 +170,7 @@ export const removeSeatDate = async ({ date, userId }) => {
 export const getCompanyAndUserData = async (username) => {
   let roleName = "";
   let companyName = "";
+  let companyId = ""
   let userId = "";
   let reservations = [];
   await axios.get(`/api/users/username/${username}`).then(async ({ data }) => {
@@ -159,10 +184,11 @@ export const getCompanyAndUserData = async (username) => {
       .then((res) => {
         roleName = res[0].data.name;
         companyName = res[1].data.name;
+        companyId = res[1].data.id
         reservations.push(res[2].data);
       });
   });
-  return { userId, roleName, companyName, reservations };
+  return { userId, roleName, companyName, reservations, companyId };
 };
 
 export const getReservationData = async (chairId) => {

@@ -7,8 +7,8 @@ const findFloorByIdQuery = `
   WHERE id = ?;
   `;
 const insertFloorQuery = `
-  INSERT INTO floors (id, companyId, buildingId, name, deskCapacity)
-  VALUES (?, ?, ?, ?, ?);
+  INSERT INTO floors (id, buildingId, name, deskCapacity)
+  VALUES (?, ?, ?, ?);
   `;
 const updateFloorCompanyQuery = `
   UPDATE floors
