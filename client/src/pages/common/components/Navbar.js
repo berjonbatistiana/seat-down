@@ -1,9 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
-import {Toolbar, Typography, Link} from "@material-ui/core";
+import { Toolbar, Typography, Link } from "@material-ui/core";
 import { Link as RouteLink, useLocation, useHistory } from "react-router-dom";
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -32,11 +31,18 @@ export function Navbar() {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.root} color="transparent" position="static" elevation={0}>
+      <AppBar
+        className={classes.root}
+        color="transparent"
+        position="static"
+        elevation={0}
+      >
         <Toolbar>
           <Typography className={classes.title}>
             <Link
-              component={RouteLink} to={token ? "/dashboard" : "/"} color="secondary"
+              component={RouteLink}
+              to={token ? "/dashboard" : "/"}
+              color="secondary"
               style={{
                 fontWeight: "bold",
               }}
@@ -47,7 +53,8 @@ export function Navbar() {
           {token ? (
             <Typography className={classes.menuButton}>
               <Link
-                color="inherit" onClick={handleSignOut}
+                color="inherit"
+                onClick={handleSignOut}
                 style={{
                   cursor: "pointer",
                 }}
@@ -55,11 +62,13 @@ export function Navbar() {
                 Sign Out
               </Link>
             </Typography>
-          ): (
+          ) : (
             <>
               <Typography className={classes.menuButton}>
                 <Link
-                  to="/signup" component={RouteLink} color="inherit"
+                  to="/signup"
+                  component={RouteLink}
+                  color="inherit"
                   style={{
                     fontWeight: location.pathname === "/signup" ? "bold" : "",
                   }}
@@ -68,10 +77,13 @@ export function Navbar() {
                 </Link>
               </Typography>
               <Typography className={classes.menuButton}>
-                <Link to="/signin" component={RouteLink} color="inherit"
-                      style={{
-                        fontWeight: location.pathname === "/signin" ? "bold" : "",
-                      }}
+                <Link
+                  to="/signin"
+                  component={RouteLink}
+                  color="inherit"
+                  style={{
+                    fontWeight: location.pathname === "/signin" ? "bold" : "",
+                  }}
                 >
                   Sign In
                 </Link>

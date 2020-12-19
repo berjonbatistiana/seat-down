@@ -27,7 +27,6 @@ module.exports = {
     try {
       res.json(await insertCompanyToDb(name));
     } catch (e) {
-      console.log(e);
       res.status(400).json(e);
     }
   },

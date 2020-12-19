@@ -8,8 +8,15 @@ import BusinessIcon from "@material-ui/icons/Business";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import axios from 'axios'
-import { addBuilding, addFloor, addTable, addChair, getCompanyAndUserData, getBuildings } from '../../../utils/API';
+import axios from "axios";
+import {
+  addBuilding,
+  addFloor,
+  addTable,
+  addChair,
+  getCompanyAndUserData,
+  getBuildings,
+} from "../../../utils/API";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -31,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
     color: "white",
     backgroundColor: "#6bd5e1",
     borderRadius: 25,
-    boxShadow: 'none',
+    boxShadow: "none",
     "&:hover": {
       backgroundColor: "#5fc5d1",
     },
@@ -42,10 +49,10 @@ export const AddBuilding = () => {
   const classes = useStyles();
   const history = useHistory();
   const getCompanyId = async () => {
-    const user = localStorage.getItem("user")
-    const { companyId} = await getCompanyAndUserData(user);
-    return companyId
-  } 
+    const user = localStorage.getItem("user");
+    const { companyId } = await getCompanyAndUserData(user);
+    return companyId;
+  };
 
   const onSubmit = async ({ target }) => {
     const rawInputs = [];
@@ -72,18 +79,27 @@ export const AddBuilding = () => {
       numChairs,
     };
     if (filteredInputs.length !== 7) {
-      alert("Please fill out all of the fields")
-      return
-    }
-    const {data} = await getBuildings()
-    const existingBuildings = data.map(resp => resp.name)
-    if (existingBuildings.includes(buildingName)) {
-      alert("This building name is already in use, please choose a different one.")
+      alert("Please fill out all of the fields");
       return;
     }
-    const [floorNames, tableNames, chairNames] = prepareToPost(inputs)
-    postToDb(buildingName, floorNames, tableNames, chairNames, numTables, numChairs);
-    history.push("/reserve")
+    const { data } = await getBuildings();
+    const existingBuildings = data.map((resp) => resp.name);
+    if (existingBuildings.includes(buildingName)) {
+      alert(
+        "This building name is already in use, please choose a different one."
+      );
+      return;
+    }
+    const [floorNames, tableNames, chairNames] = prepareToPost(inputs);
+    postToDb(
+      buildingName,
+      floorNames,
+      tableNames,
+      chairNames,
+      numTables,
+      numChairs
+    );
+    history.push("/reserve");
   };
 
   const prepareToPost = ({
@@ -103,12 +119,16 @@ export const AddBuilding = () => {
     );
     const chairNames = {};
     Object.keys(tableNames).forEach((key, index) => {
-      const tables = iterateNumbers(tableNames[key], `${chairPrefix}${index}`, numChairs)
-      Object.keys(tables).forEach(table => {
-        chairNames[table] = tables[table]
-      })
-    })
-    return [floorNames, tableNames, chairNames]
+      const tables = iterateNumbers(
+        tableNames[key],
+        `${chairPrefix}${index}`,
+        numChairs
+      );
+      Object.keys(tables).forEach((table) => {
+        chairNames[table] = tables[table];
+      });
+    });
+    return [floorNames, tableNames, chairNames];
   };
 
   const iterateNumbers = (items, prefix, numChildren) => {
@@ -116,7 +136,7 @@ export const AddBuilding = () => {
     items.forEach((item, index) => {
       const arr = [];
       for (let i = 0; i < numChildren; i++) {
-        arr.push(`${prefix}${index}${i}`)
+        arr.push(`${prefix}${index}${i}`);
       }
       returnDict[item] = arr;
     });
@@ -124,39 +144,51 @@ export const AddBuilding = () => {
   };
 
   const individualPost = async (requests) => {
-    const ids = []
-    await axios.all(requests).then(responses => {
-      responses.forEach(res => {
-        ids.push(res.data.id)
+    const ids = [];
+    await axios
+      .all(requests)
+      .then((responses) => {
+        responses.forEach((res) => {
+          ids.push(res.data.id);
+        });
       })
-    }).catch(e => console.log(e))
-    return ids
-  }
+      .catch((e) => console.log(e));
+    return ids;
+  };
 
-  const postToDb = async (buildingName, floorNames, tableNames, chairNames, numTables, numChairs) => {
-    const companyId = await getCompanyId()
-    const buildingRequests = [addBuilding(buildingName, companyId)]
-    const buildingResponse = await individualPost(buildingRequests)
-    const floorRequests = []
-    floorNames[Object.keys(floorNames)[0]].forEach(floor => {
-      floorRequests.push(addFloor(floor, buildingResponse[0], numTables, companyId))
-     })
-    const floorResponse = await individualPost(floorRequests)
-    const tableRequests = []
+  const postToDb = async (
+    buildingName,
+    floorNames,
+    tableNames,
+    chairNames,
+    numTables,
+    numChairs
+  ) => {
+    const companyId = await getCompanyId();
+    const buildingRequests = [addBuilding(buildingName, companyId)];
+    const buildingResponse = await individualPost(buildingRequests);
+    const floorRequests = [];
+    floorNames[Object.keys(floorNames)[0]].forEach((floor) => {
+      floorRequests.push(
+        addFloor(floor, buildingResponse[0], numTables, companyId)
+      );
+    });
+    const floorResponse = await individualPost(floorRequests);
+    const tableRequests = [];
     Object.keys(tableNames).forEach((floor, index) => {
-      tableNames[floor].forEach(table => {
-        tableRequests.push(addTable(table, floorResponse[index], numChairs))
-      })
-    })
-    const tableResponse = await individualPost(tableRequests)
-    const chairRequests = []
+      tableNames[floor].forEach((table) => {
+        tableRequests.push(addTable(table, floorResponse[index], numChairs));
+      });
+    });
+    const tableResponse = await individualPost(tableRequests);
+    const chairRequests = [];
     Object.keys(chairNames).forEach((table, index) => {
-      chairNames[table].forEach(chair => {
-        chairRequests.push(addChair(chair, tableResponse[index]))
-      })
-    })
+      chairNames[table].forEach((chair) => {
+        chairRequests.push(addChair(chair, tableResponse[index]));
+      });
+    });
     await individualPost(chairRequests);
-  }
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -237,11 +269,7 @@ export const AddBuilding = () => {
               />
             </Grid>
           </Grid>
-          <Button
-            type="submit"
-            fullWidth
-            className={classes.submit}
-          >
+          <Button type="submit" fullWidth className={classes.submit}>
             Submit
           </Button>
         </form>

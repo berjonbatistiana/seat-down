@@ -10,15 +10,15 @@ export const convertDate = (date) => {
 
 export const compareDate = (dateA, dateB) => {
   // gets milliseconds of both dates.
-  dateA = typeof dateA ==='object'? convertDate(dateA):dateA
-  dateB = typeof dateB ==='object'? convertDate(dateB):dateB
+  dateA = typeof dateA === "object" ? convertDate(dateA) : dateA;
+  dateB = typeof dateB === "object" ? convertDate(dateB) : dateB;
   const milliSDateA = new Date(dateA).getTime();
   const milliDateB = new Date(dateB).getTime();
 
   return milliSDateA === milliDateB;
-}
+};
 
 export const getLocalDate = () => {
   const date = new Date(Date.now());
   return new Date(date.toString());
-}
+};

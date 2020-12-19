@@ -18,7 +18,9 @@ Workspace is an employee management system. With COVID-19 causing massive disrup
 
 ## The Personal Calendar
 
+
 The personal calendar shows all of your current, past and upcoming dates where you have a scheduled seat.
+
 
 ![screenshot](./assets/images/Calendar.gif)
 

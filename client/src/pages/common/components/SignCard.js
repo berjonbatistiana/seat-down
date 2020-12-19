@@ -12,7 +12,11 @@ export const SignCard = (props) => {
     <Grid
       container
       direction="row"
-      style={{ textAlign: "center", height: "93vh", backgroundColor: '#faf9f7' }}
+      style={{
+        textAlign: "center",
+        height: "93vh",
+        backgroundColor: "#faf9f7",
+      }}
       justify="center"
       alignItems="stretch"
     >

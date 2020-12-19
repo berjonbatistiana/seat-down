@@ -4,4 +4,4 @@ export * from "./Directory";
 export * from "./Reservation";
 export * from "./SignIn";
 export * from "./SignUp";
-export * from "./AddBuilding"
+export * from "./AddBuilding";

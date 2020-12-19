@@ -25,19 +25,10 @@ const fetchDeskByIdFromDb = async (deskId) => {
   }
 };
 
-const insertDeskToDb = async (
-  floorId,
-  name,
-  chairCapacity
-) => {
+const insertDeskToDb = async (floorId, name, chairCapacity) => {
   const id = uniqid();
   try {
-    await connection.query(insertDeskQuery, [
-      id,
-      floorId,
-      name,
-      chairCapacity,
-    ]);
+    await connection.query(insertDeskQuery, [id, floorId, name, chairCapacity]);
     const [deskResult] = await connection.query(findDeskByIdQuery, id);
     return deskResult[0];
   } catch (e) {

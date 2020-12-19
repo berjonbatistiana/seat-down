@@ -27,7 +27,6 @@ module.exports = {
     try {
       res.json(await insertBuildingToDb(name, companyId));
     } catch (e) {
-      console.log(e);
       res.status(400).json(e);
     }
   },

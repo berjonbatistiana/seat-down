@@ -25,9 +25,7 @@ module.exports = {
   insertRoleApi: async (req, res) => {
     const { name } = req.body;
     try {
-      res.json(
-        await insertRoleToDb(name)
-      );
+      res.json(await insertRoleToDb(name));
     } catch (e) {
       res.status(400).json(e);
     }
