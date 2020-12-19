@@ -1,13 +1,12 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { makeStyles, withStyles } from "@material-ui/core/styles";
+import {makeStyles, withStyles} from "@material-ui/core/styles";
 import Tabs from "@material-ui/core/Tabs";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
+import {Tab} from "@material-ui/core";
 
 function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
+  const {children, value, index, ...other} = props;
+  
   return (
     <div
       role="tabpanel"
@@ -16,7 +15,7 @@ function TabPanel(props) {
       aria-labelledby={`vertical-tab-${index}`}
       {...other}
     >
-      {value === index && { children }}
+      {value === index && {children}}
     </div>
   );
 }
@@ -44,14 +43,25 @@ const AntTabs = withStyles({
   },
 })(Tabs);
 
+const AntTab = withStyles((theme) => ({
+  root: {
+    textTransform: "none",
+    minWidth: 70,
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    fontWeight: theme.typography.fontWeightRegular,
+  },
+}))((props) => <Tab disableRipple {...props} />);
+
+
 export const UpcomingMenu = (props) => {
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-
+  
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
+  
   return (
     <div className={classes.root}>
       <AntTabs
@@ -63,14 +73,11 @@ export const UpcomingMenu = (props) => {
         aria-label="Vertical tabs example"
         className={classes.tabs}
       >
-        <Box mt={2} ml={2} mr={2} style={{ textAlign: "center" }}>
-          <Box>
-            <Typography>Upcoming</Typography>
-          </Box>
-          <Box>
-            <Typography>Dates</Typography>
-          </Box>
-        </Box>
+        <AntTab
+          key={'header'}
+          label={'Upcoming\nDates'}
+        />
+        
         {props.dates}
       </AntTabs>
       {props.content}
