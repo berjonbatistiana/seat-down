@@ -1,5 +1,5 @@
 import axios from "axios";
-axios.defaults.headers.get['Authorization'] = localStorage.getItem('token');
+axios.defaults.headers.common['Authorization'] = localStorage.getItem('token');
 
 export const findUserById = async (userId) => {
   try {

@@ -83,7 +83,7 @@ export const AddBuilding = () => {
     }
     const [floorNames, tableNames, chairNames] = prepareToPost(inputs)
     postToDb(buildingName, floorNames, tableNames, chairNames, numTables, numChairs);
-    history.push("/")
+    history.push("/reserve")
   };
 
   const prepareToPost = ({
