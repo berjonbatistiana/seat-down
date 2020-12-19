@@ -1,5 +1,9 @@
 import axios from "axios";
-axios.defaults.headers.common["Authorization"] = localStorage.getItem("token");
+axios.defaults.headers.get["Authorization"] = localStorage.getItem("token");
+axios.defaults.headers.post["Authorization"] = localStorage.getItem("token");
+axios.defaults.headers.patch["Authorization"] = localStorage.getItem("token");
+axios.defaults.headers.put["Authorization"] = localStorage.getItem("token");
+axios.defaults.headers.delete["Authorization"] = localStorage.getItem("token");
 
 export const findUserById = async (userId) => {
   try {
@@ -218,3 +222,15 @@ export const getReservationData = async (chairId) => {
   });
   return { building, floor, desk, seat };
 };
+
+export const changePassword = async (formData) => {
+  try {
+    // needs username, password, newpassword
+    return await axios.patch(`/api/users/changePassword`);
+  } catch (e) {
+    console.error(
+      `API Error: Could not change password for ${formData.username}.`
+    );
+    throw new Error(e);
+  }
+}

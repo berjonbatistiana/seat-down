@@ -4,6 +4,7 @@ const {
   fetchUserByUsernameFromDb,
   getUserInfoFromDb,
   deleteUserByIdFromDb,
+  updatePasswordFromDb
 } = require("../model/userOrm");
 
 module.exports = {
@@ -16,7 +17,7 @@ module.exports = {
     }
   },
   getUserByUsernameApi: async (req, res) => {
-    const { username } = req.params;
+    const {username} = req.params;
     try {
       const user = await fetchUserByUsernameFromDb(username);
       res.json(user);
@@ -26,7 +27,7 @@ module.exports = {
     }
   },
   getEmployeeDirectoryApi: async (req, res) => {
-    const { companyId } = req.params;
+    const {companyId} = req.params;
     try {
       res.json(await getEmployeeDirectoryFromDb(companyId));
     } catch (e) {
@@ -37,7 +38,7 @@ module.exports = {
     }
   },
   getUserInfoFromApi: async (req, res) => {
-    const { userId } = req.params;
+    const {userId} = req.params;
     try {
       res.json(await getUserInfoFromDb(userId));
     } catch (e) {
@@ -48,16 +49,30 @@ module.exports = {
     }
   },
   deleteUserByIdApi: async (req, res) => {
-    const { userId } = req.params;
+    const {userId} = req.params;
     if (userId !== req.user.id) {
       return res
         .status(401)
-        .json({ error: "You cannot delete a user that is not yourself" });
+        .json({error: "You cannot delete a user that is not yourself"});
     }
     try {
       const deletedUser = await deleteUserByIdFromDb(userId);
       res.json(deletedUser);
     } catch (e) {
+      res.status(400).json(e);
+    }
+  },
+  changePasswordApi: async (req, res) => {
+    const {password, newPassword} = req.body;
+    try {
+      const user = await updatePasswordFromDb(
+        req.user.id,
+        password,
+        newPassword
+      );
+      res.json(user);
+    } catch (e) {
+      console.error(e)
       res.status(400).json(e);
     }
   },

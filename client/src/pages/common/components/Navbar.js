@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import { Toolbar, Typography, Link } from "@material-ui/core";
 import { Link as RouteLink, useLocation, useHistory } from "react-router-dom";
+import {changePassword} from "../../../utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,6 +29,15 @@ export function Navbar() {
     localStorage.removeItem("user");
     history.push("/");
   };
+  
+  const handleChangePassword = async () => {
+    const formData = {
+      username: localStorage.getItem('user'),
+      password: '',
+      newPassword: '',
+    }
+    const {data} = await changePassword(formData);
+  }
 
   return (
     <div className={classes.root}>

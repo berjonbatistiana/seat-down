@@ -23,18 +23,5 @@ module.exports = {
     } catch (e) {
       res.status(400).json(e);
     }
-  },
-  changePasswordApi: async (req, res) => {
-    const { password, newPassword } = req.body;
-    try {
-      const user = await updatePasswordFromDb(
-        req.user.id,
-        password,
-        newPassword
-      );
-      res.json(user);
-    } catch (e) {
-      res.status(400).json(e);
-    }
-  },
+  }
 };
