@@ -91,6 +91,10 @@ export const UserNavbar = () => {
             style={{color: location.pathname === '/directory' ? '#5fc5d1' : ''}}
             component={RouteLink} to="/directory" label={<div><SearchIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Employee Directory</div>} {...a11yProps(2)}
           />
+          <AntTab
+            style={{color: location.pathname === '/configure' ? '#5fc5d1' : ''}}
+            component={RouteLink} to="/configure" label={<div><SearchIcon fontSize="small" style={{verticalAlign: 'middle'}}/> Configure Company</div>} {...a11yProps(2)}
+          />
         </AntTabs>
       </AppBar>
     </div>

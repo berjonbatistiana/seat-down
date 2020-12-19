@@ -23,9 +23,9 @@ module.exports = {
     }
   },
   insertCompanyApi: async (req, res) => {
-    const { name } = req.body;
+    const { name, companyId } = req.body;
     try {
-      res.json(await insertCompanyToDb(name));
+      res.json(await insertCompanyToDb(name,companyId));
     } catch (e) {
       console.log(e);
       res.status(400).json(e);

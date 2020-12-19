@@ -1,6 +1,6 @@
 import React from "react";
 import { HashRouter as Router, Route } from "react-router-dom";
-import { About, SignIn, SignUp, Dashboard, Directory, Reservation } from "./pages/Viewer"
+import { About, SignIn, SignUp, Dashboard, Directory, Reservation, AddBuilding } from "./pages/Viewer"
 import {Navbar, UserNavbar} from "./pages/common"
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import {MuiPickersUtilsProvider} from "@material-ui/pickers";
@@ -30,6 +30,7 @@ const App = () => {
           <Route path="/directory" component={Directory}  />
           <Route path="/dashboard" component={Dashboard}/>
           <Route path="/reserve" component={Reservation} />
+          <Route path="/configure" component={AddBuilding}/>
           <Route exact path="/" component={About} />
         </Router>
       </MuiPickersUtilsProvider>
