@@ -77,7 +77,6 @@ const insertUserToDb = async (username, password, roleId, companyId) => {
     const [userResult] = await connection.query(findUserByIdQuery, _id);
     return userResult[0];
   } catch (e) {
-    console.log(e);
     throw new Error(e);
   }
 };
@@ -87,7 +86,6 @@ const updatePasswordFromDb = async (userId, oldPassword, newPassword) => {
   try {
     const [rows] = await connection.query(findUserByIdQuery, userId);
     const user = rows[0];
-    console.log(user);
     const isVerified = await comparePassword(oldPassword, user.password);
 
     if (isVerified) {
@@ -102,7 +100,6 @@ const updatePasswordFromDb = async (userId, oldPassword, newPassword) => {
 
     return -1;
   } catch (e) {
-    console.log(e);
     throw new Error(e);
   }
 };

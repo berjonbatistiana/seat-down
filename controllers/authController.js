@@ -14,7 +14,6 @@ const tokenForUser = (id) => {
 module.exports = {
   signInApi: (req, res) => {
     res.json(tokenForUser(req.user.id));
-    console.log(req.user.id);
   },
   signUpApi: async (req, res) => {
     const { username, password, roleId, companyId } = req.body;
