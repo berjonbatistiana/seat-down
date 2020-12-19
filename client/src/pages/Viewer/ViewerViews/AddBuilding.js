@@ -1,5 +1,4 @@
 import { useHistory } from "react-router-dom";
-import react from "react"
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -145,7 +144,6 @@ export const AddBuilding = () => {
     const tableRequests = []
     Object.keys(tableNames).forEach((floor, index) => {
       tableNames[floor].forEach(table => {
-        console.log(floorResponse[index]);
         tableRequests.push(addTable(table, floorResponse[index], numChairs))
       })
     })
@@ -153,7 +151,6 @@ export const AddBuilding = () => {
     const chairRequests = []
     Object.keys(chairNames).forEach((table, index) => {
       chairNames[table].forEach(chair => {
-        console.log(tableResponse[index]);
         chairRequests.push(addChair(chair, tableResponse[index]))
       })
     })
