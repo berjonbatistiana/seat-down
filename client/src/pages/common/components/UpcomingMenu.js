@@ -38,9 +38,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const AntTabs = withStyles({
-  root: {
-    borderBottom: "1px solid #e8e8e8",
-  },
   indicator: {
     backgroundColor: "#5fc5d1",
   },

@@ -19,7 +19,7 @@ import {
   ViewColumn,
 } from "@material-ui/icons";
 import EventSeatIcon from "@material-ui/icons/EventSeat";
-import { Button, Typography } from "@material-ui/core";
+import {Typography, Link} from "@material-ui/core";
 
 export const SeatingTable = (props) => {
   const tableIcons = {
@@ -67,6 +67,7 @@ export const SeatingTable = (props) => {
 
   return (
     <MaterialTable
+      style={{boxShadow: 'none'}}
       pr={3}
       icons={tableIcons}
       title={props.renderTableTitle()}
@@ -89,7 +90,7 @@ export const SeatingTable = (props) => {
         actionsColumnIndex: -1,
         searchFieldAlignment: "right",
         actionsCellStyle: {
-          padding: "25px",
+          padding: "16px",
         },
       }}
       localization={{
@@ -105,24 +106,15 @@ export const SeatingTable = (props) => {
             </Typography>
           ) : (
             <Typography variant="h6">
-              You already have a seat.
-              <Button
-                variant="contained"
-                style={{
-                  marginLeft: 5,
-                  marginRight: 5,
-                  color: "white",
-                  backgroundColor: "#fd8369",
-                  borderRadius: 25,
-                  "&:hover": {
-                    backgroundColor: "#fd8369",
-                  },
-                }}
+              {`You have reserved ${props.currentChair}. `}
+              <Link
+                color="secondary"
                 onClick={props.handleRemoveSeat}
+                style={{ cursor: "pointer"}}
               >
                 Click here
-              </Button>
-              to remove previous reservation.
+              </Link>
+              {` to remove the reservation.`}
             </Typography>
           ),
         },
