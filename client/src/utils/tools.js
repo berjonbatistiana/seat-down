@@ -14,7 +14,7 @@ export const compareDate = (dateA, dateB) => {
   dateB = typeof dateB ==='object'? convertDate(dateB):dateB
   const milliSDateA = new Date(dateA).getTime();
   const milliDateB = new Date(dateB).getTime();
-  
+
   return milliSDateA === milliDateB;
 }
 

@@ -142,7 +142,6 @@ export const Reservation = () => {
           <DatePicker
             selectedDate={selectedDate}
             handleDateChange={handleDateChange}
-            fullWidth={false}
             disablePast={true}
           />
         </Box>
@@ -161,6 +160,7 @@ export const Reservation = () => {
     <form>
       <Box m={3} component={Paper} variant="outlined">
         <MaterialTable
+          style={{boxShadow: 'none',}}
           pr={3}
           icons={tableIcons}
           title={renderTableTitle()}
