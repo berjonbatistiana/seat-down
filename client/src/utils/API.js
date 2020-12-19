@@ -226,7 +226,7 @@ export const getReservationData = async (chairId) => {
 export const changePassword = async (formData) => {
   try {
     // needs username, password, newpassword
-    return await axios.patch(`/api/users/changePassword`);
+    return await axios.patch(`/api/users/changePassword`, formData);
   } catch (e) {
     console.error(
       `API Error: Could not change password for ${formData.username}.`
