@@ -99,7 +99,7 @@ export const AddBuilding = () => {
       numTables,
       numChairs
     );
-    history.push("/");
+    history.push("/reserve");
   };
 
   const prepareToPost = ({
