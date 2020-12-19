@@ -14,7 +14,7 @@ import { addBuilding, addFloor, addTable, addChair, getCompanyAndUserData, getBu
 
 const useStyles = makeStyles((theme) => ({
   paper: {
-    marginTop: theme.spacing(8),
+    marginTop: theme.spacing(3),
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -28,7 +28,14 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    marginTop: theme.spacing(2),
+    color: "white",
+    backgroundColor: "#6bd5e1",
+    borderRadius: 25,
+    boxShadow: 'none',
+    "&:hover": {
+      backgroundColor: "#5fc5d1",
+    },
   },
 }));
 
@@ -235,8 +242,6 @@ export const AddBuilding = () => {
           <Button
             type="submit"
             fullWidth
-            variant="contained"
-            color="primary"
             className={classes.submit}
           >
             Submit
