@@ -51,8 +51,10 @@ export function Navbar() {
   const [open, setOpen] = useState(false);
   const [oldPass, setOldPass] = useState('');
   const [newPass, setNewPass] = useState('');
+  const [confirmPass, setConfirmPass] = useState('');
   const [showNewPass, setShowNewPass] = useState(false);
   const [showOldPass, setShowOldPass] = useState(false);
+  const [showConfirmPass, setShowConfirmPass] = useState('');
   const [snackbar, setSnackbar] = useState(false);
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState('');
@@ -94,6 +96,11 @@ export function Navbar() {
 
   const handleChangePassword = async (e) => {
     e.preventDefault();
+    if (confirmPass !== newPass) {
+      setMessage('The new password and the confirmation password do not match.');
+      setSeverity('error');
+      return setSnackbar(true);
+    }
     const formData = {
       username: localStorage.getItem('user'),
       password: oldPass,
@@ -106,7 +113,7 @@ export function Navbar() {
       setSnackbar(true);
       handleClose();
     } else {
-      setMessage('You were unable to change your password.');
+      setMessage('Sorry, your old password was entered incorrectly.');
       setSeverity('error');
       setSnackbar(true);
     }
@@ -167,6 +174,14 @@ export function Navbar() {
                           onClick={() => setShowNewPass(!showNewPass)}
                           icon={showNewPass ? <Visibility /> : <VisibilityOff />}
                         />
+                        <PasswordFormControl
+                          type={showConfirmPass ? 'text' : 'password'}
+                          value={confirmPass}
+                          onChange={(e) => setConfirmPass(e.target.value)}
+                          id="confirmPass" label="Confirm New Password"
+                          onClick={() => setShowConfirmPass(!showConfirmPass)}
+                          icon={showConfirmPass ? <Visibility /> : <VisibilityOff />}
+                        />
                         <Button
                           type="submit"
                           fullWidth
@@ -215,7 +230,7 @@ export function Navbar() {
               horizontal: 'center',
             }}
             open={snackbar}
-            autoHideDuration={3000}
+            autoHideDuration={3500}
             onClose={handleSnackbarClose}>
             <MuiAlert onClose={handleSnackbarClose} severity={severity}>
               {message}
