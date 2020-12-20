@@ -147,9 +147,9 @@ export const SignUp = () => {
                 }}
                 onClick={handleSubmit}
                 disabled={
-                  username === "" &&
-                  password === "" &&
-                  company === "" &&
+                  username === "" ||
+                  password === "" ||
+                  company === "" ||
                   role === ""
                     ? true
                     : false
