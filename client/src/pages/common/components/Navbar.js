@@ -64,16 +64,21 @@ export function Navbar() {
     setAnchorEl(null);
   };
 
+  const handleReset = () => {
+    setOldPass('');
+    setNewPass('');
+    setConfirmPass('');
+    setShowNewPass(false);
+    setShowOldPass(false);
+    setOpen(false);
+    setAnchorEl(null);
+  }
+
   const handleClose = (e) => {
     if (e.key === "Tab") {
       return;
     }
-    setOpen(false);
-    setAnchorEl(null);
-    setOldPass('');
-    setNewPass('');
-    setShowNewPass(false);
-    setShowOldPass(false);
+    handleReset();
   };
 
   const handleSnackbarClose = (event, reason) => {
@@ -111,7 +116,7 @@ export function Navbar() {
       setMessage('You have successfully changed your password.');
       setSeverity('success');
       setSnackbar(true);
-      handleClose();
+      handleReset();
     } else {
       setMessage('Sorry, your old password was entered incorrectly.');
       setSeverity('error');
