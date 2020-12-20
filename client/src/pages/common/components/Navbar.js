@@ -47,6 +47,7 @@ export function Navbar() {
   const history = useHistory();
   const token = localStorage.getItem("token");
   const user = localStorage.getItem("user");
+  const inputArr = ['oldPass', 'newPass', 'confirmPass', 'submitBtn']
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [oldPass, setOldPass] = useState('');
@@ -64,16 +65,27 @@ export function Navbar() {
     setAnchorEl(null);
   };
 
-  const handleClose = (e) => {
-    if (e.key === "Tab") {
-      return;
-    }
-    setOpen(false);
-    setAnchorEl(null);
+  const handleReset = () => {
     setOldPass('');
     setNewPass('');
+    setConfirmPass('');
     setShowNewPass(false);
     setShowOldPass(false);
+    setOpen(false);
+    setAnchorEl(null);
+  }
+
+  const handleClose = (event, reason) => {
+    let target = event.target.id;
+    if (reason === 'tabKeyDown') {
+      for (let i = 0; i < inputArr.length; i++) {
+        if (target === inputArr[i] && target !== 'submitBtn') {
+          document.getElementById(inputArr[i + 1]).focus();
+        }
+      }
+      return;
+    }
+    handleReset();
   };
 
   const handleSnackbarClose = (event, reason) => {
@@ -91,7 +103,7 @@ export function Navbar() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
     history.push("/");
-    handleClose();
+    handleReset();
   };
 
   const handleChangePassword = async (e) => {
@@ -111,7 +123,7 @@ export function Navbar() {
       setMessage('You have successfully changed your password.');
       setSeverity('success');
       setSnackbar(true);
-      handleClose();
+      handleReset();
     } else {
       setMessage('Sorry, your old password was entered incorrectly.');
       setSeverity('error');
@@ -145,9 +157,10 @@ export function Navbar() {
                 <MenuItem onClick={handleOpen}>Reset Password</MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
                 <Modal
+                  disableEscapeKeyDown
                   className={classes.modal}
                   open={open}
-                  onClose={handleClose}
+                  onClose={handleReset}
                   closeAfterTransition
                   BackdropComponent={Backdrop}
                   BackdropProps={{
@@ -184,6 +197,7 @@ export function Navbar() {
                         />
                         <Button
                           type="submit"
+                          id="submitBtn"
                           fullWidth
                           className={classes.submit}
                           disabled={oldPass === "" || newPass === "" ? true : false}
@@ -224,19 +238,19 @@ export function Navbar() {
               </Typography>
             </>
           )}
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-            open={snackbar}
-            autoHideDuration={3500}
-            onClose={handleSnackbarClose}>
-            <MuiAlert onClose={handleSnackbarClose} severity={severity}>
-              {message}
-            </MuiAlert>
-          </Snackbar>
         </Toolbar>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'center',
+          }}
+          open={snackbar}
+          autoHideDuration={3500}
+          onClose={handleSnackbarClose}>
+          <MuiAlert onClose={handleSnackbarClose} severity={severity}>
+            {message}
+          </MuiAlert>
+        </Snackbar>
       </AppBar>
     </div>
   );
