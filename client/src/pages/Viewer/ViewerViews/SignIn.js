@@ -73,7 +73,7 @@ export const SignIn = () => {
                   },
                 }}
                 onClick={handleSubmit}
-                disabled={username === "" && password === "" ? true : false}
+                disabled={username === "" || password === "" ? true : false}
               >
                 Sign In
               </Button>
