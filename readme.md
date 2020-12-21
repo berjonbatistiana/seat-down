@@ -42,6 +42,12 @@ It is quick an easy to add configurations to your company to enable scheduling.
 
 ![screenshot](./assets/images/Configure.gif)
 
+## Demo
+
+[Demo link](https://nybor.herokuapp.com/)
+
+## Contributors
+
 - Alisa Poon
 - Bermond Batistiana
 - Brandon Scott
