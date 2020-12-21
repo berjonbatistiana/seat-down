@@ -39,6 +39,7 @@ export const SignUp = () => {
       localStorage.setItem("token", res.data);
       localStorage.setItem("user", username);
       history.push("/dashboard");
+      window.location.reload();
     } catch (e) {
       setSnackbar(true);
     }

@@ -200,7 +200,7 @@ export const AddBuilding = () => {
         <Typography component="h1" variant="h5">
           Add Building
         </Typography>
-        <form className={classes.form} onSubmit={onSubmit} noValidate>
+        <form className={classes.form} onSubmit={onSubmit} noValidate autoComplete="off">
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
