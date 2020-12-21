@@ -199,7 +199,7 @@ export class Dashboard extends React.Component {
                 <Box mt={3}>
                   <Grid container justify="center">
                     <Grid item>
-                      <Box m={3}>
+                      <Box m={3} style={{ overflow: "hidden" }}>
                         <Calendar
                           autoOk
                           orientation="portrait"

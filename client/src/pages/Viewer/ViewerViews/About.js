@@ -37,7 +37,7 @@ export const About = () => {
               THE MOST MODERN WORKSPACE MANAGEMENT SOFTWARE
             </Typography>
             <Typography variant="h3">
-              Navigate a hybrid working envoronment with ease
+              Navigate a hybrid working environment with ease
             </Typography>
             <Box my={3} mb={3}>
               <Typography variant="body1">
