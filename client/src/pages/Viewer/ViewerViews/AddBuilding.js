@@ -228,6 +228,16 @@ export const AddBuilding = () => {
                 id="numFloors"
                 label="Number of Floors"
                 type="number"
+                defaultValue={1}
+                InputProps={{
+                  inputProps: {
+                    min: 1,
+                    max: 9,
+                    onKeyDown: (event) => {
+                      event.preventDefault();
+                    },
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={7}>
@@ -247,6 +257,16 @@ export const AddBuilding = () => {
                 id="tablesPerFloor"
                 label="Tables per Floor"
                 type="number"
+                defaultValue={1}
+                InputProps={{
+                  inputProps: {
+                    min: 1,
+                    max: 9,
+                    onKeyDown: (event) => {
+                      event.preventDefault();
+                    },
+                  },
+                }}
               />
             </Grid>
             <Grid item xs={7}>
@@ -265,6 +285,16 @@ export const AddBuilding = () => {
                 fullWidth
                 id="chairsPerTable"
                 label="Chairs per Table"
+                defaultValue={1}
+                InputProps={{
+                  inputProps: {
+                    min: 1,
+                    max: 9,
+                    onKeyDown: (event) => {
+                      event.preventDefault();
+                    },
+                  },
+                }}
                 type="number"
               />
             </Grid>
